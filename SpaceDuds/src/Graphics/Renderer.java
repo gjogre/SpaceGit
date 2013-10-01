@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jbox2d.common.Vec2;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -25,8 +26,14 @@ import org.lwjgl.util.glu.*;
 public class Renderer {
     
     private int WIDTH = 800, HEIGHT = 800;
-
+    private Vec2 camera = new Vec2(0,0);
+    
     private ArrayList<GameObject> objectList = new ArrayList<>();
+    
+    public void setCameraPos(float x, float y){
+        camera.set(new Vec2(x,y));
+    }
+    
     
     public Renderer()throws LWJGLException{
         
@@ -60,6 +67,10 @@ public class Renderer {
     }
     
     public void render(){
+        //moving screen to camera postition
+        GL11.glPushMatrix();
+        GL11.glTranslatef(-camera.x, -camera.y, 0f);
+        
          GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
          
          for(GameObject o : objectList){
@@ -83,6 +94,8 @@ public class Renderer {
 
             GL11.glPopMatrix();
          }
+         //return the camera position
+         GL11.glPopMatrix();
     }
 
      /*   private void drawParticles(){
