@@ -6,11 +6,15 @@ import org.jbox2d.dynamics.Body;
 
 public class GameObject {
 
-    private final int MAX_VERTICES = 100;
+    private final int MAX_VERTICES = 200;
     
     protected Body body;
     protected Vec2[] shape;
     protected int shapeVecCount;
+    //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
+    protected int graphicsVecCount;
+    //no need to touch this, if you apply texture for gameobject, this will be set automatically
+    private boolean textured = false;
     
     public GameObject(){
         shape = new Vec2[MAX_VERTICES];
@@ -20,6 +24,7 @@ public class GameObject {
     
     private void setBasicShape(){
        shapeVecCount = 4;
+       graphicsVecCount = 4;
        shape[0] = new Vec2(-1,1);
        shape[1] = new Vec2(-1,-1);
        shape[2] = new Vec2(1,-1);
@@ -27,11 +32,22 @@ public class GameObject {
         
         
     }
+    
+    public void setRoundShape(float radius){
+        shapeVecCount = 0;//not needed for circle shape
+        graphicsVecCount = 179;
+        for(int i = 0; i < 180; i+= 1){
+            shape[i] = new Vec2(radius *(float)Math.cos(i)+radius*2.5f, radius*(float)Math.sin(i));
+        }
+    }
     public Vec2[] getShape(){
         return shape;
     }
     public int getshapeVecCount(){
         return shapeVecCount;
+    }
+    public int getGraphicsVecCount(){
+        return graphicsVecCount;
     }
     public Vec2 getLine(int index){
         return shape[index];

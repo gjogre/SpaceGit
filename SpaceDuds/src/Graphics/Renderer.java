@@ -49,6 +49,8 @@ public class Renderer {
        
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
+        glEnable( GL11.GL_LINE_SMOOTH );
+        GL11.glHint( GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST );
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         glClearColor(0f, 0f, 0f, 0f);
@@ -72,7 +74,6 @@ public class Renderer {
         GL11.glTranslatef(-camera.x, -camera.y, 0f);
         
          GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-         
          for(GameObject o : objectList){
             GL11.glPushMatrix();
             
@@ -80,7 +81,7 @@ public class Renderer {
                GL11.glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
                GL11.glBegin(GL11.GL_LINES);
 
-                for(int i = 0; i < o.getshapeVecCount(); i++){
+                for(int i = 0; i < o.getGraphicsVecCount(); i++){
                     
                     GL11.glVertex2f(o.getLine(i).x, o.getLine(i).y);
                     if(i == o.getshapeVecCount()-1){
@@ -89,7 +90,7 @@ public class Renderer {
                         GL11.glVertex2f(o.getLine(i+1).x, o.getLine(i+1).y);
                     }
                 }
-
+                
                GL11.glEnd();
 
             GL11.glPopMatrix();

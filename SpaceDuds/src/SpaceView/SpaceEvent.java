@@ -36,7 +36,8 @@ public class SpaceEvent{
         renderer.addObject(ship);
         // this is the end of define
         GameObject square = new GameObject();
-        square.setBody(physicsCore.addStaticObject(5, 0, square.getShape(), square.getshapeVecCount()));
+        square.setRoundShape(2f);
+        square.setBody(physicsCore.addPlanet(5, 0,2f));
         renderer.addObject(square);
         
         
@@ -101,11 +102,6 @@ public class SpaceEvent{
     }
 
     
-    private void addPlanet(float x, float y, float size){
-        Planet p = new Planet(size);
-        planets.add(p);
-        p.setBody(physicsCore.addPlanet(x, y, (int)p.getSize()));
-    }
     
 
 }
