@@ -5,6 +5,8 @@
 
 package SpaceView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Space {
@@ -19,18 +21,22 @@ public class Space {
         for(int g = 0; g < galaxies; g++){
             int planetsInGalaxy = r.nextInt(maxPlanets);
             float distanceToSun = 0f;
-            
+            planets[g] = new Planet[planetsInGalaxy];
             for(int p = 0 ; p < planetsInGalaxy; p++){
                 if(distanceToSun == 0f){
                     planets[g][p] = new Planet(r.nextFloat()*5,g, Planet.Climate.SUN,p,0f);
-                    distanceToSun += r.nextFloat() * 5+ 3f;
+                    distanceToSun += r.nextFloat() * 30f+ 10f;
                 } else {
                     
                     planets[g][p] = new Planet(r.nextFloat()*5,g, Planet.Climate.TEMPERATE,p,distanceToSun);
-                    distanceToSun += r.nextFloat() * 5+ 3f;
+                    distanceToSun += r.nextFloat() * 30f+ 10f;
                 }
             }
         }
     }
-    
+    public ArrayList<Planet> generatePlanetArray(int galaxy){
+        ArrayList<Planet> planetArr = new ArrayList<>();
+        planetArr.addAll(Arrays.asList(planets[galaxy]));
+        return planetArr;
+    }
 }

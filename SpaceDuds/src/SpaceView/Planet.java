@@ -21,11 +21,13 @@ public class Planet extends GameObject{
         this.distanceToSun = distanceToSun;
     }
 
-    public double getSize(){
+    public float getSize(){
         return size;
     }
     
-
+    public float getDistanceToSun(){
+        return distanceToSun;
+    }
 
     
 }

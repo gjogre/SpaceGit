@@ -97,7 +97,7 @@ public class Core {
        b.type = BodyType.STATIC;
        
        CircleShape shape = new CircleShape();
-       shape.m_p.set(x,y);
+       //shape.m_p.set(x,y);
        shape.m_radius = size;
        
        FixtureDef f = new FixtureDef();

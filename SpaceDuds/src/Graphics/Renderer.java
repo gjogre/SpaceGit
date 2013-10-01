@@ -61,6 +61,7 @@ public class Renderer {
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         
+        GL11.glLineWidth(2f);
         
     }
     

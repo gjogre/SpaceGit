@@ -35,9 +35,12 @@ public class GameObject {
     
     public void setRoundShape(float radius){
         shapeVecCount = 0;//not needed for circle shape
-        graphicsVecCount = 179;
-        for(int i = 0; i < 180; i+= 1){
-            shape[i] = new Vec2(radius *(float)Math.cos(i)+radius*2.5f, radius*(float)Math.sin(i));
+        graphicsVecCount = 34;
+        for(int i = 0; i < graphicsVecCount+1; i+= 1){
+            float theta = 2.0f * (float)Math.PI * (float)i /(float)graphicsVecCount;
+            float x = radius * (float)Math.cos(theta);
+            float y = radius * (float)Math.sin(theta);
+            shape[i] = new Vec2(x, y);
         }
     }
     public Vec2[] getShape(){
