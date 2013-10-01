@@ -6,6 +6,7 @@ import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 public class Core {
     
@@ -159,6 +160,14 @@ public class Core {
         
         
     }
+    
+    public void distanceJoint(Body a, Body b, Vec2 anchorA, Vec2 anchorB){
+       DistanceJointDef jointDef = new DistanceJointDef();
+       jointDef.initialize(a, b, anchorA, anchorB);
+       jointDef.collideConnected = true;
+       world.createJoint(jointDef);
+    }
+    
     
     public void removeBody(Body b){
         world.destroyBody(b);

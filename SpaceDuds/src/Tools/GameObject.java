@@ -13,6 +13,10 @@ public class GameObject {
     protected int shapeVecCount;
     //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
     protected int graphicsVecCount;
+
+    public Body getBody() {
+        return body;
+    }
     //no need to touch this, if you apply texture for gameobject, this will be set automatically
     private boolean textured = false;
     

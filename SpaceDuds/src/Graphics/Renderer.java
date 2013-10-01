@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.common.Vec3;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -75,25 +76,8 @@ public class Renderer {
     public void render(){
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         
-        //first we draw gui...
-        for(GUIObject g : GUIList){
-            GL11.glPushMatrix();
-            GL11.glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
-            GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
-            GL11.glBegin(GL11.GL_QUADS);
-            for(Vec2 q : g.getQuads()){
-                GL11.glVertex2f(q.x,q.y);
-            }
-            GL11.glEnd();
-            GL11.glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
-            GL11.glBegin(GL11.GL_LINES);
-            for(Vec2 l : g.getLines()){
-                GL11.glVertex2f(l.x, l.y);
-            }
-            GL11.glEnd();
-            GL11.glPopMatrix();
-        }
-        // ...
+  
+
         GL11.glColor3f(1, 1, 1);
         //moving screen to camera postition
         GL11.glPushMatrix();
@@ -119,10 +103,36 @@ public class Renderer {
 
             GL11.glPopMatrix();
          }
-         //return the camera position
+         
+              
+ //return the camera position
          GL11.glPopMatrix();
+         drawGUI();
     }
 
+    private void drawGUI(){
+        for(GUIObject g : GUIList){
+            GL11.glPushMatrix();
+            GL11.glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
+            GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
+            GL11.glBegin(GL11.GL_QUADS);
+                for(Vec3 q : g.getQuads()){
+                    GL11.glVertex3f(q.x-(q.z/2) , q.y+(q.z/2),0f);
+                    GL11.glVertex3f(q.x-(q.z/2) , q.y-(q.z/2),0f);
+                    GL11.glVertex3f(q.x+(q.z/2) , q.y-(q.z/2),0f);
+                    GL11.glVertex3f(q.x+(q.z/2) , q.y+(q.z/2),0f);
+                }
+            GL11.glEnd();
+            GL11.glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
+            GL11.glBegin(GL11.GL_LINES);
+                for(Vec2 l : g.getLines()){
+                    GL11.glVertex2f(l.x, l.y);
+                }
+            GL11.glEnd();
+            GL11.glPopMatrix();
+        }
+        // ...
+    }
      /*   private void drawParticles(){
         double angle = 0;
         for(Iterator<Particle> itr = particles.iterator(); itr.hasNext();){

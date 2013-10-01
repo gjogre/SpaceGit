@@ -30,10 +30,24 @@ public class SpaceEvent{
         physicsCore = new Core();
         // this is how you define object
         ship = new Ship();
-        ship.setBody(physicsCore.addObject(0, 10f, ship.getShape(), ship.getshapeVecCount(), 0.5f, 0.5f, 0.5f));
+        ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
         renderer.addObject(ship);
         // this is the end of define
-       
+        
+        //testing addon, 2 wings
+        Wing wing = new Wing();
+        wing.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y+1, wing.getShape(), wing.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        physicsCore.distanceJoint(ship.getBody(), wing.getBody(), 
+                ship.getBody().getWorldCenter(), wing.getBody().getWorldCenter());
+        renderer.addObject(wing);
+        
+        Wing wing2 = new Wing();
+        wing2.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y-1, wing2.getShape(), wing2.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        wing2.getBody().setTransform(wing2.getBody().getPosition(), 3.14159265f);
+        physicsCore.distanceJoint(ship.getBody(), wing2.getBody(), 
+                ship.getBody().getWorldCenter(), wing2.getBody().getWorldCenter());
+        renderer.addObject(wing2);
+        // /testing addon
         
         makeMapFrame();
         
@@ -94,7 +108,8 @@ private void makeMapFrame(){
         map.addLine(5.0f, -5f);
         map.addLine(5.0f, 5f);
         
-        map.addQuad(0, 0);
+        map.setQuadColor(0.1f, 0.1f, 0.1f);
+        map.addQuad(0, 0,10f);
 }
 
 }
