@@ -1,34 +1,33 @@
 package SpaceView;
 
-import java.awt.Graphics2D;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-public class Planet {
+import Tools.GameObject;
+public class Planet extends GameObject{
 
-    private enum Climate{
+    public static enum Climate{
         SUN, HOT, WARM, TEMPERATE, CHILLY, COLD, FREEZING;
     }
- 
-    private float size;
-    private Body body;
     
-    public Planet( float size){
+    private int galaxy;
+    private int id;
+    private float size;
+    private Climate climate;
+    private float distanceToSun;
+    public Planet( float size, int galaxy, Climate climate, int id, float distanceToSun){
+        super();
         this.size = size;
-        
+        this.galaxy = galaxy;
+        this.climate = climate;
+        this.id = id;
+        this.distanceToSun = distanceToSun;
     }
-    public Vec2 getPos(){
-        return body.getPosition();
-    }
-    public double getSize(){
+
+    public float getSize(){
         return size;
     }
     
-    public void draw(){
-        
+    public float getDistanceToSun(){
+        return distanceToSun;
     }
 
-    public void setBody(Body b){
-        body = b;
-    }
     
 }
