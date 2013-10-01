@@ -1,5 +1,6 @@
 package Graphics;
 
+import Tools.GUIObject;
 import Tools.GameObject;
 import Tools.Particle;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Renderer {
     private Vec2 camera = new Vec2(0,0);
     
     private ArrayList<GameObject> objectList = new ArrayList<>();
-    
+    private ArrayList<GUIObject> GUIList = new ArrayList<>();
     public void setCameraPos(float x, float y){
         camera.set(new Vec2(x,y));
     }
@@ -68,13 +69,32 @@ public class Renderer {
     public void addObject(GameObject obj){
         objectList.add(obj);
     }
-    
+    public void addGuiObject(GUIObject obj){
+        GUIList.add(obj);
+    }
     public void render(){
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glPushMatrix();
+        //first we draw gui...
+        for(GUIObject g : GUIList){
+            GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
+            GL11.glBegin(GL11.GL_QUADS);
+            for(Vec2 q : g.getQuads()){
+                GL11.glVertex2f(q.x,q.y);
+            }
+            GL11.glEnd();
+            GL11.glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
+            GL11.glBegin(GL11.GL_LINES);
+            for(Vec2 l : g.getLines()){
+                GL11.glVertex2f(l.x, l.y);
+            }
+            GL11.glEnd();
+        }
+        GL11.glPopMatrix();
+        // ...
         //moving screen to camera postition
         GL11.glPushMatrix();
         GL11.glTranslatef(-camera.x, -camera.y, 0f);
-        
-         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
          for(GameObject o : objectList){
             GL11.glPushMatrix();
             
