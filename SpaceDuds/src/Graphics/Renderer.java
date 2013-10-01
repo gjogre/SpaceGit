@@ -74,9 +74,11 @@ public class Renderer {
     }
     public void render(){
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glPushMatrix();
+        
         //first we draw gui...
         for(GUIObject g : GUIList){
+            GL11.glPushMatrix();
+            GL11.glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
             GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
             GL11.glBegin(GL11.GL_QUADS);
             for(Vec2 q : g.getQuads()){
@@ -89,9 +91,10 @@ public class Renderer {
                 GL11.glVertex2f(l.x, l.y);
             }
             GL11.glEnd();
+            GL11.glPopMatrix();
         }
-        GL11.glPopMatrix();
         // ...
+        GL11.glColor3f(1, 1, 1);
         //moving screen to camera postition
         GL11.glPushMatrix();
         GL11.glTranslatef(-camera.x, -camera.y, 0f);

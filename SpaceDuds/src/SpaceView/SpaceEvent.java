@@ -20,7 +20,7 @@ public class SpaceEvent{
     private Ship ship;
     private Core physicsCore;
     private Body debugBody = null;
-    
+    private Map map;
     private Random r = new Random();
     
     
@@ -34,13 +34,17 @@ public class SpaceEvent{
         renderer.addObject(ship);
         // this is the end of define
        
+        
+        makeMapFrame();
+        
         ArrayList<Planet> planets = space.generatePlanetArray(0);
         for(Planet p : planets){
             p.setRoundShape(p.getSize());
             p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0, p.getSize()));
             renderer.addObject(p);
         }
-        
+
+        renderer.addGuiObject(map);
         while(!Display.isCloseRequested()){
             
             input();
@@ -78,6 +82,19 @@ public class SpaceEvent{
         }
         
     }
-
+private void makeMapFrame(){
+        map = new Map(-19.0f,-19.0f);
+        map.setLineColor(0f,0f,1f);
+        map.addLine(5.0f, 5f);
+        map.addLine(-5.0f, 5f);
+        map.addLine(-5.0f, 5f);
+        map.addLine(-5.0f, -5f);
+        map.addLine(-5.0f, -5f);
+        map.addLine(5.0f, -5f);
+        map.addLine(5.0f, -5f);
+        map.addLine(5.0f, 5f);
+        
+        map.addQuad(0, 0);
+}
 
 }
