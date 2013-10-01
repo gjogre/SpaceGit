@@ -44,6 +44,7 @@ public class SpaceEvent{
             
             input();
             Display.sync(60);
+            renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
             renderer.render();
             Display.update();
             physicsCore.doStep();
