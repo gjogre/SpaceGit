@@ -19,27 +19,46 @@ public class SpaceEvent{
    
     private Ship ship;
     private Core physicsCore;
-    private Collection<Planet> planets = new ArrayList<>();
-    private Collection<Particle> particles = new ArrayList<>();
     private Body debugBody = null;
-    
+    private Map map;
     private Random r = new Random();
     
     
     public SpaceEvent(Renderer renderer){
         
-        
+        Space space = new Space();
         physicsCore = new Core();
         // this is how you define object
         ship = new Ship();
-        ship.setBody(physicsCore.addObject(0, 0, ship.getShape(), ship.getshapeVecCount(), 0.5f, 0.5f, 0.5f));
+        ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
         renderer.addObject(ship);
         // this is the end of define
-        GameObject square = new GameObject();
-        square.setBody(physicsCore.addStaticObject(5, 0, square.getShape(), square.getshapeVecCount()));
-        renderer.addObject(square);
         
+        //testing addon, 2 wings
+        Wing wing = new Wing();
+        wing.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y+1, wing.getShape(), wing.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        physicsCore.distanceJoint(ship.getBody(), wing.getBody(), 
+                ship.getBody().getWorldCenter(), wing.getBody().getWorldCenter());
+        renderer.addObject(wing);
         
+        Wing wing2 = new Wing();
+        wing2.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y-1, wing2.getShape(), wing2.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        wing2.getBody().setTransform(wing2.getBody().getPosition(), 3.14159265f);
+        physicsCore.distanceJoint(ship.getBody(), wing2.getBody(), 
+                ship.getBody().getWorldCenter(), wing2.getBody().getWorldCenter());
+        renderer.addObject(wing2);
+        // /testing addon
+        
+        makeMapFrame();
+        
+        ArrayList<Planet> planets = space.generatePlanetArray(0);
+        for(Planet p : planets){
+            p.setRoundShape(p.getSize());
+            p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0, p.getSize()));
+            renderer.addObject(p);
+        }
+
+        renderer.addGuiObject(map);
         while(!Display.isCloseRequested()){
             
             input();
@@ -56,12 +75,12 @@ public class SpaceEvent{
 
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            Particle p = new Particle();
-            p.radius = (r.nextFloat()+0.1f)/5;
+            //Particle p = new Particle();
+           // p.radius = (r.nextFloat()+0.1f)/5;
 
-            particles.add(p);
+            //particles.add(p);
             
-            ship.applyForceForward(2);
+            ship.applyForceForward(2f);
 
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
             ship.applyForce(new Vec2(0,-1));
@@ -77,35 +96,20 @@ public class SpaceEvent{
         }
         
     }
-
-
-    
-    private void drawPlanets(){
-
-        double angle = 0;
-
+private void makeMapFrame(){
+        map = new Map(-19.0f,-19.0f);
+        map.setLineColor(0f,0f,1f);
+        map.addLine(5.0f, 5f);
+        map.addLine(-5.0f, 5f);
+        map.addLine(-5.0f, 5f);
+        map.addLine(-5.0f, -5f);
+        map.addLine(-5.0f, -5f);
+        map.addLine(5.0f, -5f);
+        map.addLine(5.0f, -5f);
+        map.addLine(5.0f, 5f);
         
-            for(Planet p : planets){
-                angle = 0;
-                glPushMatrix();
-                glTranslatef(p.getPos().x, p.getPos().y, 0);
-                glBegin(GL_POLYGON); 
-                for(int i = 0; i < 39; i ++){
-                    glVertex2d(p.getSize()*Math.cos(i*2*Math.PI / 32)+p.getPos().x,p.getSize()*Math.sin(i*2*Math.PI / 32)+p.getPos().y );
-                }
-                glEnd();
-                glPopMatrix();
-            }
-        
-
-    }
-
-    
-    private void addPlanet(float x, float y, float size){
-        Planet p = new Planet(size);
-        planets.add(p);
-        p.setBody(physicsCore.addPlanet(x, y, (int)p.getSize()));
-    }
-    
+        map.setQuadColor(0.1f, 0.1f, 0.1f);
+        map.addQuad(0, 0,10f);
+}
 
 }
