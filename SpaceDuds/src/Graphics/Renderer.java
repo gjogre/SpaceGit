@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.common.Vec3;
+import org.jbox2d.dynamics.Body;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -103,7 +104,7 @@ public class Renderer {
 
             GL11.glPopMatrix();
          }
-         
+         drawQuadParticles();
               
  //return the camera position
          GL11.glPopMatrix();
@@ -113,7 +114,10 @@ public class Renderer {
     private void drawGUI(){
         for(GUIObject g : GUIList){
             GL11.glPushMatrix();
+            
             GL11.glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
+            
+            
             GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
             GL11.glBegin(GL11.GL_QUADS);
                 for(Vec3 q : g.getQuads()){
@@ -133,6 +137,35 @@ public class Renderer {
         }
         // ...
     }
+    
+    private void drawQuadParticles(){
+        
+
+        for(Iterator<Particle> itr = Particle.particles.iterator(); itr.hasNext();){
+            Particle p = itr.next();
+            GL11.glPushMatrix();
+            
+                GL11.glColor3f(p.color.x, p.color.y, p.color.z);
+            
+                GL11.glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
+                GL11.glRotatef((float)Math.toDegrees(p.body.getAngle()),0,0,1);
+                
+                GL11.glBegin(GL11.GL_QUADS);
+                    GL11.glVertex3f(- (p.radius/2), (p.radius/2), 0f);
+                    GL11.glVertex3f( - (p.radius/2), -(p.radius/2), 0f);
+                    GL11.glVertex3f((p.radius/2), -(p.radius/2), 0f);
+                    GL11.glVertex3f( (p.radius/2), (p.radius/2), 0f);
+                GL11.glEnd();
+            GL11.glPopMatrix();
+
+            
+            if(p.subTtl()){
+                Particle.remove(p);
+                itr.remove();
+            } 
+        }
+    }
+    
      /*   private void drawParticles(){
         double angle = 0;
         for(Iterator<Particle> itr = particles.iterator(); itr.hasNext();){

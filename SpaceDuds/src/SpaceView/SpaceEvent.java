@@ -23,11 +23,13 @@ public class SpaceEvent{
     private Map map;
     private Random r = new Random();
     
-    
     public SpaceEvent(Renderer renderer){
         
         Space space = new Space();
         physicsCore = new Core();
+        
+        Particle.bindCore(physicsCore);
+        
         // this is how you define object
         ship = new Ship();
         ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
@@ -35,7 +37,7 @@ public class SpaceEvent{
         // this is the end of define
         
         //testing addon, 2 wings
-        Wing wing = new Wing();
+        /*Wing wing = new Wing();
         wing.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y+1, wing.getShape(), wing.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
         physicsCore.distanceJoint(ship.getBody(), wing.getBody(), 
                 ship.getBody().getWorldCenter(), wing.getBody().getWorldCenter());
@@ -46,7 +48,7 @@ public class SpaceEvent{
         wing2.getBody().setTransform(wing2.getBody().getPosition(), 3.14159265f);
         physicsCore.distanceJoint(ship.getBody(), wing2.getBody(), 
                 ship.getBody().getWorldCenter(), wing2.getBody().getWorldCenter());
-        renderer.addObject(wing2);
+        renderer.addObject(wing2);*/
         // /testing addon
         
         makeMapFrame();
@@ -64,22 +66,22 @@ public class SpaceEvent{
             input();
             Display.sync(60);
             renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
+            
             renderer.render();
+            
             Display.update();
             physicsCore.doStep();
-            
-            
+          
+            //DEBUG
+            //physicsCore.printBodyCount();
         }
         
     }
 
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            //Particle p = new Particle();
-           // p.radius = (r.nextFloat()+0.1f)/5;
 
-            //particles.add(p);
-            
+            createParticle();
             ship.applyForceForward(2f);
 
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
@@ -96,6 +98,16 @@ public class SpaceEvent{
         }
         
     }
+    
+    private void createParticle(){
+        
+            Particle p = new Particle();
+            Particle.addParticle(p);
+            p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
+            p.radius, ship.getAngle());
+        
+    }
+    
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);
         map.setLineColor(0f,0f,1f);
