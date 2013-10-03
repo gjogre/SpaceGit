@@ -140,9 +140,12 @@ public class Renderer {
     
     private void drawQuadParticles(){
         
+
         for(Iterator<Particle> itr = Particle.particles.iterator(); itr.hasNext();){
             Particle p = itr.next();
             GL11.glPushMatrix();
+            
+                GL11.glColor3f(p.color.x, p.color.y, p.color.z);
             
                 GL11.glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
                 GL11.glRotatef((float)Math.toDegrees(p.body.getAngle()),0,0,1);
