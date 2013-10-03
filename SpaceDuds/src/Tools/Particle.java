@@ -1,22 +1,36 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package Tools;
 
+import Graphics.Renderer;
+import Physics.Core;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
+import org.jbox2d.common.Vec3;
 import org.jbox2d.dynamics.Body;
 
 public class Particle {
 
+    public static ArrayList<Particle> particles = new ArrayList<>();
+    
     public Body body;
     public float radius;
     private int ttl = 0;
+    private static Core physicsCore;
+    public Vec3 color; 
     
     public Particle(){
         Random r = new Random();
-        ttl = r.nextInt(50)+50;
+        ttl = r.nextInt(10)+10;
+        radius = (r.nextFloat()/2f+0.2f);
+        float colorBrightness = r.nextFloat();
+        if(colorBrightness < 0.2f){
+            colorBrightness = 0.5f;
+        }
+        color = new Vec3(colorBrightness,colorBrightness,0f);
+    }
+    public static void addParticle(Particle p){
+        particles.add(p);
     }
     
     public boolean subTtl(){
@@ -28,5 +42,13 @@ public class Particle {
         }
         
     }
+    public static void bindCore(Core core){
+        physicsCore = core;
+    }
+    
+    public static void remove(Particle p){
+        physicsCore.removeBody(p.body);
+    }
+
     
 }
