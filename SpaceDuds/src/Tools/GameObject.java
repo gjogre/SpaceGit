@@ -72,7 +72,11 @@ public class GameObject {
     public void applyForce(Vec2 force){
         body.applyForce(force, new Vec2(0f,0f));
     }
-    
+       public void applyImulse(float force){
+        float x = (float) Math.cos(body.getAngle());
+        float y = (float) Math.sin(body.getAngle());
+        body.applyLinearImpulse(new Vec2(x,y), new Vec2(0f,0f));
+    }
     public void applyForceForward(float force){
         float x = (float) Math.cos(body.getAngle());
         float y = (float) Math.sin(body.getAngle());

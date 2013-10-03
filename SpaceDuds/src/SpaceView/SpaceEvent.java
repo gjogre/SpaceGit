@@ -96,6 +96,16 @@ public class SpaceEvent{
             
 
         }
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            for(int i = 0; i < 50; i ++){
+                Particle p = new Particle();
+                Particle.addParticle(p);
+                p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
+                p.radius, r.nextFloat()*(float)Math.PI*2);
+                //ship.applyImulse(0.0000002f);
+
+            }
+        }
         
     }
     
