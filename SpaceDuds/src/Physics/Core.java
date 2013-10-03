@@ -120,7 +120,39 @@ public class Core {
         return body;
         
     }
-    
+   
+   public Body addSquareParticle(float x, float y, float size, float angle){
+       
+       BodyDef b = new BodyDef();
+       b.position.set(x,y);
+       b.type = BodyType.DYNAMIC;
+       
+       PolygonShape shape = new PolygonShape();
+       shape.setAsBox(size, size);
+       
+       FixtureDef f = new FixtureDef();
+       f.shape = shape;
+       //mass density
+       f.density = 0.2f;
+       //kitka
+       f.friction = 0.5f;
+       //bouncyness
+       f.restitution = 0.5f;
+       
+       f.filter.categoryBits = (Entities.PARTICLE.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode());
+       
+       Body body = world.createBody(b);
+       body.createFixture(f);
+      
+        body.applyLinearImpulse(new Vec2(-(float)Math.cos(angle)*size*5, -(float)Math.sin(angle)*size*5), new Vec2(0,0));
+        return body;
+       
+       
+   }
+   
+   
+    /*
     public Body addFireParticle(float x, float y, float angle, float radius){
 
        float speed = r.nextFloat()*0.3f+0.2f; 
@@ -159,7 +191,7 @@ public class Core {
        return body;
         
         
-    }
+    }*/
     
     public void distanceJoint(Body a, Body b, Vec2 anchorA, Vec2 anchorB){
        DistanceJointDef jointDef = new DistanceJointDef();
@@ -177,6 +209,8 @@ public class Core {
          world.step(timeStep, velIterations, posIterations);
         
     }
-    
-    
+    // FOR DEBUG ONLY
+    public void printBodyCount(){
+        System.out.println(world.getBodyCount());
+    }
 }
