@@ -62,7 +62,7 @@ public class Core {
        f.restitution = restitution;
        
        f.filter.categoryBits = (Entities.DYNAMIC.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() );
        Body body = world.createBody(b);
        body.createFixture(f);
        
@@ -140,7 +140,7 @@ public class Core {
        f.restitution = 0.5f;
        
        f.filter.categoryBits = (Entities.PARTICLE.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode() );
        
        Body body = world.createBody(b);
        body.createFixture(f);
