@@ -45,7 +45,7 @@ public class PlanetEvent {
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
             ship.applyForceForward(1f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            ship.applyLinearImpulse(3f,0f);
+            ship.applyImulse(3f);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
             ship.applyRotation(-0.5f);
