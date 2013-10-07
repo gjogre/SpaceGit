@@ -1,6 +1,7 @@
 
 package Tools;
 
+import Graphics.SpaceTexture;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -14,16 +15,30 @@ public class GameObject {
     //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
     protected int graphicsVecCount;
 
+    //no need to touch this, if you apply texture for gameobject, this will be set automatically
+    private boolean hasTexture;
+    private SpaceTexture texture;
+    
     public Body getBody() {
         return body;
     }
-    //no need to touch this, if you apply texture for gameobject, this will be set automatically
-    private boolean textured = false;
+    
+
     
     public GameObject(){
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
-        
+        hasTexture = false;
+    }
+
+    public void setTexture(String filename){
+        texture = new SpaceTexture(filename);
+        hasTexture = true;
+    }
+    
+    
+    public boolean hasTexture(){
+        return hasTexture;
     }
     
     private void setBasicShape(){
@@ -72,7 +87,11 @@ public class GameObject {
     public void applyForce(Vec2 force){
         body.applyForce(force, new Vec2(0f,0f));
     }
-    
+       public void applyImulse(float force){
+        float x = (float) Math.cos(body.getAngle());
+        float y = (float) Math.sin(body.getAngle());
+        body.applyLinearImpulse(new Vec2(x,y), new Vec2(0f,0f));
+    }
     public void applyForceForward(float force){
         float x = (float) Math.cos(body.getAngle());
         float y = (float) Math.sin(body.getAngle());

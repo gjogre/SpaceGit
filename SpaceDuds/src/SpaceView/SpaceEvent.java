@@ -22,7 +22,7 @@ public class SpaceEvent{
     private Body debugBody = null;
     private Map map;
     private Random r = new Random();
-    
+    private ArrayList<Planet> planets;
     public SpaceEvent(Renderer renderer){
         
         Space space = new Space();
@@ -34,32 +34,19 @@ public class SpaceEvent{
         ship = new Ship();
         ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
         renderer.addObject(ship);
+        
+        GameObject testObject = new GameObject();
+        testObject.setBody(physicsCore.addObject(4f, 10f, testObject.getShape(), testObject.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        renderer.addObject(testObject);
         // this is the end of define
-        
-        //testing addon, 2 wings
-        /*Wing wing = new Wing();
-        wing.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y+1, wing.getShape(), wing.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-        physicsCore.distanceJoint(ship.getBody(), wing.getBody(), 
-                ship.getBody().getWorldCenter(), wing.getBody().getWorldCenter());
-        renderer.addObject(wing);
-        
-        Wing wing2 = new Wing();
-        wing2.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y-1, wing2.getShape(), wing2.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-        wing2.getBody().setTransform(wing2.getBody().getPosition(), 3.14159265f);
-        physicsCore.distanceJoint(ship.getBody(), wing2.getBody(), 
-                ship.getBody().getWorldCenter(), wing2.getBody().getWorldCenter());
-        renderer.addObject(wing2);*/
-        // /testing addon
-        
-        makeMapFrame();
-        
-        ArrayList<Planet> planets = space.generatePlanetArray(0);
+
+        planets = space.generatePlanetArray(0);
         for(Planet p : planets){
             p.setRoundShape(p.getSize());
-            p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0, p.getSize()));
+            p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), r.nextFloat()*50-100, p.getSize()));
             renderer.addObject(p);
         }
-
+        makeMapFrame();
         renderer.addGuiObject(map);
         while(!Display.isCloseRequested()){
             
@@ -72,6 +59,7 @@ public class SpaceEvent{
             Display.update();
             physicsCore.doStep();
           
+            updateMap();
             //DEBUG
             //physicsCore.printBodyCount();
         }
@@ -95,6 +83,16 @@ public class SpaceEvent{
         } else {
             
 
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            for(int i = 0; i < 50; i ++){
+                Particle p = new Particle();
+                Particle.addParticle(p);
+                p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
+                p.radius, r.nextFloat()*(float)Math.PI*2);
+                //ship.applyImulse(0.0000002f);
+
+            }
         }
         
     }
@@ -120,8 +118,34 @@ private void makeMapFrame(){
         map.addLine(5.0f, -5f);
         map.addLine(5.0f, 5f);
         
-        map.setQuadColor(0.1f, 0.1f, 0.1f);
-        map.addQuad(0, 0,10f);
+        map.setQuadColor(0.6f, 0.1f, 0.6f);
+       // map.addQuad(0, 0,10f);
+        System.out.println(planets.size());
+        for(Planet p : planets){
+            map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/10);
+        }
+        map.player = map.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
+}
+
+private void updateMap(){
+    
+    map.setQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f,map.player-1);
+    
 }
 
 }
+        
+        //testing addon, 2 wings
+        /*Wing wing = new Wing();
+        wing.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y+1, wing.getShape(), wing.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        physicsCore.distanceJoint(ship.getBody(), wing.getBody(), 
+                ship.getBody().getWorldCenter(), wing.getBody().getWorldCenter());
+        renderer.addObject(wing);
+        
+        Wing wing2 = new Wing();
+        wing2.setBody(physicsCore.addObject(ship.getPos().x-2, ship.getPos().y-1, wing2.getShape(), wing2.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+        wing2.getBody().setTransform(wing2.getBody().getPosition(), 3.14159265f);
+        physicsCore.distanceJoint(ship.getBody(), wing2.getBody(), 
+                ship.getBody().getWorldCenter(), wing2.getBody().getWorldCenter());
+        renderer.addObject(wing2);*/
+        // /testing addon
