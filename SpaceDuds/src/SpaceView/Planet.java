@@ -24,7 +24,9 @@ public class Planet extends GameObject{
     public float getSize(){
         return size;
     }
-    
+    public Climate getClimate() {
+        return this.climate;
+    }
     public float getDistanceToSun(){
         return distanceToSun;
     }
