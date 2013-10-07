@@ -1,6 +1,7 @@
 
 package Tools;
 
+import Graphics.SpaceTexture;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -14,16 +15,30 @@ public class GameObject {
     //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
     protected int graphicsVecCount;
 
+    //no need to touch this, if you apply texture for gameobject, this will be set automatically
+    private boolean hasTexture;
+    private SpaceTexture texture;
+    
     public Body getBody() {
         return body;
     }
-    //no need to touch this, if you apply texture for gameobject, this will be set automatically
-    private boolean textured = false;
+    
+
     
     public GameObject(){
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
-        
+        hasTexture = false;
+    }
+
+    public void setTexture(String filename){
+        texture = new SpaceTexture(filename);
+        hasTexture = true;
+    }
+    
+    
+    public boolean hasTexture(){
+        return hasTexture;
     }
     
     private void setBasicShape(){
