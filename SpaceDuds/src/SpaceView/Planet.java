@@ -3,6 +3,10 @@ package SpaceView;
 import Tools.GameObject;
 public class Planet extends GameObject{
 
+    public Climate getClimate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public static enum Climate{
         SUN, HOT, WARM, TEMPERATE, CHILLY, COLD, FREEZING;
     }

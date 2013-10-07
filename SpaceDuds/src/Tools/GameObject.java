@@ -78,6 +78,9 @@ public class GameObject {
         float y = (float) Math.sin(body.getAngle());
         body.applyForceToCenter(new Vec2(x,y));
     }
+    public void applyLinearImpulse(float x, float y){
+        body.applyLinearImpulse(new Vec2(x,y), body.getPosition());
+    }
     
     public void applyRotation(float rot){
         body.applyTorque(rot);

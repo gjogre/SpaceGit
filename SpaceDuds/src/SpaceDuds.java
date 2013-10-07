@@ -1,4 +1,5 @@
 import Graphics.Renderer;
+import PlanetView.PlanetEvent;
 import SpaceView.SpaceEvent;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -30,7 +31,7 @@ public class SpaceDuds{
     public SpaceDuds() throws LWJGLException{
         Renderer renderer = new Renderer();
         
-        new SpaceEvent(renderer);
+        new PlanetEvent(renderer);
 
         Display.destroy();
         

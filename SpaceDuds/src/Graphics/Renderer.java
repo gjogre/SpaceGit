@@ -27,6 +27,8 @@ import org.lwjgl.util.glu.*;
 
 public class Renderer {
     
+    
+    private float negativeX = -20f, positiveX = 20f, negativeY = -20f, positiveY = 20f; 
     private int WIDTH = 800, HEIGHT = 800;
     private Vec2 camera = new Vec2(0,0);
     
@@ -57,7 +59,7 @@ public class Renderer {
         
         glClearColor(0f, 0f, 0f, 0f);
         glViewport(0, 0, Display.getWidth(), Display.getHeight());
-        GLU.gluOrtho2D(-25.0f, 25.0f, -25.0f, 25.0f);
+        GLU.gluOrtho2D(-20.0f, 20.0f, -20.0f, 20.0f);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         
         GL11.glLoadIdentity();
@@ -154,4 +156,7 @@ public class Renderer {
         }
     }
     */
+    public float getScreenHeight(){
+        return positiveY;
+    }
 }

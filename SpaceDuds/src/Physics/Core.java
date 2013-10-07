@@ -38,9 +38,7 @@ public class Core {
         
        Vec2 gravity = new Vec2(0.0f,0f);
        world = new World(gravity);
-       
-      
-        
+          
     }
     
     public Body addObject(float x, float y, Vec2[] shapeLines,  int count, float density, float friction, float restitution){
@@ -120,6 +118,34 @@ public class Core {
         return body;
         
     }
+   
+   public Body addGround(float x, float y,Vec2[] shapeLines,  int count){
+       BodyDef b = new BodyDef();
+       b.position.set(x,y);
+       b.type = BodyType.STATIC;
+       
+       PolygonShape shape = new PolygonShape();
+       shape.set(shapeLines, count);
+       
+       FixtureDef f = new FixtureDef();
+       f.shape = shape;
+       //mass density
+       f.density = 1.0f;
+       //kitka
+       f.friction = 1.0f;
+       //bouncyness
+       f.restitution = 0.2f;
+       
+       f.filter.categoryBits = (Entities.SOLID.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() | Entities.PARTICLE.getCode());
+       
+       Body body = world.createBody(b);
+       body.createFixture(f);
+      
+        
+        return body;
+   
+   }
     
     public Body addFireParticle(float x, float y, float angle, float radius){
 
@@ -177,6 +203,8 @@ public class Core {
          world.step(timeStep, velIterations, posIterations);
         
     }
+    
+    
     
     
 }
