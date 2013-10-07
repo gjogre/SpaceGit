@@ -30,7 +30,7 @@ public class Ship extends GameObject {
         super.shape[0] = new Vec2(-4f,1);
         super.shape[1] = new Vec2(-4f,-1);
         super.shape[2] = new Vec2(0.25f,-1f);
-        super.shape[3] = new Vec2(1f,0f);
+        super.shape[3] = new Vec2(2f,0f);
         super.shape[4] = new Vec2(0.25f,1f);
         particleOutputPos = new Vec2(-5f, 0f);
        

@@ -36,11 +36,15 @@ public class Core {
     
     public Core() {
         
-       Vec2 gravity = new Vec2(0.0f,0f);
+       Vec2 gravity = new Vec2(0.0f,0.0f);
        world = new World(gravity);
        
       
         
+    }
+    
+    public void setGravity(float x, float y){
+        world.setGravity(new Vec2(x,y));
     }
     
     public Body addObject(float x, float y, Vec2[] shapeLines,  int count, float density, float friction, float restitution){
@@ -62,7 +66,7 @@ public class Core {
        f.restitution = restitution;
        
        f.filter.categoryBits = (Entities.DYNAMIC.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() );
        Body body = world.createBody(b);
        body.createFixture(f);
        
@@ -104,7 +108,7 @@ public class Core {
        FixtureDef f = new FixtureDef();
        f.shape = shape;
        //mass density
-       f.density = 1.0f;
+       f.density = 0.2f;
        //kitka
        f.friction = 1.0f;
        //bouncyness
@@ -140,7 +144,7 @@ public class Core {
        f.restitution = 0.5f;
        
        f.filter.categoryBits = (Entities.PARTICLE.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode());
+       f.filter.maskBits = (Entities.SOLID.getCode() );
        
        Body body = world.createBody(b);
        body.createFixture(f);

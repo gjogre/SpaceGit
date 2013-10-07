@@ -1,10 +1,8 @@
 
 package Tools;
 
-import Graphics.Renderer;
 import Physics.Core;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 import org.jbox2d.common.Vec3;
 import org.jbox2d.dynamics.Body;
