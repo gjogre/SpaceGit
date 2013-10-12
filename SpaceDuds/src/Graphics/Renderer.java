@@ -37,6 +37,11 @@ public class Renderer {
         camera.set(new Vec2(x,y));
     }
     
+    public void release() {
+        objectList.clear();
+        GUIList.clear();
+        camera.set(new Vec2(0f,0f));
+    }
     
     public Renderer()throws LWJGLException{
         
