@@ -49,7 +49,7 @@ public class Surface {
                groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
                firstPiece = false;
             }else{
-                yAxisStart = groundList.get(i-1).returnLast().y;
+                yAxisStart = groundList.get(groundList.size()-1).returnLast().y;
                 rdm = r.nextInt(4);
                 if(rdm == 0){
                     if(lastYAxis >= (2*scale)){
