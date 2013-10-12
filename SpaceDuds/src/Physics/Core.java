@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 public class Core {
     
-
+ 
     private float timeStep = 1.0f / 60.f; //advancement of physics at every step call
     private int velIterations = 6; //velocity accuracy, default = 6
     private int posIterations = 3; //position accuracy, default = 3.
@@ -33,10 +33,10 @@ public class Core {
         }
     };
     
-    
+    private Vec2 gravity = new Vec2(0.0f,0.0f);
     public Core() {
         
-       Vec2 gravity = new Vec2(0.0f,0.0f);
+       
        world = new World(gravity);
        
       
@@ -66,7 +66,7 @@ public class Core {
        f.restitution = restitution;
        
        f.filter.categoryBits = (Entities.DYNAMIC.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() );
+       f.filter.maskBits = ( Entities.DYNAMIC.getCode() | Entities.SOLID.getCode());
        Body body = world.createBody(b);
        body.createFixture(f);
        
@@ -86,7 +86,7 @@ public class Core {
        FixtureDef f = new FixtureDef();
        f.shape = shape;
        
-       f.filter.categoryBits = (Entities.DYNAMIC.getCode());
+       f.filter.categoryBits = (Entities.SOLID.getCode());
        f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode());
        Body body = world.createBody(b);
        body.createFixture(f);
@@ -115,7 +115,7 @@ public class Core {
        f.restitution = 0.2f;
        
        f.filter.categoryBits = (Entities.SOLID.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() | Entities.PARTICLE.getCode());
+       f.filter.maskBits = (Entities.PARTICLE.getCode());
        
        Body body = world.createBody(b);
        body.createFixture(f);
@@ -230,7 +230,10 @@ public class Core {
        world.createJoint(jointDef);
     }
     
-    
+    public void release(){
+        
+        world = new World(gravity);
+    }
     public void removeBody(Body b){
         world.destroyBody(b);
     }

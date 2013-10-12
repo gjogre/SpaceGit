@@ -1,75 +1,70 @@
 
 package SpaceView;
+import Event.Event;
+import static Event.EventMachine.*;
 import Tools.Particle;
-import Graphics.Renderer;
-import Physics.Core;
 import Tools.GameObject;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import static org.lwjgl.opengl.GL11.*;
-
-
-public class SpaceEvent{
+import static Event.EventMachine.*;
+import PlanetView.PlanetEvent;
+import static Event.sharedContainer.*;
+public class SpaceEvent extends Event{
    
-    private Ship ship;
-    private Core physicsCore;
+    
     private Body debugBody = null;
     private Map map;
     private Random r = new Random();
-    private ArrayList<Planet> planets;
-    public SpaceEvent(Renderer renderer){
+    
+    public SpaceEvent(){
         
-        Space space = new Space();
-        physicsCore = new Core();
         
-        Particle.bindCore(physicsCore);
-        
-        // this is how you define object
-        ship = new Ship();
-        ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-        renderer.addObject(ship);
-        
-        GameObject testObject = new GameObject();
-        testObject.setBody(physicsCore.addObject(4f, 10f, testObject.getShape(), testObject.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-        renderer.addObject(testObject);
-        // this is the end of define
-
-        planets = space.generatePlanetArray(0);
-        for(Planet p : planets){
-            p.setRoundShape(p.getSize());
-            p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), r.nextFloat()*50-100, p.getSize()));
-            renderer.addObject(p);
-        }
-        makeMapFrame();
-        renderer.addGuiObject(map);
-        while(!Display.isCloseRequested()){
-            
-            input();
-            Display.sync(60);
-            renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
-            
-            renderer.render();
-            
-            Display.update();
-            physicsCore.doStep();
-          
-            updateMap();
-            //DEBUG
-            //physicsCore.printBodyCount();
-        }
         
     }
 
+    @Override
+        protected void init(){
+
+
+            ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+            renderer.addObject(ship);
+
+            GameObject testObject = new GameObject();
+            testObject.setBody(physicsCore.addObject(4f, 10f, testObject.getShape(), testObject.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+            renderer.addObject(testObject);
+            // this is the end of define
+
+
+            for(Planet p : planets){
+                p.setRoundShape(p.getSize());
+                p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), r.nextFloat()*50-100, p.getSize()));
+                renderer.addObject(p);
+            }
+            makeMapFrame();
+            renderer.addGuiObject(map);
+        }
+    
+    
+    @Override
+    public void update(){
+        input();
+        updateMap();
+        renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
+    }
+    @Override
+    public void release(){
+        renderer.release();
+        physicsCore.release();
+    }
+    
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 
-            createParticle();
+            //createParticle();
             ship.applyForceForward(2f);
 
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
@@ -85,26 +80,12 @@ public class SpaceEvent{
 
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            for(int i = 0; i < 50; i ++){
-                Particle p = new Particle();
-                Particle.addParticle(p);
-                p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
-                p.radius, r.nextFloat()*(float)Math.PI*2);
-                //ship.applyImulse(0.0000002f);
-
-            }
+            pushEvent(new PlanetEvent());
         }
         
     }
     
-    private void createParticle(){
-        
-            Particle p = new Particle();
-            Particle.addParticle(p);
-            p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
-            p.radius, ship.getAngle());
-        
-    }
+
     
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);
