@@ -31,6 +31,7 @@ public class SpaceEvent extends Event{
 
 
             ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
+            ship.setTexture("basicShip.png");
             renderer.addObject(ship);
 
             GameObject testObject = new GameObject();

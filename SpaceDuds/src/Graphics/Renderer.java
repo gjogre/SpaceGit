@@ -58,6 +58,7 @@ public class Renderer {
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glEnable( GL11.GL_LINE_SMOOTH );
+        //glEnable(GL11.GL_TEXTURE_2D);
         GL11.glHint( GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST );
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
@@ -90,21 +91,23 @@ public class Renderer {
         GL11.glTranslatef(-camera.x, -camera.y, 0f);
          for(GameObject o : objectList){
             GL11.glPushMatrix();
-            
+                           if(o.hasTexture()){glEnable(GL11.GL_TEXTURE_2D);o.getTexture().bind();} else {GL11.glDisable(GL11.GL_TEXTURE_2D);
+               }
                GL11.glTranslatef(o.getPos().x, o.getPos().y, 0f);
                GL11.glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
-               GL11.glBegin(GL11.GL_LINES);
+               GL11.glBegin(GL11.GL_TRIANGLES);
+
 
                 for(int i = 0; i < o.getGraphicsVecCount(); i++){
-                    
+
+             
+
+                    if(o.hasTexture()){ GL11.glTexCoord2f(o.getLine(i).x/6f+0.5f,-o.getLine(i).y/2f+0.41f);}
+
                     GL11.glVertex2f(o.getLine(i).x, o.getLine(i).y);
-                    if(i == o.getshapeVecCount()-1){
-                        GL11.glVertex2f(o.getLine(0).x, o.getLine(0).y);
-                    } else {
-                        GL11.glVertex2f(o.getLine(i+1).x, o.getLine(i+1).y);
-                    }
+                   
                 }
-                
+                if(o.hasTexture()){o.getTexture().release();}
                GL11.glEnd();
 
             GL11.glPopMatrix();
