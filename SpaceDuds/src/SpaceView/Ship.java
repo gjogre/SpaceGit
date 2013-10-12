@@ -25,13 +25,21 @@ public class Ship extends GameObject {
     }
 
     private void makeNormalShip(){
-        super.shapeVecCount = 5;
-        super.graphicsVecCount = 5;
+        super.shapeVecCount =6;
+        super.graphicsVecCount = 9;
         super.shape[0] = new Vec2(-4f,1);
         super.shape[1] = new Vec2(-4f,-1);
         super.shape[2] = new Vec2(0.25f,-1f);
-        super.shape[3] = new Vec2(2f,0f);
-        super.shape[4] = new Vec2(0.25f,1f);
+        
+        super.shape[3] = new Vec2(0.25f,1f);
+        super.shape[4] = new Vec2(0.25f,-1f);
+        super.shape[5] = new Vec2(2f,0f);
+        
+        super.shape[6] = new Vec2(-4f,1);
+        super.shape[7] = new Vec2(0.25f,-1f);
+        super.shape[8] = new Vec2(0.25f,1f);
+
+      //  super.shape[4] = new Vec2(0.25f,1f);
         particleOutputPos = new Vec2(-5f, 0f);
        
         

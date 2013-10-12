@@ -4,6 +4,7 @@ package Tools;
 import Graphics.SpaceTexture;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.opengl.Texture;
 
 public class GameObject {
 
@@ -40,7 +41,9 @@ public class GameObject {
     public boolean hasTexture(){
         return hasTexture;
     }
-    
+    public Texture getTexture(){
+        return texture.getTexture();
+    }
     private void setBasicShape(){
        shapeVecCount = 4;
        graphicsVecCount = 4;

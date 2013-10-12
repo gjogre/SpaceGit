@@ -12,6 +12,10 @@ public class SpaceTexture {
     private int width;
     private int height;
     private Texture texture;
+    
+    public Texture getTexture(){
+        return texture;
+    }
     public SpaceTexture(String name){
         id = 0;
         width = 0;
