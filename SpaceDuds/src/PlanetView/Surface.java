@@ -1,7 +1,9 @@
 package PlanetView;
 
-import SpaceView.Planet;
-import SpaceView.Planet.Climate;
+import GameObjects.Ground;
+import GameObjects.Planet;
+import GameObjects.Planet.Climate;
+import GameObjects.Volcano;
 import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
@@ -12,6 +14,8 @@ public class Surface {
     private float temperature;
     Random r = new Random();
     public ArrayList<Ground> groundList;
+    public ArrayList<Volcano> volcanoList;
+    
     private boolean firstPiece = true;
     
     public Surface(Planet planet){
@@ -40,40 +44,42 @@ public class Surface {
         int i;
         int rdm;
         float yAxisStart = 0;
-        float lastYAxis = 0, lastXAxis = 1;
+        float lastYAxis = 0;
         
         groundList = new ArrayList<Ground>();
+        volcanoList = new ArrayList<Volcano>();
+        
         firstPiece = true;
-        for(i = 0;i<30;i++){
-            if(firstPiece){
-               groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
+        for(i = 0;i<2;i++){
+            if(firstPiece){ 
+               groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                firstPiece = false;
             }else{
                 yAxisStart = groundList.get(groundList.size()-1).returnLast().y;
                 rdm = r.nextInt(4);
                 if(rdm == 0){
-                    if(lastYAxis >= (2*scale)){
+                    if(lastYAxis >= (6*scale)){
                         lastYAxis = yAxisStart;
                     }else{
-                        lastYAxis = yAxisStart + (0.15f*scale);
-                        groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
+                        lastYAxis = yAxisStart + (0.4f*scale);
+                        groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                     }
                 }else if(rdm == 1){
-                    lastYAxis = yAxisStart + (0.1f*scale);
-                    groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
+                    lastYAxis = yAxisStart + (0.3f*scale);
+                    groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                 }else if(rdm == 2){
                     if(lastYAxis <= (-1*scale)){
                         lastYAxis = yAxisStart;
                     }else{
-                        lastYAxis = yAxisStart - (0.18f*scale);
-                        groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
+                        lastYAxis = yAxisStart - (0.5f*scale);
+                        groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                     }
                 }else if(rdm == 3){
                     if(lastYAxis <= (-1*scale)){
                         lastYAxis = -(0.8f*scale);
                     }else{
-                        lastYAxis = yAxisStart - (0.18f*scale);
-                        groundList.add(new Ground(0*scale, yAxisStart, (0*scale),(-6*scale), (1*scale),(-6*scale), lastXAxis*scale,lastYAxis));
+                        lastYAxis = yAxisStart - (0.3f*scale);
+                        groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                     }
                 }
                 

@@ -1,6 +1,6 @@
 package Event;
 
-import SpaceView.Ship;
+import GameObjects.Ship;
 import SpaceView.Space;
 import Tools.Particle;
 import org.lwjgl.input.Keyboard;
@@ -52,8 +52,8 @@ public class Event{
         
             Particle p = new Particle();
             Particle.addParticle(p);
-            p.body = physicsCore.addSquareParticle(ship.getBody().getPosition().x + ship.getParticleOutputPos().x , ship.getBody().getPosition().y+ ship.getParticleOutputPos().y , 
-            p.radius, ship.getAngle());
+            p.body = physicsCore.addSquareParticle(15, 15, 
+            1, 0.25f);
         
     }
     

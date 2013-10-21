@@ -1,5 +1,5 @@
 
-package Tools;
+package GameObjects;
 
 import Graphics.SpaceTexture;
 import org.jbox2d.common.Vec2;

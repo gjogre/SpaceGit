@@ -2,8 +2,8 @@
 
 package Event;
 
-import SpaceView.Planet;
-import SpaceView.Ship;
+import GameObjects.Planet;
+import GameObjects.Ship;
 import SpaceView.Space;
 import java.util.ArrayList;
 

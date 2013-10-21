@@ -1,6 +1,6 @@
-package SpaceView;
+package GameObjects;
 
-import Tools.GameObject;
+import GameObjects.GameObject;
 public class Planet extends GameObject{
 
     public static enum Climate{

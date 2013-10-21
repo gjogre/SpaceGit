@@ -1,8 +1,8 @@
 
 
-package SpaceView;
+package GameObjects;
 
-import Tools.GameObject;
+import GameObjects.GameObject;
 import org.jbox2d.common.Vec2;
 
 public class Wing extends GameObject{

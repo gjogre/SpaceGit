@@ -1,9 +1,10 @@
 
 package SpaceView;
+import GameObjects.Planet;
 import Event.Event;
 import static Event.EventMachine.*;
 import Tools.Particle;
-import Tools.GameObject;
+import GameObjects.GameObject;
 import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
@@ -66,7 +67,7 @@ public class SpaceEvent extends Event{
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 
             //createParticle();
-            ship.applyForceForward(2f);
+            ship.applyForceForward(1f);
 
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
             ship.applyForce(new Vec2(0,-1));

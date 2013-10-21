@@ -1,8 +1,5 @@
 package Graphics;
 import java.io.IOException;
-import java.nio.IntBuffer;
-import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
