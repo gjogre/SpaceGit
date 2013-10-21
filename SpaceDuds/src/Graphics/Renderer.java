@@ -1,7 +1,7 @@
 package Graphics;
 
 import Tools.GUIObject;
-import Tools.GameObject;
+import GameObjects.GameObject;
 import Tools.Particle;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +35,10 @@ public class Renderer {
     private ArrayList<GUIObject> GUIList = new ArrayList<>();
     public void setCameraPos(float x, float y){
         camera.set(new Vec2(x,y));
+    }
+    
+    public Vec2 getCameraPos(){
+        return camera;
     }
     
     public void release() {
@@ -165,7 +169,7 @@ public class Renderer {
                     GL11.glVertex3f( (p.radius/2), (p.radius/2), 0f);
                 GL11.glEnd();
             GL11.glPopMatrix();
-
+            System.out.println(p.body.getPosition().toString());
             
             if(p.subTtl()){
                 Particle.remove(p);

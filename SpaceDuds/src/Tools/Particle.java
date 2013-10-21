@@ -1,6 +1,7 @@
 
 package Tools;
 
+import Event.EventMachine;
 import Physics.Core;
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,7 +15,6 @@ public class Particle {
     public Body body;
     public float radius;
     private int ttl = 0;
-    private static Core physicsCore;
     public Vec3 color; 
     
     public Particle(){
@@ -36,16 +36,15 @@ public class Particle {
             ttl--;
             return false;
         } else {
+            
             return true;
         }
         
     }
-    public static void bindCore(Core core){
-        physicsCore = core;
-    }
+
     
     public static void remove(Particle p){
-        physicsCore.removeBody(p.body);
+        EventMachine.physicsCore.removeBody(p.body);
     }
 
     

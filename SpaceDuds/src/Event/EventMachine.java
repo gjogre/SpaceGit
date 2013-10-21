@@ -18,7 +18,6 @@ public class EventMachine {
     public EventMachine() throws LWJGLException{
         
         events = new ArrayList<>();
-        Particle.bindCore(physicsCore);
         
         physicsCore = new Core();
         renderer = new Renderer();

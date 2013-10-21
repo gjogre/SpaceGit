@@ -1,10 +1,7 @@
-package SpaceView;
+package GameObjects;
 
-import Graphics.Renderer;
-import Physics.Core;
-import Tools.GameObject;
+import GameObjects.GameObject;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 
 
 
