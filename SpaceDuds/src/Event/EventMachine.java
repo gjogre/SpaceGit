@@ -2,7 +2,6 @@ package Event;
 
 import Graphics.Renderer;
 import Physics.Core;
-import SpaceView.Space;
 import Tools.Particle;
 import java.util.ArrayList;
 import org.lwjgl.LWJGLException;

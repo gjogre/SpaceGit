@@ -12,7 +12,7 @@ public class Volcano extends GameObject {
         super.shape[2] = new Vec2(1f*s,end*s);
         super.shape[3] = new Vec2(0.75f*s,0.5f*s);
         super.shape[4] = new Vec2(0.25f*s,0.5f*s);
-        super.shape[5] = new Vec2(1f*s,end*s);
+        super.shape[5] = new Vec2(1f*s ,end*s);
     }
     
 }

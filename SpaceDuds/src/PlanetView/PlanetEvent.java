@@ -102,7 +102,7 @@ public class PlanetEvent extends Event{
 
         }
         else if(Keyboard.isKeyDown(Keyboard.KEY_B)){
-            createParticle();
+            createParticle(1,1,1,1);
         }
     }
 

@@ -9,15 +9,17 @@ public class SpaceTexture {
     private int width;
     private int height;
     private Texture texture;
-    
+    public float textureDividerX = 6f;
+    public float textureDividerY = 4f;
     public Texture getTexture(){
         return texture;
     }
-    public SpaceTexture(String name){
+    public SpaceTexture(String name, float dividerx, float dividery){
         id = 0;
         width = 0;
         height = 0;
-        
+        textureDividerX = dividerx;
+        textureDividerY = dividery;
         try {
             // load texture from PNG file
             texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("images/"+name));
