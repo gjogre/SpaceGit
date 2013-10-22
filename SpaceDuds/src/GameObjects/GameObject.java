@@ -84,6 +84,11 @@ public class GameObject {
         return body.getPosition();
     }
     
+    public void setTransform(float x, float y, float angle){
+        body.setTransform(new Vec2(x,y), angle);
+    }
+    
+    
     public void applyForce(Vec2 force, Vec2 point){
         body.applyForce(force, point);
     }

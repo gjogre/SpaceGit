@@ -14,6 +14,7 @@ public class PlanetEvent extends Event{
     private BattleShip ship;
     private Ground ground;
     private Meteor meteor;
+    
     private float cameraY = 10;
     private float cameraPushbackX = 15; // changing this parameter will make camera go 'n' pixels ahead the ship 
     private boolean typed = false;
@@ -55,10 +56,12 @@ public class PlanetEvent extends Event{
             renderer.addObject(g);
             if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
+                g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnLast().y-g.returnFirst().y),scale));
                 renderer.addObject(g.volcano);
             }
             startX = startX + scale;
         }
+        
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
         renderer.addObject(ship);  

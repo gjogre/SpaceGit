@@ -34,13 +34,9 @@ public class Core {
     };
     
     private Vec2 gravity = new Vec2(0.0f,0.0f);
+    
     public Core() {
-        
-       
-       world = new World(gravity);
-       
-      
-        
+       world = new World(gravity);  
     }
     
     public void setGravity(float x, float y){
@@ -95,6 +91,7 @@ public class Core {
         return body;
         
     }
+    
    public Body addPlanet(float x, float y, float size){
 
        BodyDef b = new BodyDef();
