@@ -48,7 +48,7 @@ public class Planet extends GameObject{
         this.id = id;
         this.distanceToSun = distanceToSun;
         int rr = r.nextInt(2);
-        this.roughness += r.nextFloat();
+        this.roughness += 0;
         if(distanceToSun - lastDistance < super.size*2 && distanceToSun != 0){
             super.size = super.size / 3;
             this.type = Type.MOON;
@@ -69,6 +69,8 @@ public class Planet extends GameObject{
          generateColor();
         lastDistance = distanceToSun;
         surface = new Surface(this);
+        
+        
     }
 
 

@@ -61,6 +61,7 @@ public class PlanetEvent extends Event{
             groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
         } else {
             groundTexture = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
+            
         }
         int[] anchors = {
           0,1,2,
@@ -69,6 +70,7 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
+            g.colorsRGB = sharedContainer.currentPlanet.colorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
