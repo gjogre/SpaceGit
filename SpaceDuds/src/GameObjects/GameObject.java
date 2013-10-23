@@ -157,7 +157,7 @@ public class GameObject {
        public void applyImulse(float force){
         float x = (float) Math.cos(body.getAngle());
         float y = (float) Math.sin(body.getAngle());
-        body.applyLinearImpulse(new Vec2(x,y), new Vec2(0f,0f));
+        body.applyLinearImpulse(new Vec2(x,y), body.getWorldCenter());
     }
     public void applyForceForward(float force){
         float x = (float) Math.cos(body.getAngle());

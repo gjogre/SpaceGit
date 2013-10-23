@@ -1,5 +1,6 @@
 package GameObjects;
 
+import Event.EventMachine;
 import GameObjects.GameObject;
 import org.jbox2d.common.Vec2;
 
@@ -7,6 +8,10 @@ import org.jbox2d.common.Vec2;
 
 public class Ship extends GameObject {
     private final int MAX_ADDONS = 10;
+    
+    private int boostLoad = 100;
+    private int boost = boostLoad;
+    private int boostStrenght = 10;
     
     //place in local coordinates where the particles comes from
     private Vec2 particleOutputPos; 
@@ -44,5 +49,23 @@ public class Ship extends GameObject {
         
     }
 
-
+    public void shipUpdate(){
+        if(boost < boostLoad){
+            boost++;
+            System.out.println(boost);
+        }
+    }
+    
+    public boolean boost(){
+        if(boost == boostLoad){
+            super.applyImulse(1f);
+            
+            boost = 0;
+            return true;
+        } else if (boost < boostStrenght){
+            super.applyImulse(1f);
+            return true;
+        }
+        return false;
+    }
 }

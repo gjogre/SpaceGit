@@ -37,6 +37,10 @@ public class Particle {
         }
         color = new Vec3(colorBrightness,colorBrightness,0f);
     }
+    public void setColor(float r, float g, float b){
+        color = new Vec3(r,g,b);
+    }
+    
     public static void addParticle(Particle p){
         particles.add(p);
     }

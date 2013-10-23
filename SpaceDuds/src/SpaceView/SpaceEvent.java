@@ -95,6 +95,7 @@ public class SpaceEvent extends Event{
         input();
         updateMap();
         renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
+        ship.shipUpdate();
     }
 
     
@@ -113,18 +114,21 @@ public class SpaceEvent extends Event{
             ship.applyRotation(-2f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
             ship.applyRotation(2f);
-        } else {
+        } else if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
             
-
+            if(ship.boost()){
+                
+                createParticle(ship.getPos().x +ship.getParticleOutputPos().x,ship.getPos().y +ship.getParticleOutputPos().y, 0.5f,r.nextFloat()*2*(float)Math.PI,20,r.nextFloat(),r.nextFloat(),r.nextFloat());
+            }
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_MINUS)){
             renderer.scale(0.1f);
         }
-                if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
+        if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
             renderer.scale(-0.1f);
             pushEvent(new PlanetEvent());
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+        if(Keyboard.isKeyDown(Keyboard.KEY_E)){
             
             landing();
             
