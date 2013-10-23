@@ -20,7 +20,11 @@ public class GameObject {
 
     //no need to touch this, if you apply texture for gameobject, this will be set automatically
     private boolean hasTexture;
+    private int[] textAnchors;
+    private boolean hasAnchors = false;
     private SpaceTexture texture;
+    
+    
     public boolean isCircle = false;
     
     public Vec3 colorsRGB;
@@ -37,6 +41,8 @@ public class GameObject {
     
     public boolean hasHalo = false;
     
+    
+    
     public GameObject(){
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
@@ -45,16 +51,32 @@ public class GameObject {
         alpha = 1f;
     }
 
-    public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY){
+    public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY, int anchors[]){
         texture = new SpaceTexture(filename,dividerx,dividery, offsetX, offsetY);
 
+        textAnchors = anchors;
+        hasAnchors = true;
         hasTexture = true;
     }
+    
     public void setTexture(SpaceTexture file){
         texture = file;
         hasTexture = true;
     }
+    public void setTexture(SpaceTexture file, int[] anchors){
+        texture = file;
+        textAnchors = anchors;
+        hasAnchors = true;
+        hasTexture = true;
+    }
     
+    public boolean hasAnchors(){
+        return hasAnchors;
+    }
+    public int getAnchor(int i){
+        return textAnchors[i];
+    }
+
     public boolean hasTexture(){
         return hasTexture;
     }
@@ -64,6 +86,9 @@ public class GameObject {
     public SpaceTexture getSTexture(){
         return texture;
     }
+
+    
+    
     private void setBasicShape(){
        shapeVecCount = 4;
        graphicsVecCount = 4;

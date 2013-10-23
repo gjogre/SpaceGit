@@ -58,9 +58,15 @@ public class PlanetEvent extends Event{
         float startX = 10f;
         float scale = 5f;
         surface = new Surface(scale);
-        SpaceTexture ground = new SpaceTexture("basicGround.png", 20f, 50f,0f,1.1f);
+        SpaceTexture ground = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
+        int[] anchors = {
+          0,1,2,
+          3,0,2
+            
+        };
+        
         for(Ground g : surface.groundList){
-            g.setTexture(ground);
+            g.setTexture(ground,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
             if(g.isVolcanic()){

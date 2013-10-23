@@ -3,6 +3,7 @@ package Graphics;
 import Tools.GUIObject;
 import GameObjects.GameObject;
 import Tools.Particle;
+import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -163,11 +164,30 @@ public class Renderer {
                if(o.isCircle){
 
                }
-               
+               int anchors = 0;
+               //normal way of drawing
                 for(int i = 0; i < o.getGraphicsVecCount(); i++){
 
                     
-                    if(o.hasTexture()){ glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
+                    if(o.hasTexture()){ 
+                        if(o.hasAnchors()){ 
+                            
+                            if(o.getAnchor(i) == 0){
+                                glTexCoord2f(0f, 0f);
+                            }
+                            if(o.getAnchor(i) == 1){
+                                glTexCoord2f(0f, 1f);
+                            }
+                            if(o.getAnchor(i) == 2){
+                                glTexCoord2f(1f, 1f);
+                            }
+                            if(o.getAnchor(i) == 3){
+                                glTexCoord2f(1f, 0f);
+                            }
+                        } else {
+                            glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);
+                        }
+                    }
 
                     glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
                    

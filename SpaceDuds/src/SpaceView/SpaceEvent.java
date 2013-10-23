@@ -34,7 +34,12 @@ public class SpaceEvent extends Event{
 
 
             ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
-            ship.setTexture("basicShip.png", 6f, 2f,0f,0f);
+            int[] anchors = {
+              0,1,2,
+              2,3,1
+              ,0,1,2
+            };
+            ship.setTexture("basicShip.png", 6f, 2f,0f,0f, anchors);
             ship.isLight = true;
             renderer.addObject(ship);
 
