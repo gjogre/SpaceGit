@@ -20,7 +20,7 @@ public class EventMachine {
         
         physicsCore = new Core();
         renderer = new Renderer();
-
+        initSound();
         generatePlanets();
         sharedContainer.currentPlanet = space.generatePlanetArray(0).get(2);
         eventTimer = 0;

@@ -157,6 +157,7 @@ System.out.println("siss" + p.getSize());
             
             sharedContainer.currentPlanet = p;
             sharedContainer.ship.posInGalaxy = ship.getPos();
+            sharedContainer.playSound(0);
             pushEvent(new PlanetEvent());
             break;
         }

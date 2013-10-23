@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Event.EventMachine;
+import Event.sharedContainer;
 import GameObjects.GameObject;
 import org.jbox2d.common.Vec2;
 
@@ -61,6 +62,7 @@ public class Ship extends GameObject {
             super.applyImulse(1f);
             
             boost = 0;
+            
             return true;
         } else if (boost < boostStrenght){
             super.applyImulse(1f);
