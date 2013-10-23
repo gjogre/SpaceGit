@@ -12,9 +12,11 @@ import org.jbox2d.dynamics.Body;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import static Event.EventMachine.*;
+import Event.sharedContainer;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
 import Graphics.SpaceTexture;
+import org.jbox2d.collision.Distance;
 import org.jbox2d.common.Vec3;
 public class SpaceEvent extends Event{
    
@@ -33,7 +35,7 @@ public class SpaceEvent extends Event{
         protected void init(){
 
 
-            ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
+            ship.setBody(physicsCore.addObject(ship.posInGalaxy.x, ship.posInGalaxy.y, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
             int[] anchors = {
               0,1,2,
               2,3,1
@@ -60,21 +62,7 @@ public class SpaceEvent extends Event{
                 p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0f, p.getSize()));
                 
                 
-                p.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
-                int colorStrenght = r.nextInt(3);
-                switch(colorStrenght){
-                    
-                    case 0:
-                        p.colorsRGB.x = 1f;
-                        break;
-                    case 1:
-                        p.colorsRGB.y = 1f;
-                        break;
-                    case 2:
-                        p.colorsRGB.z = 1f;
-                        break;
-                    
-                }
+
                 
                 //p.colorsRGB = new Vec3(1,1,r.nextFloat());
                 if(p.getType() == Planet.Type.SOLID){
@@ -106,11 +94,7 @@ public class SpaceEvent extends Event{
         updateMap();
         renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
     }
-    @Override
-    public void release(){
-        renderer.release();
-        physicsCore.release();
-    }
+
     
     private boolean tapped = false;
     private void input(){
@@ -131,14 +115,6 @@ public class SpaceEvent extends Event{
             
 
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            if(!tapped) {
-                ship.applyForceForward(100f);
-                tapped = true;
-            } 
-        } else {
-            tapped = false;
-        }
         if(Keyboard.isKeyDown(Keyboard.KEY_MINUS)){
             renderer.scale(0.1f);
         }
@@ -146,12 +122,29 @@ public class SpaceEvent extends Event{
             renderer.scale(-0.1f);
             pushEvent(new PlanetEvent());
         }
-                if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            pushEvent(new PlanetEvent());
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            
+            landing();
+            
         }
     }
     
+private void landing(){
+    
+    for(Planet p : planets) {
 
+System.out.println("siss" + p.getSize());
+        if(physicsCore.getDistance(p.getBody(), ship.getBody()) < p.getSize()*2){
+            
+            sharedContainer.currentPlanet = p;
+            sharedContainer.ship.posInGalaxy = ship.getPos();
+            pushEvent(new PlanetEvent());
+            break;
+        }
+        
+    }
+    
+}
     
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);

@@ -52,7 +52,10 @@ public class Particle {
         
     }
 
-    
+
+    public static void clear(){
+        particles.clear();
+    }
     public static void remove(Particle p){
         EventMachine.physicsCore.removeBody(p.body);
     }

@@ -1,11 +1,20 @@
 package GameObjects;
 
 import GameObjects.GameObject;
+import PlanetView.Surface;
 import java.util.Random;
+import org.jbox2d.common.Vec3;
 public class Planet extends GameObject{
 
+    private Surface surface;
+
+    public Surface getSurface() {
+        return surface;
+    }
+    
     public static enum Climate{
         SUN, HOT, WARM, TEMPERATE, CHILLY, COLD, FREEZING;
+
     }
     public static enum Type {
         GAS, SOLID, MOON;
@@ -23,6 +32,12 @@ public class Planet extends GameObject{
     private float distanceToSun;
     private static float lastDistance;
     
+    private float roughness = 5f;
+
+    public float getRoughness() {
+        return roughness;
+    }
+    
     private static Random r = new Random();
     
     public Planet( float size, int galaxy, Climate climate, int id, float distanceToSun){
@@ -33,6 +48,7 @@ public class Planet extends GameObject{
         this.id = id;
         this.distanceToSun = distanceToSun;
         int rr = r.nextInt(2);
+        this.roughness += r.nextFloat();
         if(distanceToSun - lastDistance < super.size*2 && distanceToSun != 0){
             super.size = super.size / 3;
             this.type = Type.MOON;
@@ -50,8 +66,11 @@ public class Planet extends GameObject{
      
         }
          System.out.println("Planet type: "+rr);
+         generateColor();
         lastDistance = distanceToSun;
+        surface = new Surface(this);
     }
+
 
     public float getSize(){
         return super.size;
@@ -63,5 +82,23 @@ public class Planet extends GameObject{
         return distanceToSun;
     }
 
-    
+    private void generateColor(){
+        
+                super.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
+                int colorStrenght = r.nextInt(3);
+                switch(colorStrenght){
+                    
+                    case 0:
+                        super.colorsRGB.x = 1f;
+                        break;
+                    case 1:
+                        super.colorsRGB.y = 1f;
+                        break;
+                    case 2:
+                        super.colorsRGB.z = 1f;
+                        break;
+                    
+                }
+        
+    }
 }

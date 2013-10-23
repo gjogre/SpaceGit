@@ -27,17 +27,15 @@ public class Surface {
             temperature = (float)r.nextInt(100)+100f;
         }
         if(atmosphere == Planet.Climate.CHILLY){
-            temperature = (float)r.nextInt(-100);
+            temperature = (float)r.nextInt(100);
         }
         if(atmosphere == Planet.Climate.COLD){
-            temperature = (float)r.nextInt(-200);
+            temperature = (float)r.nextInt(200);
         }
         if(atmosphere == Planet.Climate.FREEZING){
             temperature = -273.15f;
         }
-    }
-    public Surface(float scale) {
-        generateGround(scale);
+        generateGround(planet.getRoughness());
     }
     
     private void generateGround(float scale){

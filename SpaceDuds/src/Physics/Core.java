@@ -1,7 +1,9 @@
 package Physics;
 
+import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
 import java.awt.Point;
 import java.util.Random;
+import org.jbox2d.collision.Distance;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.*;
@@ -96,6 +98,13 @@ public class Core {
         return body;
         
     }
+    public float getDistance(Body b1, Body b2){
+        float distance=(float)Math.sqrt((b1.getPosition().x-b2.getPosition().x)*(b1.getPosition().x-b2.getPosition().x) + (b1.getPosition().y-b2.getPosition().y)*(b1.getPosition().y-b2.getPosition().y));
+        System.out.println(distance);
+        return distance;
+    
+    }
+    
    public Body addPlanet(float x, float y, float size){
 
        BodyDef b = new BodyDef();

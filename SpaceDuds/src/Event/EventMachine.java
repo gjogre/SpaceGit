@@ -30,11 +30,15 @@ public class EventMachine {
                 while(!Display.isCloseRequested()){
                 eventTimer++;
                 Display.sync(60);
-                events.get(events.size()-1).update();
-                events.get(events.size()-1).pauseInput();
+                
+                if(!events.get(events.size()-1).pauseInput()) {
+                        events.get(events.size()-1).update();
+                         physicsCore.doStep();
+                    }
+                
                 renderer.render();
                 Display.update();
-                physicsCore.doStep();
+               
                 
             
         }

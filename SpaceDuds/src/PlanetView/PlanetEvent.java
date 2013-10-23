@@ -5,9 +5,12 @@ import GameObjects.Ground;
 import Event.Event;
 import org.lwjgl.input.Keyboard;
 import static Event.EventMachine.*;
+import Event.sharedContainer;
 import GameObjects.Meteor;
+import GameObjects.Planet;
 import GameObjects.Volcano;
 import Graphics.SpaceTexture;
+import Tools.Particle;
 import java.util.Random;
 
 public class PlanetEvent extends Event{
@@ -47,18 +50,18 @@ public class PlanetEvent extends Event{
         }
     }
     
-    @Override
-    public void release(){
-        renderer.release();
-        physicsCore.release();
-    }
     
     @Override
     protected void init(){
         float startX = 10f;
         float scale = 5f;
-        surface = new Surface(scale);
-        SpaceTexture ground = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
+        surface = sharedContainer.currentPlanet.getSurface();
+        SpaceTexture groundTexture;
+        if(sharedContainer.currentPlanet.getType() == Planet.Type.MOON){
+            groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
+        } else {
+            groundTexture = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
+        }
         int[] anchors = {
           0,1,2,
           3,0,2
@@ -66,7 +69,7 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
-            g.setTexture(ground,anchors);
+            g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
             if(g.isVolcanic()){

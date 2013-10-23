@@ -11,6 +11,8 @@ public class sharedContainer {
     public static ArrayList<Planet> planets;
     
     public static Ship ship= new Ship();
+    public static Planet currentPlanet;
+    
     public static void generatePlanets(){
         
         planets = space.generatePlanetArray(0);

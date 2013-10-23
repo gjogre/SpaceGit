@@ -15,9 +15,11 @@ public class Ship extends GameObject {
         return temp;
     }
    
+    public Vec2 posInGalaxy;
     
     public Ship(){
         super();
+        posInGalaxy = new Vec2(-100f,15f);
         makeNormalShip();
     }
 

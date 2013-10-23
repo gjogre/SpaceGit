@@ -257,7 +257,6 @@ public class Renderer {
                     glVertex3f( (p.radius/2), (p.radius/2), 0f);
                 glEnd();
             glPopMatrix();
-            System.out.println(p.body.getPosition().toString());
             
             if(p.subTtl()){
                 Particle.remove(p);

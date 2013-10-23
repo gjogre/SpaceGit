@@ -2,12 +2,15 @@
 package Event;
 
 import GameObjects.Planet;
+import GameObjects.Planet.Climate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Space {
 
+   
+    
     private Random r = new Random();
     private int galaxies = 50;
     private int maxPlanets = 10;
@@ -24,8 +27,23 @@ public class Space {
                     planets[g][p] = new Planet(r.nextFloat()*5,g, Planet.Climate.SUN,p,0f);
                     distanceToSun += r.nextFloat() * 50f+ 10f;
                 } else {
+                    System.out.println("d: " + distanceToSun);
                     
-                    planets[g][p] = new Planet(r.nextFloat()*5+5,g, Planet.Climate.TEMPERATE,p,distanceToSun);
+                    Climate temp;
+                    
+                    float hotd = 20 * planets[g][0].getSize();
+                     float warmd = 50 * planets[g][0].getSize();
+                     float tempd = 100 * planets[g][0].getSize();
+                     float coldd = 200 *  planets[g][0].getSize();
+                    if(distanceToSun < hotd){
+                        temp = Climate.HOT;
+                    } else if(distanceToSun < hotd){
+                        temp = Climate.TEMPERATE;
+                    } else {
+                        temp = Climate.COLD;
+                    }
+                    
+                    planets[g][p] = new Planet(r.nextFloat()*5+5,g, temp,p,distanceToSun);
                     distanceToSun += r.nextFloat() * 50f+ 10f;
                 }
             }

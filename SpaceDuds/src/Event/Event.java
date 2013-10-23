@@ -12,7 +12,11 @@ public class Event{
     // declare all physics and renderobjects
     protected void init(){}
     public void update(){}
-    public void release(){}
+    public void release(){
+        Particle.clear();
+        renderer.release();
+        physicsCore.release();
+    }
      
     
     public Event() {
@@ -22,29 +26,36 @@ public class Event{
     private boolean paused = false;
     private void PauseMenu(){
         
-        while(paused){
-
-            paused = false;
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            pause = false;
+            keyType = true;
+            
         }
-        System.out.println("FEEE");
     }
     private boolean keyType = false;
-    public void pauseInput(){
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+    private boolean pause = false;
+    public boolean pauseInput(){
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && pause == false){
             if(!keyType){
                
 
-                paused = !paused;
+                pause = true;
                 
                 keyType = true;
-                PauseMenu();
+                
             }
            
         } else {
-             
+            
             keyType = false;
-        }
-
+                PauseMenu();
+            
+                
+             
+            
+        } 
+        
+        return pause;
     }
     
     protected void createParticle(float x, float y, float size, float angle){
