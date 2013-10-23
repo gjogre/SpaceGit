@@ -46,11 +46,11 @@ public class Surface {
         float yAxisStart = 0;
         float lastYAxis = 0;
         
-        groundList = new ArrayList<Ground>();
-        volcanoList = new ArrayList<Volcano>();
+        groundList = new ArrayList<>();
+        volcanoList = new ArrayList<>();
         
         firstPiece = true;
-        for(i = 0;i<2;i++){
+        for(i = 0;i<50;i++){
             if(firstPiece){ 
                groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                firstPiece = false;
@@ -62,11 +62,11 @@ public class Surface {
                         lastYAxis = yAxisStart;
                     }else{
                         lastYAxis = yAxisStart + (0.4f*scale);
-                        groundList.add(new Ground(scale, yAxisStart, lastYAxis));
+                        groundList.add(new Ground(scale, yAxisStart, lastYAxis));   
                     }
                 }else if(rdm == 1){
                     lastYAxis = yAxisStart + (0.3f*scale);
-                    groundList.add(new Ground(scale, yAxisStart, lastYAxis));
+                    groundList.add(new Ground(scale, yAxisStart, lastYAxis)); 
                 }else if(rdm == 2){
                     if(lastYAxis <= (-1*scale)){
                         lastYAxis = yAxisStart;

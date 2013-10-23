@@ -3,6 +3,7 @@ package Graphics;
 import Tools.GUIObject;
 import GameObjects.GameObject;
 import Tools.Particle;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -10,10 +11,11 @@ import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.common.Vec3;
 import org.jbox2d.dynamics.Body;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -30,7 +32,7 @@ public class Renderer {
     
     private int WIDTH = 800, HEIGHT = 800;
     private Vec2 camera = new Vec2(0,0);
-    
+    private Vec2 scale = new Vec2(0.05f,0.8f);
     private ArrayList<GameObject> objectList = new ArrayList<>();
     private ArrayList<GUIObject> GUIList = new ArrayList<>();
     public void setCameraPos(float x, float y){
@@ -40,7 +42,10 @@ public class Renderer {
     public Vec2 getCameraPos(){
         return camera;
     }
-    
+    public void scale(float scale){
+        this.scale.x += scale;
+        this.scale.y += scale;
+    }
     public void release() {
         objectList.clear();
         GUIList.clear();
@@ -58,23 +63,27 @@ public class Renderer {
         Display.setFullscreen(false);
         
         Display.create();
-       
-        glDisable(GL_DEPTH_TEST);
+        
+        
+
+
+        glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
-        glEnable( GL11.GL_LINE_SMOOTH );
-        //glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glHint( GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST );
+        glEnable( GL_LINE_SMOOTH );
+        glEnable(GL_TEXTURE_2D);
+      //  GL11.glHint( GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST );
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         glClearColor(0f, 0f, 0f, 0f);
-        glViewport(0, 0, Display.getWidth(), Display.getHeight());
-        GLU.gluOrtho2D(-25.0f, 25.0f, -25.0f, 25.0f);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+       //glViewport(0, 0, Display.getWidth(), Display.getHeight());
+         //GLU.gluOrtho2D(-25.0f, 25.0f, -25.0f, 25.0f);
+        glOrtho(-25, 25, -25, 25, -1, 1);
+        glMatrixMode(GL_PROJECTION);
         
-        GL11.glLoadIdentity();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        
-        GL11.glLineWidth(2f);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLineWidth(2f);
+
         
     }
     
@@ -84,91 +93,150 @@ public class Renderer {
     public void addGuiObject(GUIObject obj){
         GUIList.add(obj);
     }
-    public void render(){
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+    
+
         
-  
+        
 
-        GL11.glColor3f(1, 1, 1);
+    
+    
+    public void render(){
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+
+
+        glColor3f(1, 1, 1);
         //moving screen to camera postition
-        GL11.glPushMatrix();
-        GL11.glTranslatef(-camera.x, -camera.y, 0f);
+        glPushMatrix();
+        glTranslatef(-camera.x, -camera.y, 0.05f);
+        glScalef(1f, 1f, 0.05f);
+        //glScalef(scale.x, scale.y, 1f);
+         
+
+        
          for(GameObject o : objectList){
-            GL11.glPushMatrix();
-                           if(o.hasTexture()){glEnable(GL11.GL_TEXTURE_2D);o.getTexture().bind();} else {GL11.glDisable(GL11.GL_TEXTURE_2D);
+            glPushMatrix();
+                if(o.hasTexture()){
+                    glEnable(GL_TEXTURE_2D);
+                    o.getTexture().bind();
+
+        
+                } else {
+                    glDisable(GL_TEXTURE_2D); 
+                }
+                
+               glTranslatef(o.getPos().x, o.getPos().y, 0f);
+               glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
+               
+                if(o.hasHalo){
+      
+                    glBegin(GL_TRIANGLE_FAN);
+                        glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, 0.2f);
+                        for(int i = 0; i < o.getGraphicsVecCount(); i++){
+                            glVertex3f(o.getLine(i).x*2, o.getLine(i).y*2,-0.1f);
+                        }
+                     glEnd();
+
                }
-               GL11.glTranslatef(o.getPos().x, o.getPos().y, 0f);
-               GL11.glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
-               GL11.glBegin(GL11.GL_TRIANGLES);
+               
+               if(o.isCircle){
+                   glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+                   //glBegin(GL_TRIANGLE_FAN);
+                   glRotatef(90f,1,0,0);
+                  glRotatef(-(float)Math.toDegrees(o.getRotation()),0,0,1);
+                  // o.getTexture().bind();
+                   Sphere s = new Sphere();
+                   s.setDrawStyle(GLU.GLU_FILL);
+                   s.setTextureFlag(true);
+                   s.setNormals(GLU.GLU_SMOOTH);
+                   s.draw(o.getSize(), 24, 16);
 
+                   
+               } else {
+                   glBegin(GL_TRIANGLES);
+             
+               
 
+               
+               glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+               
+               if(o.isCircle){
+
+               }
+               
                 for(int i = 0; i < o.getGraphicsVecCount(); i++){
 
-             
+                    
+                    if(o.hasTexture()){ glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
 
-                    if(o.hasTexture()){ GL11.glTexCoord2f(o.getLine(i).x/6f+0.5f,-o.getLine(i).y/2f+0.41f);}
-
-                    GL11.glVertex2f(o.getLine(i).x, o.getLine(i).y);
+                    glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
                    
-                }
-                if(o.hasTexture()){o.getTexture().release();}
-               GL11.glEnd();
 
-            GL11.glPopMatrix();
+                }
+                
+                if(o.hasTexture()){o.getTexture().release();}
+               
+               glEnd();
+            }
+
+            glPopMatrix();
          }
+          glDisable(GL_TEXTURE_2D);
          drawQuadParticles();
               
  //return the camera position
-         GL11.glPopMatrix();
+         glPopMatrix();
+         
          drawGUI();
     }
 
     private void drawGUI(){
+
         for(GUIObject g : GUIList){
-            GL11.glPushMatrix();
+            glPushMatrix();
             
-            GL11.glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
+            glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
             
             
-            GL11.glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
-            GL11.glBegin(GL11.GL_QUADS);
+            glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
+            glBegin(GL_QUADS);
                 for(Vec3 q : g.getQuads()){
-                    GL11.glVertex3f(q.x-(q.z/2) , q.y+(q.z/2),0f);
-                    GL11.glVertex3f(q.x-(q.z/2) , q.y-(q.z/2),0f);
-                    GL11.glVertex3f(q.x+(q.z/2) , q.y-(q.z/2),0f);
-                    GL11.glVertex3f(q.x+(q.z/2) , q.y+(q.z/2),0f);
+                    glVertex3f(q.x-(q.z/2) , q.y+(q.z/2),0.2f);
+                    glVertex3f(q.x-(q.z/2) , q.y-(q.z/2),0.2f);
+                    glVertex3f(q.x+(q.z/2) , q.y-(q.z/2),0.2f);
+                    glVertex3f(q.x+(q.z/2) , q.y+(q.z/2),0.2f);
                 }
-            GL11.glEnd();
-            GL11.glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
-            GL11.glBegin(GL11.GL_LINES);
+            glEnd();
+            glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
+            glBegin(GL_LINES);
                 for(Vec2 l : g.getLines()){
-                    GL11.glVertex2f(l.x, l.y);
+                    glVertex3f(l.x, l.y,0.2f);
                 }
-            GL11.glEnd();
-            GL11.glPopMatrix();
+            glEnd();
+            glPopMatrix();
         }
-        // ...
+
     }
     
     private void drawQuadParticles(){
-        
+
 
         for(Iterator<Particle> itr = Particle.particles.iterator(); itr.hasNext();){
             Particle p = itr.next();
-            GL11.glPushMatrix();
+            glPushMatrix();
             
-                GL11.glColor3f(p.color.x, p.color.y, p.color.z);
+                glColor3f(p.color.x, p.color.y, p.color.z);
             
-                GL11.glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
-                GL11.glRotatef((float)Math.toDegrees(p.body.getAngle()),0,0,1);
+                glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
+                glRotatef((float)Math.toDegrees(p.body.getAngle()),0,0,1);
                 
-                GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex3f(- (p.radius/2), (p.radius/2), 0f);
-                    GL11.glVertex3f( - (p.radius/2), -(p.radius/2), 0f);
-                    GL11.glVertex3f((p.radius/2), -(p.radius/2), 0f);
-                    GL11.glVertex3f( (p.radius/2), (p.radius/2), 0f);
-                GL11.glEnd();
-            GL11.glPopMatrix();
+                glBegin(GL_QUADS);
+                    glVertex3f(- (p.radius/2), (p.radius/2), 0f);
+                    glVertex3f( - (p.radius/2), -(p.radius/2), 0f);
+                    glVertex3f((p.radius/2), -(p.radius/2), 0f);
+                    glVertex3f( (p.radius/2), (p.radius/2), 0f);
+                glEnd();
+            glPopMatrix();
             System.out.println(p.body.getPosition().toString());
             
             if(p.subTtl()){
@@ -176,6 +244,7 @@ public class Renderer {
                 itr.remove();
             } 
         }
+
     }
     
      /*   private void drawParticles(){
@@ -183,14 +252,14 @@ public class Renderer {
         for(Iterator<Particle> itr = particles.iterator(); itr.hasNext();){
             Particle p = itr.next();
             angle = 0;
-                GL11.glPushMatrix();
-                GL11.glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
-                GL11.glBegin(GL11.GL_POLYGON); 
+                glPushMatrix();
+                glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
+                glBegin(GL_POLYGON); 
                 for(int i = 0; i < 29; i ++){
-                    GL11.glVertex2d(p.radius * Math.cos(i*2*Math.PI / 32)+p.body.getPosition().x,p.radius*Math.sin(i*2*Math.PI / 32)+p.body.getPosition().y );
+                    glVertex2d(p.radius * Math.cos(i*2*Math.PI / 32)+p.body.getPosition().x,p.radius*Math.sin(i*2*Math.PI / 32)+p.body.getPosition().y );
                 }
-                GL11.glEnd();
-                GL11.glPopMatrix();
+                glEnd();
+                glPopMatrix();
             if(p.subTtl()){
                 physicsCore.removeBody(p.body);
                 itr.remove();

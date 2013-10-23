@@ -27,6 +27,16 @@ public class Particle {
         }
         color = new Vec3(colorBrightness,colorBrightness,0f);
     }
+    public Particle(int ttl){
+        Random r = new Random();
+        this.ttl = ttl;
+        radius = (r.nextFloat()/2f+0.2f);
+        float colorBrightness = r.nextFloat();
+        if(colorBrightness < 0.2f){
+            colorBrightness = 0.5f;
+        }
+        color = new Vec3(colorBrightness,colorBrightness,0f);
+    }
     public static void addParticle(Particle p){
         particles.add(p);
     }

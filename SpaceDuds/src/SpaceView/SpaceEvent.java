@@ -14,6 +14,8 @@ import org.lwjgl.opengl.Display;
 import static Event.EventMachine.*;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
+import Graphics.SpaceTexture;
+import org.jbox2d.common.Vec3;
 public class SpaceEvent extends Event{
    
     
@@ -31,25 +33,67 @@ public class SpaceEvent extends Event{
         protected void init(){
 
 
-            ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-            ship.setTexture("basicShip.png");
+            ship.setBody(physicsCore.addObject(2f, 10f, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
+            ship.setTexture("basicShip.png", 6f, 2f,0f,0f);
+            ship.isLight = true;
             renderer.addObject(ship);
 
-            GameObject testObject = new GameObject();
-            testObject.setBody(physicsCore.addObject(4f, 10f, testObject.getShape(), testObject.getshapeVecCount(), 0.1f,  0.5f, 0.5f));
-            renderer.addObject(testObject);
-            // this is the end of define
-
-
-            for(Planet p : planets){
-                p.setRoundShape(p.getSize());
-                p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), r.nextFloat()*50-100, p.getSize()));
-                renderer.addObject(p);
-            }
+            generatePlanets();
+            
             makeMapFrame();
             renderer.addGuiObject(map);
         }
-    
+    private void generatePlanets(){
+            SpaceTexture solid = new SpaceTexture("planet.png",1f,1f,0f,0f);
+            SpaceTexture gas = new SpaceTexture("gasplanet.png",1f,1f,0f,0f);
+            SpaceTexture moon = new SpaceTexture("moon.png",1f,1f,0f,0f);
+            for(Planet p : planets){
+                
+                p.is2d = false;
+                
+                p.setRoundShape(p.getSize());
+                p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0f, p.getSize()));
+                
+                
+                p.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
+                int colorStrenght = r.nextInt(3);
+                switch(colorStrenght){
+                    
+                    case 0:
+                        p.colorsRGB.x = 1f;
+                        break;
+                    case 1:
+                        p.colorsRGB.y = 1f;
+                        break;
+                    case 2:
+                        p.colorsRGB.z = 1f;
+                        break;
+                    
+                }
+                
+                //p.colorsRGB = new Vec3(1,1,r.nextFloat());
+                if(p.getType() == Planet.Type.SOLID){
+                    p.setTexture(solid);
+                } else if(p.getType() == Planet.Type.GAS){
+                    p.setTexture(gas);
+                    p.alpha = 0.4f;
+                } else if(p.getType() == Planet.Type.MOON){
+                    p.setTexture(moon);
+                    p.colorsRGB = new Vec3(1f,1f,1f);
+                } 
+                System.out.println(p.getClimate().toString());
+                p.hasHalo = true;
+                
+                renderer.addObject(p);
+                
+                if(p.getClimate() == Planet.Climate.SUN){
+                    p.isLight = true;
+                    p.setTexture(gas);
+                }
+                
+            }
+        
+    }
     
     @Override
     public void update(){
@@ -63,10 +107,11 @@ public class SpaceEvent extends Event{
         physicsCore.release();
     }
     
+    private boolean tapped = false;
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 
-            //createParticle();
+            createParticle(ship.getPos().x +ship.getParticleOutputPos().x,ship.getPos().y +ship.getParticleOutputPos().y, 0.5f,ship.getAngle()+r.nextFloat()-0.5f );
             ship.applyForceForward(1f);
 
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
@@ -82,9 +127,23 @@ public class SpaceEvent extends Event{
 
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            if(!tapped) {
+                ship.applyForceForward(100f);
+                tapped = true;
+            } 
+        } else {
+            tapped = false;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_MINUS)){
+            renderer.scale(0.1f);
+        }
+                if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
+            renderer.scale(-0.1f);
             pushEvent(new PlanetEvent());
         }
-        
+                if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            pushEvent(new PlanetEvent());
+        }
     }
     
 
@@ -103,9 +162,9 @@ private void makeMapFrame(){
         
         map.setQuadColor(0.6f, 0.1f, 0.6f);
        // map.addQuad(0, 0,10f);
-        System.out.println(planets.size());
+
         for(Planet p : planets){
-            map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/10);
+            map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/20f);
         }
         map.player = map.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
 }
@@ -113,7 +172,6 @@ private void makeMapFrame(){
 private void updateMap(){
     
     map.setQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f,map.player-1);
-    
 }
 
 }

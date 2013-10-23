@@ -2,7 +2,9 @@
 package GameObjects;
 
 import Graphics.SpaceTexture;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.common.Vec3;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.opengl.Texture;
 
@@ -19,30 +21,48 @@ public class GameObject {
     //no need to touch this, if you apply texture for gameobject, this will be set automatically
     private boolean hasTexture;
     private SpaceTexture texture;
+    public boolean isCircle = false;
+    
+    public Vec3 colorsRGB;
+    public float alpha;
+    
+    public boolean isLight = false;
+    public boolean is2d = true;
+    
+
     
     public Body getBody() {
         return body;
     }
     
-
+    public boolean hasHalo = false;
     
     public GameObject(){
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
         hasTexture = false;
+        colorsRGB = new Vec3(1,1,1);
+        alpha = 1f;
     }
 
-    public void setTexture(String filename){
-        texture = new SpaceTexture(filename);
+    public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY){
+        texture = new SpaceTexture(filename,dividerx,dividery, offsetX, offsetY);
+
         hasTexture = true;
     }
-    
+    public void setTexture(SpaceTexture file){
+        texture = file;
+        hasTexture = true;
+    }
     
     public boolean hasTexture(){
         return hasTexture;
     }
     public Texture getTexture(){
         return texture.getTexture();
+    }
+    public SpaceTexture getSTexture(){
+        return texture;
     }
     private void setBasicShape(){
        shapeVecCount = 4;
@@ -54,7 +74,20 @@ public class GameObject {
         
         
     }
+    //for planets for now
+    protected float size;
+    public float getSize(){
+        return size;
+    }
+    private float rotation = 0;
+    private Random r = new Random();
+    private float rotateSpeed = r.nextFloat()/100;
+    public float getRotation(){
+        rotation += rotateSpeed;
+        return rotation;
+    }
     
+    ////////////////
     public void setRoundShape(float radius){
         shapeVecCount = 0;//not needed for circle shape
         graphicsVecCount = 34;
@@ -64,7 +97,13 @@ public class GameObject {
             float y = radius * (float)Math.sin(theta);
             shape[i] = new Vec2(x, y);
         }
+        isCircle = true;
     }
+    
+    public void setTransform(float x, float y, float angle){
+        body.setTransform(new Vec2(x,y), angle);
+    }
+    
     public Vec2[] getShape(){
         return shape;
     }

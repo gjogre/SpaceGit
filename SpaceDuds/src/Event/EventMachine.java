@@ -2,7 +2,6 @@ package Event;
 
 import Graphics.Renderer;
 import Physics.Core;
-import SpaceView.Space;
 import Tools.Particle;
 import java.util.ArrayList;
 import org.lwjgl.LWJGLException;
@@ -13,7 +12,7 @@ public class EventMachine {
     private static ArrayList<Event> events;
     public static Core physicsCore;
     public static Renderer renderer;
-
+    public static long eventTimer;
     
     public EventMachine() throws LWJGLException{
         
@@ -23,15 +22,16 @@ public class EventMachine {
         renderer = new Renderer();
 
         generatePlanets();
-
+        eventTimer = 0;
         
     }
     
     public void loop(){
                 while(!Display.isCloseRequested()){
+                eventTimer++;
+                Display.sync(60);
                 events.get(events.size()-1).update();
                 events.get(events.size()-1).pauseInput();
-                Display.sync(60);
                 renderer.render();
                 Display.update();
                 physicsCore.doStep();
@@ -44,13 +44,14 @@ public class EventMachine {
             events.get(events.size()-1).release();
         }
         event.init();
-
+        eventTimer = 0;
         events.add(event);
     }
     
     public static void popEvent(){
         events.get(events.size()-1).release();
         events.remove(events.get(events.size()-1));
+        eventTimer = 0;
         events.get(events.size()-1).init();
     }
 

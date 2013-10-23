@@ -1,7 +1,6 @@
 package Event;
 
 import GameObjects.Ship;
-import SpaceView.Space;
 import Tools.Particle;
 import org.lwjgl.input.Keyboard;
 import static Event.EventMachine.*;
@@ -48,12 +47,20 @@ public class Event{
 
     }
     
-    protected void createParticle(){
+    protected void createParticle(float x, float y, float size, float angle){
         
             Particle p = new Particle();
             Particle.addParticle(p);
-            p.body = physicsCore.addSquareParticle(15, 15, 
-            1, 0.25f);
+            p.body = physicsCore.addSquareParticle(x, y, 
+            size, angle);
+        
+    }
+        protected void createParticle(float x, float y, float size, float angle, int ttl){
+        
+            Particle p = new Particle(ttl);
+            Particle.addParticle(p);
+            p.body = physicsCore.addSquareParticle(x, y, 
+            size, angle);
         
     }
     
