@@ -30,8 +30,8 @@ public class Space {
                     System.out.println("d: " + distanceToSun);
                     
                     Climate temp;
-                    
-                    float hotd = 20 * planets[g][0].getSize();
+                    // planets climate tresholds with suns size taken in account..
+                     float hotd = 20 * planets[g][0].getSize();
                      float warmd = 50 * planets[g][0].getSize();
                      float tempd = 100 * planets[g][0].getSize();
                      float coldd = 200 *  planets[g][0].getSize();
@@ -42,7 +42,7 @@ public class Space {
                     } else {
                         temp = Climate.COLD;
                     }
-                    
+                    //..
                     planets[g][p] = new Planet(r.nextFloat()*5+5,g, temp,p,distanceToSun);
                     distanceToSun += r.nextFloat() * 50f+ 10f;
                 }

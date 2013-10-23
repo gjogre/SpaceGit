@@ -3,6 +3,7 @@ package GameObjects;
 import GameObjects.GameObject;
 import PlanetView.Surface;
 import java.util.Random;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.common.Vec3;
 public class Planet extends GameObject{
 
@@ -83,7 +84,11 @@ public class Planet extends GameObject{
     public float getDistanceToSun(){
         return distanceToSun;
     }
-
+ public Vec2 generatePointInGalaxy(Vec2 sunPoint){
+     float angle = r.nextFloat()*2*(float)Math.PI;
+     Vec2 p = new Vec2(sunPoint.x + distanceToSun * (float)Math.cos(angle),sunPoint.y + distanceToSun * (float)Math.sin(angle));
+     return p;
+ }
     private void generateColor(){
         
                 super.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());

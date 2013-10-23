@@ -22,6 +22,7 @@ public class EventMachine {
         renderer = new Renderer();
 
         generatePlanets();
+        sharedContainer.currentPlanet = space.generatePlanetArray(0).get(2);
         eventTimer = 0;
         
     }

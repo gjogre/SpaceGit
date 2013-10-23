@@ -152,7 +152,7 @@ public class GameObject {
         body.applyForce(force, point);
     }
     public void applyForce(Vec2 force){
-        body.applyForce(force, new Vec2(0f,0f));
+        body.applyForce(force, body.getWorldCenter());
     }
        public void applyImulse(float force){
         float x = (float) Math.cos(body.getAngle());
@@ -160,11 +160,15 @@ public class GameObject {
         body.applyLinearImpulse(new Vec2(x,y), body.getWorldCenter());
     }
     public void applyForceForward(float force){
-        float x = (float) Math.cos(body.getAngle());
-        float y = (float) Math.sin(body.getAngle());
+        float x = (float) Math.cos(body.getAngle()) * force;
+        float y = (float) Math.sin(body.getAngle()) * force;
         body.applyForceToCenter(new Vec2(x,y));
     }
-    
+    public void applyForceForward(Vec2 force){
+        float x = (float) Math.cos(body.getAngle()) * force.x;
+        float y = (float) Math.sin(body.getAngle()) * force.y;
+        body.applyForceToCenter(new Vec2(x,y));
+    }
     public void applyRotation(float rot){
         body.applyTorque(rot);
     }

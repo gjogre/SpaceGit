@@ -4,6 +4,7 @@ import Tools.GUIObject;
 import GameObjects.GameObject;
 import Tools.Particle;
 import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
+import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +29,9 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.*;
-
+import org.newdawn.slick.Font;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.opengl.SlickCallable;
 public class Renderer {
     
     private int WIDTH = 800, HEIGHT = 800;
@@ -84,7 +87,7 @@ public class Renderer {
         glLoadIdentity();
         glMatrixMode(GL_MODELVIEW);
         glLineWidth(2f);
-
+        makeFont();
         
     }
     
@@ -209,14 +212,25 @@ public class Renderer {
          
          drawGUI();
     }
-
+    private java.awt.Font awtFont;
+    private TrueTypeFont font;
+    private void makeFont(){
+        awtFont = new  java.awt.Font("Times New Roman",  java.awt.Font.PLAIN, 18);
+       
+        font = new TrueTypeFont(awtFont, false);
+    }
+    
     private void drawGUI(){
 
         for(GUIObject g : GUIList){
             glPushMatrix();
             
-            glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0f);
+            glTranslatef(g.getScreenCoord().x, g.getScreenCoord().y, 0.5f);
             
+
+
+
+
             
             glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
             glBegin(GL_QUADS);
@@ -232,10 +246,22 @@ public class Renderer {
                 for(Vec2 l : g.getLines()){
                     glVertex3f(l.x, l.y,0.2f);
                 }
+                
+                  
+          
+
+                
             glEnd();
             glPopMatrix();
-        }
 
+        }
+            glPushMatrix();
+                glTranslatef(-20f, 20f, 0.5f);
+                glScalef(0.1f, -0.1f, 0.2f);
+                font.drawString(0f, 0f, "Space: Boost", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 18f, "e: Land (p: to get off land)", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 36f, "wasd: Move", org.newdawn.slick.Color.blue);
+            glPopMatrix();
     }
     
     private void drawQuadParticles(){
