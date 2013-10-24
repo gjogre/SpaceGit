@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import static Event.sharedContainer.*;
+
 public class EventMachine {
 
     private static ArrayList<Event> events;
@@ -19,7 +20,7 @@ public class EventMachine {
         events = new ArrayList<>();
         
         physicsCore = new Core();
-        renderer = new Renderer();
+        renderer = new Renderer(false);
         initSound();
         generatePlanets();
         sharedContainer.currentPlanet = space.generatePlanetArray(0).get(2);
@@ -32,10 +33,10 @@ public class EventMachine {
                 eventTimer++;
                 Display.sync(60);
                 
-                if(!events.get(events.size()-1).pauseInput()) {
-                        events.get(events.size()-1).update();
-                         physicsCore.doStep();
-                    }
+                events.get(events.size()-1).pauseInput();
+                events.get(events.size()-1).update();
+                physicsCore.doStep();
+                    
                 
                 renderer.render();
                 Display.update();

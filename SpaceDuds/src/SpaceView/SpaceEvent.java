@@ -151,8 +151,6 @@ public class SpaceEvent extends Event{
 private void landing(){
     
     for(Planet p : planets) {
-
-System.out.println("siss" + p.getSize());
         if(physicsCore.getDistance(p.getBody(), ship.getBody()) < p.getSize()*2){
             
             sharedContainer.currentPlanet = p;

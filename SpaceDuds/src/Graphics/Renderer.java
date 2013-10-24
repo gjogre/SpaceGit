@@ -3,7 +3,6 @@ package Graphics;
 import Tools.GUIObject;
 import GameObjects.GameObject;
 import Tools.Particle;
-import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -55,9 +54,11 @@ public class Renderer {
         GUIList.clear();
         camera.set(new Vec2(0f,0f));
     }
+
     
-    public Renderer()throws LWJGLException{
-        
+    private Display display;
+    public Renderer(boolean isApplet)throws LWJGLException{
+        if(!isApplet){
         Display.setTitle("SpaceDuds");
         Display.setResizable(false);
 
@@ -68,7 +69,7 @@ public class Renderer {
         
         Display.create();
         
-        
+        }
 
 
         glEnable(GL_DEPTH_TEST);

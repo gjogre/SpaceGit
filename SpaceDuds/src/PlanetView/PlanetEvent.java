@@ -105,7 +105,7 @@ public class PlanetEvent extends Event{
     
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            ship.applyForceForward(1f);
+            ship.applyForceForward(5f);
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
             if(!typed){
@@ -117,9 +117,9 @@ public class PlanetEvent extends Event{
             }
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            ship.applyRotation(-0.5f);
+            ship.applyRotation(-5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            ship.applyRotation(0.5f);
+            ship.applyRotation(5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             popEvent();
 

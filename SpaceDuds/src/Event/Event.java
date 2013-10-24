@@ -20,42 +20,31 @@ public class Event{
      
     
     public Event() {
-
+        keyHold = true;
+        pressed = false;
     }
     
-    private boolean paused = false;
-    private void PauseMenu(){
-        
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            pause = false;
-            keyType = true;
+    private boolean keyHold;
+    private boolean pressed;
+    public void pauseInput(){
+       
+          if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             
-        }
-    }
-    private boolean keyType = false;
-    private boolean pause = false;
-    public boolean pauseInput(){
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && pause == false){
-            if(!keyType){
-               
+            if(!keyHold){
+                
+                 pressed = true;
+            
+        
 
-                pause = true;
-                
-                keyType = true;
-                
             }
-           
-        } else {
-            
-            keyType = false;
-                PauseMenu();
-            
-                
-             
-            
-        } 
-        
-        return pause;
+        } else{
+            keyHold = false;
+        }
+        if(pressed){
+            pushEvent(new PauseEvent());
+            keyHold = true;
+             pressed = false;
+        }
     }
     
     protected void createParticle(float x, float y, float size, float angle){
