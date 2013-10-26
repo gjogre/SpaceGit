@@ -12,6 +12,7 @@ import GameObjects.Volcano;
 import Graphics.SpaceTexture;
 import Tools.Particle;
 import java.util.Random;
+import org.jbox2d.common.Vec2;
 
 public class PlanetEvent extends Event{
     private Surface surface;
@@ -42,10 +43,11 @@ public class PlanetEvent extends Event{
             meteorbool = true;
         }else if(meteorbool){
             if(eventTimer % 2 == 0) {
-            createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
+            //createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
             }
             meteor.applyRotation(1f);
         }
+        meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
         //physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
@@ -102,7 +104,7 @@ public class PlanetEvent extends Event{
         float meteorStartY = renderer.getCameraPos().y + 30;
         if(meteorChance == 0){
             meteor = new Meteor();
-            meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.5f));
+            meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.1f));
             meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
             renderer.addObject(meteor);
             for(int impulse = 0; impulse < 30 ;impulse++){

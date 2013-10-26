@@ -26,7 +26,7 @@ public class GameObject {
     
     
     public boolean isCircle = false;
-    
+    public boolean isSphere = false;
     public Vec3 colorsRGB;
     public float alpha;
     
@@ -122,8 +122,25 @@ public class GameObject {
             float y = radius * (float)Math.sin(theta);
             shape[i] = new Vec2(x, y);
         }
+        isSphere = true;
+    }
+    public void setCircle(float radius, int smoothness){
+        shapeVecCount = 0;//not needed for circle shape
+        graphicsVecCount = smoothness;
+        float ra = r.nextFloat();
+        for(int i = 0; i < graphicsVecCount; i+= 1){
+            float theta,x,y;
+                theta = 2.0f * (float)Math.PI * (float)i /(float)graphicsVecCount;
+                x = radius * (float)Math.cos(theta);
+                y = radius * (float)Math.sin(theta);
+            ra += (r.nextFloat())/3;
+           // x = x * ra;
+            //y = y * ra;
+            shape[i] = new Vec2(x, y);
+        }
         isCircle = true;
     }
+
     
     public void setTransform(float x, float y, float angle){
         body.setTransform(new Vec2(x,y), angle);

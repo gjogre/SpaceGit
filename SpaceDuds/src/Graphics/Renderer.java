@@ -136,7 +136,7 @@ public class Renderer {
 
                }
                
-               if(o.isCircle){
+               if(o.isSphere){
                    glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
                    //glBegin(GL_TRIANGLE_FAN);
                    glRotatef(90f,1,0,0);
@@ -149,48 +149,53 @@ public class Renderer {
                    s.draw(o.getSize(), 24, 16);
 
                    
-               } else {
-                   glBegin(GL_TRIANGLES);
-             
-               
-
-               
-               glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
-               
-               if(o.isCircle){
-
-               }
-               int anchors = 0;
-               //normal way of drawing
-                for(int i = 0; i < o.getGraphicsVecCount(); i++){
-
-                    
-                    if(o.hasTexture()){ 
-                        if(o.hasAnchors()){ 
-                            
-                            if(o.getAnchor(i) == 0){
-                                glTexCoord2f(0f, 0f);
-                            }
-                            if(o.getAnchor(i) == 1){
-                                glTexCoord2f(0f, 1f);
-                            }
-                            if(o.getAnchor(i) == 2){
-                                glTexCoord2f(1f, 1f);
-                            }
-                            if(o.getAnchor(i) == 3){
-                                glTexCoord2f(1f, 0f);
-                            }
-                        } else {
-                            glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);
-                        }
+               } else if(o.isCircle){
+                   glBegin(GL_TRIANGLE_FAN);
+                   System.out.println("POINTS");
+                    glVertex3f(0f, 0f,0.2f);
+                    for(int i = 0; i < o.getGraphicsVecCount(); i++){
+                        System.out.println(o.getLine(i).x + ">" + o.getLine(i).y);
+                        glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
                     }
+                    glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
+                   glEnd();
+               } else {
+               glBegin(GL_TRIANGLES);
 
-                    glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
-                   
+                glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
 
-                }
-                
-                if(o.hasTexture()){o.getTexture().release();}
+
+                int anchors = 0;
+                //normal way of drawing
+                 for(int i = 0; i < o.getGraphicsVecCount(); i++){
+
+
+                     if(o.hasTexture()){ 
+                         if(o.hasAnchors()){ 
+
+                             if(o.getAnchor(i) == 0){
+                                 glTexCoord2f(0f, 0f);
+                             }
+                             if(o.getAnchor(i) == 1){
+                                 glTexCoord2f(0f, 1f);
+                             }
+                             if(o.getAnchor(i) == 2){
+                                 glTexCoord2f(1f, 1f);
+                             }
+                             if(o.getAnchor(i) == 3){
+                                 glTexCoord2f(1f, 0f);
+                             }
+                         } else {
+                             glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);
+                         }
+                     }
+
+                     glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
+
+
+                 }
+
+                 if(o.hasTexture()){o.getTexture().release();}
                
                glEnd();
             }
