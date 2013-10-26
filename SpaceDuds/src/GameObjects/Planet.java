@@ -92,7 +92,7 @@ public class Planet extends GameObject{
     private void generateColor(){
         
                 super.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
-                int colorStrenght = r.nextInt(3);
+               /* int colorStrenght = r.nextInt(3);
                 switch(colorStrenght){
                     
                     case 0:
@@ -105,7 +105,7 @@ public class Planet extends GameObject{
                         super.colorsRGB.z = 1f;
                         break;
                     
-                }
+                }*/
         
     }
 }

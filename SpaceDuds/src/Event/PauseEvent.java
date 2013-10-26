@@ -13,23 +13,9 @@ public class PauseEvent extends Event{
     }
     @Override
     public void update(){
-        System.out.println(keyHold);
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-            
-            if(!keyHold){
-                
-                 pressed = true;
-            
-        
 
-            }
-        } else{
-            keyHold = false;
-        }
-        if(pressed){
-                popEvent();
-        }
     }
-    
-    
 }
+    
+    
+

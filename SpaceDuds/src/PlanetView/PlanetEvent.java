@@ -59,6 +59,8 @@ public class PlanetEvent extends Event{
         SpaceTexture groundTexture;
         if(sharedContainer.currentPlanet.getType() == Planet.Type.MOON){
             groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
+        } else if(sharedContainer.currentPlanet.getType() == Planet.Type.GAS){
+            groundTexture = new SpaceTexture("pepperground.png", 10f, 10f,0f,0f);
         } else {
             groundTexture = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
             

@@ -8,7 +8,7 @@ import static Event.sharedContainer.*;
 import org.lwjgl.opengl.Display;
 public class Event{
 
-
+    public static boolean paused = true;
     // declare all physics and renderobjects
     protected void init(){}
     public void update(){}
@@ -20,31 +20,25 @@ public class Event{
      
     
     public Event() {
-        keyHold = true;
-        pressed = false;
-    }
-    
-    private boolean keyHold;
-    private boolean pressed;
-    public void pauseInput(){
-       
-          if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-            
-            if(!keyHold){
-                
-                 pressed = true;
-            
-        
 
-            }
-        } else{
-            keyHold = false;
+    }
+   
+    public void pauseInput(){
+        while (Keyboard.next()) {
+       if (Keyboard.getEventKeyState()) {
+          if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE){
+              paused = !paused;
+              if(paused){
+                  popEvent();
+              }else {
+                   pushEvent(new PauseEvent());
+              }
+           
+
+
         }
-        if(pressed){
-            pushEvent(new PauseEvent());
-            keyHold = true;
-             pressed = false;
-        }
+       }
+      }
     }
     
     protected void createParticle(float x, float y, float size, float angle){

@@ -2,6 +2,7 @@
 package SpaceView;
 import GameObjects.Planet;
 import Event.Event;
+import Event.EventMachine;
 import static Event.EventMachine.*;
 import Tools.Particle;
 import GameObjects.GameObject;
@@ -59,6 +60,7 @@ public class SpaceEvent extends Event{
             SpaceTexture solid = new SpaceTexture("rockplanet.png",1f,1f,0f,0f);
             SpaceTexture gas = new SpaceTexture("gasplanet.png",1f,1f,0f,0f);
             SpaceTexture moon = new SpaceTexture("moon.png",1f,1f,0f,0f);
+            SpaceTexture sun = new SpaceTexture("sun.png",1f,1f,0f,0f);
              Vec2 point;
             for(Planet p : planets){
                 
@@ -84,6 +86,7 @@ public class SpaceEvent extends Event{
                     } 
                 }
                 else{
+                    p.setTexture(sun);
                     p.colorsRGB = new Vec3(1f,1f,0f);
                 }
                 System.out.println(p.getClimate().toString());
@@ -91,10 +94,6 @@ public class SpaceEvent extends Event{
                 
                 renderer.addObject(p);
                 
-                if(p.getClimate() == Planet.Climate.SUN){
-                    p.isLight = true;
-                    p.setTexture(gas);
-                }
                 
             }
         
@@ -163,35 +162,56 @@ private void landing(){
     }
     
 }
-    
+    private int boostMeter;
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);
+       
+        map.addLine(5.0f, 5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(-5.0f, 5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(-5.0f, 5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(-5.0f, -5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(-5.0f, -5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(5.0f, -5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(5.0f, -5f);
+         map.setLineColor(0f,0f,1f);
+        map.addLine(5.0f, 5f);
         map.setLineColor(0f,0f,1f);
-        map.addLine(5.0f, 5f);
-        map.addLine(-5.0f, 5f);
-        map.addLine(-5.0f, 5f);
-        map.addLine(-5.0f, -5f);
-        map.addLine(-5.0f, -5f);
-        map.addLine(5.0f, -5f);
-        map.addLine(5.0f, -5f);
-        map.addLine(5.0f, 5f);
-        
-        map.setQuadColor(0.6f, 0.1f, 0.6f);
-        
-        
-       // map.addQuad(0, 0,10f);
 
         for(Planet p : planets){
+            for(float i = 0f; i < 2*Math.PI; i+=0.2f) {
+                map.addLine(p.getDistanceToSun() * (float)Math.cos(i) / 50f, p.getDistanceToSun() * (float)Math.sin(i) / 50f);
+                map.setLineColor(0.2f, 0.2f, 0.2f);
+            }
+            
             map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/20f);
+             map.setQuadColor(0.6f, 0.1f, 0.6f);
         }
         movables = new GUIObject(-19.0f, -19.0f);
-        map.player = movables.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
         movables.addQuad(0f, 0f, 0.5f);
         movables.setQuadColor(1f, 1f, 0f);
+        
+        boostMeter =movables.addQuad(0f, 0f, 0.5f);
+        
+        map.player = movables.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
+        movables.setQuadColor(0f, 1f, 0f);
 }
-
+private boolean blink;
 private void updateMap(){
     
+    if(EventMachine.eventTimer % 60 == 0) {
+        if(blink) {
+            movables.setQuadColor(1f, 1f, 0f);
+        } else {
+            movables.setQuadColor(0f, 1f, 0f);
+        }
+        blink = !blink;
+    }
     movables.setQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f,map.player-1);
 }
 

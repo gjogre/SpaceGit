@@ -2,17 +2,12 @@ package Graphics;
 
 import Tools.GUIObject;
 import GameObjects.GameObject;
+import Tools.GUILine;
+import Tools.GUIQuad;
 import Tools.Particle;
-import java.awt.Color;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.common.Vec3;
-import org.jbox2d.dynamics.Body;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -25,12 +20,9 @@ import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glViewport;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.glu.*;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.opengl.SlickCallable;
 public class Renderer {
     
     private int WIDTH = 800, HEIGHT = 800;
@@ -78,7 +70,7 @@ public class Renderer {
         glEnable(GL_TEXTURE_2D);
       //  GL11.glHint( GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST );
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_NEAREST);
         glClearColor(0f, 0f, 0f, 0f);
        //glViewport(0, 0, Display.getWidth(), Display.getHeight());
          //GLU.gluOrtho2D(-25.0f, 25.0f, -25.0f, 25.0f);
@@ -87,9 +79,9 @@ public class Renderer {
         
         glLoadIdentity();
         glMatrixMode(GL_MODELVIEW);
-        glLineWidth(2f);
+        glLineWidth(1f);
         makeFont();
-        
+       // GL30.glGenerateMipmap(GL_TEXTURE_2D);
     }
     
     public void addObject(GameObject obj){
@@ -230,22 +222,20 @@ public class Renderer {
             
 
 
-
-
-            
-            glColor3f(g.getQuadColor().x, g.getQuadColor().y, g.getQuadColor().z);
             glBegin(GL_QUADS);
-                for(Vec3 q : g.getQuads()){
-                    glVertex3f(q.x-(q.z/2) , q.y+(q.z/2),0.2f);
-                    glVertex3f(q.x-(q.z/2) , q.y-(q.z/2),0.2f);
-                    glVertex3f(q.x+(q.z/2) , q.y-(q.z/2),0.2f);
-                    glVertex3f(q.x+(q.z/2) , q.y+(q.z/2),0.2f);
+                for(GUIQuad q : g.getQuads()){
+                    glColor3f(q.color.x, q.color.y, q.color.z);
+                    glVertex3f(q.quad.x-(q.quad.z/2) , q.quad.y+(q.quad.z/2),0.2f);
+                    glVertex3f(q.quad.x-(q.quad.z/2) , q.quad.y-(q.quad.z/2),0.2f);
+                    glVertex3f(q.quad.x+(q.quad.z/2) , q.quad.y-(q.quad.z/2),0.2f);
+                    glVertex3f(q.quad.x+(q.quad.z/2) , q.quad.y+(q.quad.z/2),0.2f);
                 }
             glEnd();
-            glColor3f(g.getLineColor().x, g.getLineColor().y, g.getLineColor().z);
+           
             glBegin(GL_LINES);
-                for(Vec2 l : g.getLines()){
-                    glVertex3f(l.x, l.y,0.2f);
+                for(GUILine l : g.getLines()){
+                    glColor3f(l.color.x, l.color.y, l.color.z);
+                    glVertex3f(l.line.x, l.line.y,0.2f);
                 }
                 
                   
