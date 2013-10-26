@@ -137,6 +137,7 @@ public class Renderer {
                }
                
                if(o.isSphere){
+                  
                    glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
                    //glBegin(GL_TRIANGLE_FAN);
                    glRotatef(90f,1,0,0);

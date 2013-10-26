@@ -16,6 +16,7 @@ import static Event.EventMachine.*;
 import Event.sharedContainer;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
+import GameObjects.Moon;
 import Graphics.SpaceTexture;
 import Tools.GUIObject;
 import org.jbox2d.collision.Distance;
@@ -72,7 +73,7 @@ public class SpaceEvent extends Event{
                point = p.generatePointInGalaxy(new Vec2(0,0));
                 p.setBody(physicsCore.addPlanet(point.x, point.y, p.getSize()));
                 
-
+                
                 
                 //p.colorsRGB = new Vec3(1,1,r.nextFloat());
                 if(p.getClimate() != Planet.Climate.SUN){
@@ -94,8 +95,20 @@ public class SpaceEvent extends Event{
                 p.hasHalo = true;
                 
                 renderer.addObject(p);
+                Vec2 moonPoint;
                 
-                
+                System.out.println("PLANET: " + p.getPos().x + ">" + p.getPos().y );
+                for(Moon m : p.moons){
+                    m.is2d = false;
+                    m.setRoundShape(m.getSize());
+                    moonPoint = m.generatePointInGalaxy(point);
+                    m.setBody(physicsCore.addPlanet(moonPoint.x, moonPoint.y, m.getSize()));
+                    m.colorsRGB = new Vec3(1f,1f,1f);
+                    m.setTexture(moon);
+                    renderer.addObject(m);
+                    System.out.println("MOON: " + m.getPos().x + ">" + m.getPos().y + "SIZE: " +m.getSize()  );
+                   
+                }
             }
         
     }
@@ -186,12 +199,17 @@ private void makeMapFrame(){
 
         for(Planet p : planets){
             for(float i = 0f; i < 2*Math.PI; i+=0.2f) {
-                map.addLine(p.getDistanceToSun() * (float)Math.cos(i) / 50f, p.getDistanceToSun() * (float)Math.sin(i) / 50f);
+                map.addLine(p.getDistanceToCenter() * (float)Math.cos(i) / 50f, p.getDistanceToCenter() * (float)Math.sin(i) / 50f);
                 map.setLineColor(0.2f, 0.2f, 0.2f);
             }
-            
+
             map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/20f);
-             map.setQuadColor(0.6f, 0.1f, 0.6f);
+            map.setQuadColor(0.6f, 0.1f, 0.6f);
+            for(Moon m : p.moons){
+                map.addQuad(m.getPos().x/50f, m.getPos().y/50f, m.getSize()/20f);
+                map.setQuadColor(0.7f, 0.7f, 0.7f);
+            }
+             
         }
         movables = new GUIObject(-19.0f, -19.0f);
         movables.addQuad(0f, 0f, 0.5f);

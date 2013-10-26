@@ -2,6 +2,7 @@ package GameObjects;
 
 import GameObjects.GameObject;
 import PlanetView.Surface;
+import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.common.Vec3;
@@ -30,7 +31,9 @@ public class Planet extends GameObject{
     private Climate climate;
     private Type type;
     
-    private float distanceToSun;
+    private float distanceToCenter;
+    private Vec2 orbitCenter;
+    
     private static float lastDistance;
     
     private float roughness = 5f;
@@ -40,20 +43,23 @@ public class Planet extends GameObject{
     }
     
     private static Random r = new Random();
-    
-    public Planet( float size, int galaxy, Climate climate, int id, float distanceToSun){
+    public ArrayList<Moon> moons;
+    public Planet( float size, int galaxy, Climate climate, int id, float distanceToCenter){
         super();
+        
+        orbitCenter = new Vec2(0,0);
+        
         super.size = size;
         this.galaxy = galaxy;
         this.climate = climate;
         this.id = id;
-        this.distanceToSun = distanceToSun;
+        this.distanceToCenter = distanceToCenter;
         int rr = r.nextInt(2);
         this.roughness += 0;
-        if(distanceToSun - lastDistance < super.size*2 && distanceToSun != 0){
-            super.size = super.size / 3;
-            this.type = Type.MOON;
-        } else {
+        if(distanceToCenter - lastDistance < super.size*2 && distanceToCenter != 0){
+            distanceToCenter += super.size*2;
+
+        } 
             switch(rr){
                 
                 case 0:
@@ -63,30 +69,39 @@ public class Planet extends GameObject{
                 default:
                     this.type = Type.SOLID;
                     break;
-            }
+          
      
         }
          System.out.println("Planet type: "+rr);
          generateColor();
-        lastDistance = distanceToSun;
+        lastDistance = distanceToCenter;
+
         surface = new Surface(this);
+        
+        generateMoons();
         
         
     }
 
-
+    private void generateMoons(){
+        moons = new ArrayList<>();
+        int m = r.nextInt(3);
+        for(int i = 0; i < m; i++){
+            moons.add(new Moon(r.nextFloat()*5+this.size*2,r.nextFloat()*3));
+        }
+    }
     public float getSize(){
         return super.size;
     }
     public Climate getClimate() {
         return this.climate;
     }
-    public float getDistanceToSun(){
-        return distanceToSun;
+    public float getDistanceToCenter(){
+        return distanceToCenter;
     }
  public Vec2 generatePointInGalaxy(Vec2 sunPoint){
      float angle = r.nextFloat()*2*(float)Math.PI;
-     Vec2 p = new Vec2(sunPoint.x + distanceToSun * (float)Math.cos(angle),sunPoint.y + distanceToSun * (float)Math.sin(angle));
+     Vec2 p = new Vec2(sunPoint.x + distanceToCenter * (float)Math.cos(angle),sunPoint.y + distanceToCenter * (float)Math.sin(angle));
      return p;
  }
     private void generateColor(){
