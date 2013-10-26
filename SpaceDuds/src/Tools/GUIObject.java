@@ -17,8 +17,8 @@ public class GUIObject {
 
 
     protected Vec3 quadColor;
-    protected ArrayList<Vec2> lines;
-    protected ArrayList<Vec3> quads;
+    protected ArrayList<GUILine> lines;
+    protected ArrayList<GUIQuad> quads;
     public GUIObject(float coordX, float coordY){
         screenCoord = new Vec2(coordX,coordY);
         bgColor = new Vec3(1,1,1);
@@ -33,38 +33,38 @@ public class GUIObject {
     public Vec3 getColor(){
         return bgColor;
     }
-    public ArrayList<Vec2> getLines(){
+    public ArrayList<GUILine> getLines(){
         return lines;
     }
-    public ArrayList<Vec3> getQuads(){
+    public ArrayList<GUIQuad> getQuads(){
         return quads;
     }
     public Vec3 getLineColor() {
-        return lineColor;
+        return lines.get(lines.size()-1).color;
     }
 
     public void setLineColor(float r, float g, float b) {
-        this.lineColor = new Vec3(r,g,b);
+        lines.get(lines.size()-1).color = new Vec3(r,g,b);
     }
 
     public Vec3 getQuadColor() {
-        return quadColor;
+        return quads.get(quads.size()-1).color;
     }
 
     public void setQuadColor(float r, float g, float b) {
-        this.quadColor = new Vec3(r,g,b);
+        quads.get(quads.size()-1).color = new Vec3(r,g,b);
     }
     public int addLine(float x, float y){
-        lines.add(new Vec2(x,y));
+        lines.add(new GUILine(x,y));
         return lines.size();
     }
     
     public void setQuad(float x, float y, float size, int index){
-        quads.get(index).set(new Vec3(x,y,size));
+        quads.get(index).quad = new Vec3(x,y,size);
     }
     
     public int addQuad(float x, float y, float size){
-        quads.add(new Vec3(x,y,size));
+        quads.add(new GUIQuad(x,y,size));
         return quads.size();
     }
 }
