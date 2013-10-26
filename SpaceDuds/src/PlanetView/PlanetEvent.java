@@ -36,18 +36,23 @@ public class PlanetEvent extends Event{
     public void update(){
         input();
         renderer.setCameraPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
-        test = r.nextInt(1000)+1;
+        test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
             meteorbool = true;
+        }else if(meteorbool){
+            if(eventTimer % 2 == 0) {
+            createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
+            }
+            meteor.applyRotation(1f);
         }
         //physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
         //esimerkki miten partikkelia vois käyttää. toi vika luku on time to live. eventTimer on eventin alusta kulunu aika. angle radiaani.
-        if(eventTimer % 3 == 0) {
+        /*if(eventTimer % 3 == 0) {
             createParticle(50f, 15f, r.nextFloat()+0.2f, r.nextFloat()*3, 30);
-        }
+        }*/
     }
     
     
@@ -90,17 +95,19 @@ public class PlanetEvent extends Event{
     }
     
     private void invokeMeteor(){
-        meteorChance = r.nextInt(100)+1;
-        meteorChance = meteorChance%3;
+        //meteorChance = r.nextInt(100)+1;
+        meteorChance = 0;
         
         float meteorStartX = renderer.getCameraPos().x + 30;
         float meteorStartY = renderer.getCameraPos().y + 30;
         if(meteorChance == 0){
             meteor = new Meteor();
             meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.5f));
+            meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
             renderer.addObject(meteor);
-            meteor.applyImulse(1f);
-            meteor.applyForceForward(1f);
+            for(int impulse = 0; impulse < 30 ;impulse++){
+               meteor.applyImulse(50f); 
+            }
             
         }
     }
@@ -117,7 +124,11 @@ public class PlanetEvent extends Event{
             }else{
                 typed = false;
             }
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_U)){
+            meteor.applyForceForward(5f);
+            
         }
+        
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
             ship.applyRotation(-5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
