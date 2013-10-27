@@ -7,12 +7,14 @@ import org.jbox2d.common.Vec2;
 
 public class Meteor extends GameObject {
     private Random r = new Random();
-    private static SpaceTexture meteorTexture = new SpaceTexture("moon.png",10f,10f,0,0);
+    private static SpaceTexture meteorTexture = new SpaceTexture("meteor.png",10f,10f,0,0);
     
     public Meteor(){
       super();  
-      meteorShape(r.nextFloat()*2+0.5f,r.nextInt(3)+4);
+      meteorShape(r.nextFloat()*2+0.5f,r.nextInt(4)+5);
       this.setTexture(meteorTexture);
+      this.hasHalo = true;
+      this.haloSize = 1.4f;
     }
     
     private void meteorShape(float radius , int smoothness){

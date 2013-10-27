@@ -126,19 +126,21 @@ public class Renderer {
                glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
                
                 if(o.hasHalo){
-      
+                    
                     glBegin(GL_TRIANGLE_FAN);
-                        glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, 0.2f);
+                        glColor4f(o.colorsRGB.x,o.colorsRGB.y, o.colorsRGB.z, 0.2f);
                         for(int i = 0; i < o.getGraphicsVecCount(); i++){
-                            glVertex3f(o.getLine(i).x*2, o.getLine(i).y*2,-0.1f);
+
+                            glVertex3f(o.getLine(i).x*o.haloSize, o.getLine(i).y*o.haloSize,-0.1f);
+                            
                         }
                      glEnd();
 
                }
-               
+               glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
                if(o.isSphere){
                   
-                   glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+
                    //glBegin(GL_TRIANGLE_FAN);
                    glRotatef(90f,1,0,0);
                   glRotatef(-(float)Math.toDegrees(o.getRotation()),0,0,1);
@@ -152,17 +154,20 @@ public class Renderer {
                    
                } else if(o.isCircle){
                    glBegin(GL_TRIANGLE_FAN);
+                   if(o.hasTexture()){glTexCoord2f(0.5f, 0.5f);}
                     glVertex3f(0,0,0.2f);
                     
                     for(int i = 0; i < o.getGraphicsVecCount(); i++){
+                        if(o.hasTexture()){glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX, o.getLine(i).y/o.getSTexture().textureDividerY);}
                         glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
                     }
+                    if(o.hasTexture()){glTexCoord2f(o.getLine(0).x/o.getSTexture().textureDividerX, o.getLine(0).y/o.getSTexture().textureDividerY);}
                     glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
                    glEnd();
                } else {
                glBegin(GL_TRIANGLES);
 
-                glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+                //glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
 
 
                 int anchors = 0;

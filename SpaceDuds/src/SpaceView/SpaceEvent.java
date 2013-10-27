@@ -50,7 +50,8 @@ public class SpaceEvent extends Event{
             ship.setTexture("basicShip.png", 6f, 2f,0f,0f, anchors);
             ship.isLight = true;
             renderer.addObject(ship);
-
+            physicsCore.addDamageObject(ship);
+            
             generatePlanets();
             ship.setBody(physicsCore.addObject(currentPlanet.getPos().x, currentPlanet.getPos().y+currentPlanet.getSize()*2, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
             makeMapFrame();
@@ -219,6 +220,9 @@ private void makeMapFrame(){
         
         map.player = movables.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
         movables.setQuadColor(0f, 1f, 0f);
+        movables.addLine(6f, -5f);
+        boostMeter = movables.addLine(6f, ship.getBoost()/(25f));
+        movables.setLineColor(1f, 1f, 0f);
 }
 private boolean blink;
 private void updateMap(){
@@ -232,6 +236,13 @@ private void updateMap(){
         blink = !blink;
     }
     movables.setQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f,map.player-1);
+    if(ship.getBoost() == ship.getBoostLoad()){
+        movables.setLineColor(0f, 1f, 0f);
+    }else{
+        movables.setLineColor(1f, 1f, 1f);
+    }
+    movables.setLine(6f, ship.getBoost()/(10f)-5f, 0.2f, boostMeter-1);
+    
 }
 
 }

@@ -33,13 +33,13 @@ public class GameObject {
     public boolean isLight = false;
     public boolean is2d = true;
     
-
+    public float haloSize = 2f;
+    public boolean hasHalo = false;
     
     public Body getBody() {
         return body;
     }
-    
-    public boolean hasHalo = false;
+
     
     
     
@@ -51,6 +51,11 @@ public class GameObject {
         alpha = 1f;
     }
 
+    public void takeHit(float force){
+        System.out.println(force);
+    }
+    
+    
     public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY, int anchors[]){
         texture = new SpaceTexture(filename,dividerx,dividery, offsetX, offsetY);
 

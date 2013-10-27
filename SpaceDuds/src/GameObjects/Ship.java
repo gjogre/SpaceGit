@@ -9,9 +9,17 @@ import org.jbox2d.common.Vec2;
 
 public class Ship extends GameObject {
     private final int MAX_ADDONS = 10;
+
+    public int getBoostLoad() {
+        return boostLoad;
+    }
     
     private int boostLoad = 100;
     private int boost = boostLoad;
+
+    public int getBoost() {
+        return boost;
+    }
     private int boostStrenght = 10;
     
     //place in local coordinates where the particles comes from
@@ -27,6 +35,9 @@ public class Ship extends GameObject {
         super();
         posInGalaxy = new Vec2(-100f,15f);
         makeNormalShip();
+        
+        //this.hasHalo = true;
+        //this.haloSize = 1.2f;
     }
 
     private void makeNormalShip(){
@@ -37,8 +48,9 @@ public class Ship extends GameObject {
         super.shape[2] = new Vec2(0.1f,-0.5f);
         
         super.shape[3] = new Vec2(0.1f,0.5f);
-        super.shape[4] = new Vec2(0.1f,-0.5f);
-        super.shape[5] = new Vec2(1f,0f);
+        super.shape[4] = new Vec2(1f,0f);
+        super.shape[5] = new Vec2(0.1f,-0.5f);
+        
         
         super.shape[6] = new Vec2(-2f,0.5f);
         super.shape[7] = new Vec2(0.1f,-0.5f);
