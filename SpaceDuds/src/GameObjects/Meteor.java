@@ -1,21 +1,22 @@
 package GameObjects;
 
 import Graphics.Renderer;
+import Graphics.SpaceTexture;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 public class Meteor extends GameObject {
     private Random r = new Random();
-    
+    private static SpaceTexture meteorTexture = new SpaceTexture("moon.png",10f,10f,0,0);
     
     public Meteor(){
       super();  
-      meteorShape(2f,4);
-      
+      meteorShape(r.nextFloat()*2+0.5f,r.nextInt(3)+4);
+      this.setTexture(meteorTexture);
     }
     
     private void meteorShape(float radius , int smoothness){
-        shapeVecCount = 0;//not needed for circle shape
+        shapeVecCount = smoothness;
         graphicsVecCount = smoothness;
         float ra = r.nextFloat();
         for(int i = 0; i < graphicsVecCount; i+= 1){
@@ -25,8 +26,8 @@ public class Meteor extends GameObject {
                 y = radius * (float)Math.sin(theta);
                 
             ra += (r.nextFloat())/3;
-           // x = x * ra;
-            //y = y * ra;
+            x = x * ra;
+            y = y * ra;
             shape[i] = new Vec2(x, y);
         }
         isCircle = true;

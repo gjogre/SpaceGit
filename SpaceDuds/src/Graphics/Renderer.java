@@ -152,10 +152,10 @@ public class Renderer {
                    
                } else if(o.isCircle){
                    glBegin(GL_TRIANGLE_FAN);
-                    glVertex3f(o.getBody().getLocalCenter().x, o.getBody().getLocalCenter().y,0.2f);
+                    glVertex3f(0,0,0.2f);
                     
                     for(int i = 0; i < o.getGraphicsVecCount(); i++){
-                        glVertex3f(-o.getLine(i).x, o.getLine(i).y,0.2f);
+                        glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
                     }
                     glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
                    glEnd();
