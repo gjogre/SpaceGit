@@ -10,22 +10,25 @@ public class Meteor extends GameObject {
     
     public Meteor(){
       super();  
-      super.setCircle(1f, r.nextInt(5)+5);
-      //meteorShape();
+      meteorShape(2f,4);
       
     }
     
-    private void meteorShape(){
-        super.shapeVecCount = 8;
-        super.graphicsVecCount = 9;
-        super.shape[0] = new Vec2(-1f,1f);
-        super.shape[1] = new Vec2(-1f,-1f);
-        super.shape[2] = new Vec2(0f, 0f);
-        super.shape[3] = new Vec2(0f,0f);
-        super.shape[4] = new Vec2(-0.5f,-1f);
-        super.shape[5] = new Vec2(0.4f,-0.9f);
-        super.shape[6] = new Vec2(0f,1f);
-        super.shape[7] = new Vec2(0.5f,-0.4f);
-        super.shape[8] = new Vec2(0.5f,0.5f);
+    private void meteorShape(float radius , int smoothness){
+        shapeVecCount = 0;//not needed for circle shape
+        graphicsVecCount = smoothness;
+        float ra = r.nextFloat();
+        for(int i = 0; i < graphicsVecCount; i+= 1){
+            float theta,x,y;
+                theta = 2.0f * (float)Math.PI * (float)i /(float)graphicsVecCount;
+                x = radius * (float)Math.cos(theta);
+                y = radius * (float)Math.sin(theta);
+                
+            ra += (r.nextFloat())/3;
+           // x = x * ra;
+            //y = y * ra;
+            shape[i] = new Vec2(x, y);
+        }
+        isCircle = true;
     } 
 }
