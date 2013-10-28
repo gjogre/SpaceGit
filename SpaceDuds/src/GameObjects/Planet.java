@@ -106,7 +106,7 @@ public class Planet extends GameObject{
  }
     private void generateColor(){
         
-                super.colorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
+                super.defaultColorsRGB = new Vec3(r.nextFloat(),r.nextFloat(),r.nextFloat());
                /* int colorStrenght = r.nextInt(3);
                 switch(colorStrenght){
                     

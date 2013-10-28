@@ -28,6 +28,7 @@ public class DamageSystem implements ContactListener{
     }
 
     public void addObject(GameObject b){
+        System.out.println(b.toString());
         damageObjects.add(b);
     }
     public void clearObjects(){

@@ -18,23 +18,26 @@ public class GameObject {
     //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
     protected int graphicsVecCount;
 
-    //no need to touch this, if you apply texture for gameobject, this will be set automatically
-    private boolean hasTexture;
-    private int[] textAnchors;
-    private boolean hasAnchors = false;
-    private SpaceTexture texture;
-    
-    
     public boolean isCircle = false;
     public boolean isSphere = false;
-    public Vec3 colorsRGB;
+    public Vec3 defaultColorsRGB;
+    public Vec3 currentColorsRGB;
     public float alpha;
-    
-    public boolean isLight = false;
-    public boolean is2d = true;
     
     public float haloSize = 2f;
     public boolean hasHalo = false;
+    
+    // set automatically
+    private boolean hasTexture;
+    
+    //texture anchors if used
+    private int[] textAnchors;
+    private boolean hasAnchors = false;
+    
+    private SpaceTexture texture;
+    
+    
+
     
     public Body getBody() {
         return body;
@@ -47,19 +50,52 @@ public class GameObject {
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
         hasTexture = false;
-        colorsRGB = new Vec3(1,1,1);
+        defaultColorsRGB = new Vec3(1,1,1);
+        currentColorsRGB = new Vec3(defaultColorsRGB);
         alpha = 1f;
     }
 
     public void takeHit(float force){
-        System.out.println(force);
+        System.out.println(force + ":" + this.toString());
+        currentColorsRGB =  new Vec3(1,0,0);
         takeDamage(force);
         
     }
+    
+    public void updateGfx(){
+
+            fade();
+
+        
+    }
+    
+    
     //override for damage handling
     protected void takeDamage(float force){
     
     
+    }
+    
+    //override for different fade algorithm
+    protected void fade(){
+        float speed = 0.1f;
+        if(currentColorsRGB.x < defaultColorsRGB.x-speed){
+            currentColorsRGB.x+=speed;
+        } else if(currentColorsRGB.x > defaultColorsRGB.x+speed){
+            currentColorsRGB.x-=speed;
+        }
+    
+        if(currentColorsRGB.y < defaultColorsRGB.y-speed){
+            currentColorsRGB.y+=speed;
+        } else if(currentColorsRGB.y > defaultColorsRGB.y+speed){
+            currentColorsRGB.y-=speed;
+        }
+        if(currentColorsRGB.z < defaultColorsRGB.z-speed){
+            currentColorsRGB.z+=speed;
+        } else if(currentColorsRGB.z > defaultColorsRGB.z+speed){
+            currentColorsRGB.z-=speed;
+        }
+        
     }
     
     public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY, int anchors[]){

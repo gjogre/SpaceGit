@@ -48,7 +48,6 @@ public class SpaceEvent extends Event{
             
              
             ship.setTexture("basicShip.png", 6f, 2f,0f,0f, anchors);
-            ship.isLight = true;
             renderer.addObject(ship);
             physicsCore.addDamageObject(ship);
             
@@ -67,7 +66,6 @@ public class SpaceEvent extends Event{
              Vec2 point;
             for(Planet p : planets){
                 
-                p.is2d = false;
                 
                 p.setRoundShape(p.getSize());
                // p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0f, p.getSize()));
@@ -85,12 +83,12 @@ public class SpaceEvent extends Event{
                         p.alpha = 0.4f;
                     } else if(p.getType() == Planet.Type.MOON){
                         p.setTexture(moon);
-                        p.colorsRGB = new Vec3(1f,1f,1f);
+                        p.defaultColorsRGB = new Vec3(1f,1f,1f);
                     } 
                 }
                 else{
                     p.setTexture(sun);
-                    p.colorsRGB = new Vec3(1f,1f,0f);
+                    p.defaultColorsRGB = new Vec3(1f,1f,0f);
                 }
                 System.out.println(p.getClimate().toString());
                 p.hasHalo = true;
@@ -100,11 +98,10 @@ public class SpaceEvent extends Event{
                 
                 System.out.println("PLANET: " + p.getPos().x + ">" + p.getPos().y );
                 for(Moon m : p.moons){
-                    m.is2d = false;
                     m.setRoundShape(m.getSize());
                     moonPoint = m.generatePointInGalaxy(point);
                     m.setBody(physicsCore.addPlanet(moonPoint.x, moonPoint.y, m.getSize()));
-                    m.colorsRGB = new Vec3(1f,1f,1f);
+                    m.defaultColorsRGB = new Vec3(1f,1f,1f);
                     m.setTexture(moon);
                     renderer.addObject(m);
                     System.out.println("MOON: " + m.getPos().x + ">" + m.getPos().y + "SIZE: " +m.getSize()  );

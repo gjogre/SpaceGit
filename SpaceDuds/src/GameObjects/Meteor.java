@@ -15,6 +15,7 @@ public class Meteor extends GameObject {
       this.setTexture(meteorTexture);
       this.hasHalo = true;
       this.haloSize = 1.4f;
+      
     }
     
     private void meteorShape(float radius , int smoothness){

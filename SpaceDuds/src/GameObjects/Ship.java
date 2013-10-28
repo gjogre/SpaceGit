@@ -67,6 +67,7 @@ public class Ship extends GameObject {
             boost++;
             System.out.println(boost);
         }
+
     }
     
     public boolean boost(){

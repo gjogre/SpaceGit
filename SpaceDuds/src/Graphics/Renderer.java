@@ -112,6 +112,7 @@ public class Renderer {
 
         
          for(GameObject o : objectList){
+             o.updateGfx();
             glPushMatrix();
                 if(o.hasTexture()){
                     glEnable(GL_TEXTURE_2D);
@@ -128,7 +129,7 @@ public class Renderer {
                 if(o.hasHalo){
                     
                     glBegin(GL_TRIANGLE_FAN);
-                        glColor4f(o.colorsRGB.x,o.colorsRGB.y, o.colorsRGB.z, 0.2f);
+                        glColor4f(o.defaultColorsRGB.x,o.defaultColorsRGB.y, o.defaultColorsRGB.z, 0.2f);
                         for(int i = 0; i < o.getGraphicsVecCount(); i++){
 
                             glVertex3f(o.getLine(i).x*o.haloSize, o.getLine(i).y*o.haloSize,-0.1f);
@@ -137,7 +138,7 @@ public class Renderer {
                      glEnd();
 
                }
-               glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+               glColor4f(o.currentColorsRGB.x, o.currentColorsRGB.y, o.currentColorsRGB.z, o.alpha);
                if(o.isSphere){
                   
 

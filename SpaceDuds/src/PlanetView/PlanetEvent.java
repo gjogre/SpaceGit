@@ -1,18 +1,16 @@
 package PlanetView;
 
-import GameObjects.BattleShip;
-import GameObjects.Ground;
 import Event.Event;
-import org.lwjgl.input.Keyboard;
 import static Event.EventMachine.*;
 import Event.sharedContainer;
+import GameObjects.BattleShip;
+import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
-import GameObjects.Volcano;
 import Graphics.SpaceTexture;
-import Tools.Particle;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
+import org.lwjgl.input.Keyboard;
 
 public class PlanetEvent extends Event{
     private Surface surface;
@@ -79,7 +77,7 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
-            g.colorsRGB = sharedContainer.currentPlanet.colorsRGB;
+            g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
@@ -93,7 +91,7 @@ public class PlanetEvent extends Event{
         
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
-        renderer.addObject(ship);  
+        renderer.addObject(ship); 
     }
     
     private void invokeMeteor(){
@@ -109,7 +107,7 @@ public class PlanetEvent extends Event{
             renderer.addObject(meteor);
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 
-            }
+            }  
             
         }
     }

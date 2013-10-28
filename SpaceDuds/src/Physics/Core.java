@@ -208,6 +208,7 @@ public class Core {
     public void release(){
         damageSystem.clearObjects();
         world = new World(gravity);
+        world.setContactListener(damageSystem);
     }
     public void removeBody(Body b){
         world.destroyBody(b);
