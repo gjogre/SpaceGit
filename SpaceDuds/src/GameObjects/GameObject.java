@@ -53,8 +53,14 @@ public class GameObject {
 
     public void takeHit(float force){
         System.out.println(force);
+        takeDamage(force);
+        
     }
+    //override for damage handling
+    protected void takeDamage(float force){
     
+    
+    }
     
     public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY, int anchors[]){
         texture = new SpaceTexture(filename,dividerx,dividery, offsetX, offsetY);
