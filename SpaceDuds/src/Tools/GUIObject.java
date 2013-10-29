@@ -62,7 +62,9 @@ public class GUIObject {
     public void setQuad(float x, float y, float size, int index){
         quads.get(index).quad = new Vec3(x,y,size);
     }
-    
+    public void setLine(float x, float y, float size, int index){
+        lines.get(index).line = new Vec2(x,y);
+    }
     public int addQuad(float x, float y, float size){
         quads.add(new GUIQuad(x,y,size));
         return quads.size();

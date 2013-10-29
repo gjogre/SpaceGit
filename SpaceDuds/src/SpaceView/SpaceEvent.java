@@ -16,6 +16,7 @@ import static Event.EventMachine.*;
 import Event.sharedContainer;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
+import GameObjects.Moon;
 import Graphics.SpaceTexture;
 import Tools.GUIObject;
 import org.jbox2d.collision.Distance;
@@ -47,9 +48,9 @@ public class SpaceEvent extends Event{
             
              
             ship.setTexture("basicShip.png", 6f, 2f,0f,0f, anchors);
-            ship.isLight = true;
             renderer.addObject(ship);
-
+            physicsCore.addDamageObject(ship);
+            
             generatePlanets();
             ship.setBody(physicsCore.addObject(currentPlanet.getPos().x, currentPlanet.getPos().y+currentPlanet.getSize()*2, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
             makeMapFrame();
@@ -57,7 +58,11 @@ public class SpaceEvent extends Event{
             renderer.addGuiObject(movables);
         }
     private void generatePlanets(){
+<<<<<<< HEAD
             SpaceTexture solid = new SpaceTexture("land.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
+=======
+            SpaceTexture solid = new SpaceTexture("rockplanet.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
+>>>>>>> d556541bf990ed4b6591b0a571a3fb4e55ee4bd2
             SpaceTexture gas = new SpaceTexture("gasplanet.png",1f,1f,0f,0f);
             SpaceTexture sun = new SpaceTexture("sun.png",1f,1f,0f,0f);
             SpaceTexture moon = new SpaceTexture("moon2asd.png",1f,1f,0f,0f);
@@ -65,14 +70,13 @@ public class SpaceEvent extends Event{
              Vec2 point;
             for(Planet p : planets){
                 
-                p.is2d = false;
                 
                 p.setRoundShape(p.getSize());
                // p.setBody(physicsCore.addPlanet(50f-p.getDistanceToSun(), 0f, p.getSize()));
                point = p.generatePointInGalaxy(new Vec2(0,0));
-                p.setBody(physicsCore.addPlanet(0, point.y, p.getSize()));
+                p.setBody(physicsCore.addPlanet(point.x, point.y, p.getSize()));
                 
-
+                
                 
                 //p.colorsRGB = new Vec3(1,1,r.nextFloat());
                 if(p.getClimate() != Planet.Climate.SUN){
@@ -83,19 +87,30 @@ public class SpaceEvent extends Event{
                         p.alpha = 0.4f;
                     } else if(p.getType() == Planet.Type.MOON){
                         p.setTexture(moon);
-                        p.colorsRGB = new Vec3(1f,1f,1f);
+                        p.defaultColorsRGB = new Vec3(1f,1f,1f);
                     } 
                 }
                 else{
                     p.setTexture(sun);
-                    p.colorsRGB = new Vec3(1f,1f,0f);
+                    p.defaultColorsRGB = new Vec3(1f,1f,0f);
                 }
                 System.out.println(p.getClimate().toString());
                 p.hasHalo = true;
                 
                 renderer.addObject(p);
+                Vec2 moonPoint;
                 
-                
+                System.out.println("PLANET: " + p.getPos().x + ">" + p.getPos().y );
+                for(Moon m : p.moons){
+                    m.setRoundShape(m.getSize());
+                    moonPoint = m.generatePointInGalaxy(point);
+                    m.setBody(physicsCore.addPlanet(moonPoint.x, moonPoint.y, m.getSize()));
+                    m.defaultColorsRGB = new Vec3(1f,1f,1f);
+                    m.setTexture(moon);
+                    renderer.addObject(m);
+                    System.out.println("MOON: " + m.getPos().x + ">" + m.getPos().y + "SIZE: " +m.getSize()  );
+                   
+                }
             }
         
     }
@@ -186,12 +201,17 @@ private void makeMapFrame(){
 
         for(Planet p : planets){
             for(float i = 0f; i < 2*Math.PI; i+=0.2f) {
-                map.addLine(p.getDistanceToSun() * (float)Math.cos(i) / 50f, p.getDistanceToSun() * (float)Math.sin(i) / 50f);
+                map.addLine(p.getDistanceToCenter() * (float)Math.cos(i) / 50f, p.getDistanceToCenter() * (float)Math.sin(i) / 50f);
                 map.setLineColor(0.2f, 0.2f, 0.2f);
             }
-            
+
             map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/20f);
-             map.setQuadColor(0.6f, 0.1f, 0.6f);
+            map.setQuadColor(0.6f, 0.1f, 0.6f);
+            for(Moon m : p.moons){
+                map.addQuad(m.getPos().x/50f, m.getPos().y/50f, m.getSize()/20f);
+                map.setQuadColor(0.7f, 0.7f, 0.7f);
+            }
+             
         }
         movables = new GUIObject(-19.0f, -19.0f);
         movables.addQuad(0f, 0f, 0.5f);
@@ -201,6 +221,9 @@ private void makeMapFrame(){
         
         map.player = movables.addQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f);
         movables.setQuadColor(0f, 1f, 0f);
+        movables.addLine(6f, -5f);
+        boostMeter = movables.addLine(6f, ship.getBoost()/(25f));
+        movables.setLineColor(1f, 1f, 0f);
 }
 private boolean blink;
 private void updateMap(){
@@ -214,6 +237,13 @@ private void updateMap(){
         blink = !blink;
     }
     movables.setQuad(ship.getPos().x/50f, ship.getPos().y/50f, 0.2f,map.player-1);
+    if(ship.getBoost() == ship.getBoostLoad()){
+        movables.setLineColor(0f, 1f, 0f);
+    }else{
+        movables.setLineColor(1f, 1f, 1f);
+    }
+    movables.setLine(6f, ship.getBoost()/(10f)-5f, 0.2f, boostMeter-1);
+    
 }
 
 }

@@ -18,28 +18,31 @@ public class GameObject {
     //vec count for renderer, keep it same as shapeVecCount if object has no 2.5d shape
     protected int graphicsVecCount;
 
-    //no need to touch this, if you apply texture for gameobject, this will be set automatically
-    private boolean hasTexture;
-    private int[] textAnchors;
-    private boolean hasAnchors = false;
-    private SpaceTexture texture;
-    
-    
     public boolean isCircle = false;
-    
-    public Vec3 colorsRGB;
+    public boolean isSphere = false;
+    public Vec3 defaultColorsRGB;
+    public Vec3 currentColorsRGB;
     public float alpha;
     
-    public boolean isLight = false;
-    public boolean is2d = true;
+    public float haloSize = 2f;
+    public boolean hasHalo = false;
+    
+    // set automatically
+    private boolean hasTexture;
+    
+    //texture anchors if used
+    private int[] textAnchors;
+    private boolean hasAnchors = false;
+    
+    private SpaceTexture texture;
+    
     
 
     
     public Body getBody() {
         return body;
     }
-    
-    public boolean hasHalo = false;
+
     
     
     
@@ -47,10 +50,54 @@ public class GameObject {
         shape = new Vec2[MAX_VERTICES];
         setBasicShape();
         hasTexture = false;
-        colorsRGB = new Vec3(1,1,1);
+        defaultColorsRGB = new Vec3(1,1,1);
+        currentColorsRGB = new Vec3(defaultColorsRGB);
         alpha = 1f;
     }
 
+    public void takeHit(float force){
+        System.out.println(force + ":" + this.toString());
+        currentColorsRGB =  new Vec3(1,0,0);
+        takeDamage(force);
+        
+    }
+    
+    public void updateGfx(){
+
+            fade();
+
+        
+    }
+    
+    
+    //override for damage handling
+    protected void takeDamage(float force){
+    
+    
+    }
+    
+    //override for different fade algorithm
+    protected void fade(){
+        float speed = 0.1f;
+        if(currentColorsRGB.x < defaultColorsRGB.x-speed){
+            currentColorsRGB.x+=speed;
+        } else if(currentColorsRGB.x > defaultColorsRGB.x+speed){
+            currentColorsRGB.x-=speed;
+        }
+    
+        if(currentColorsRGB.y < defaultColorsRGB.y-speed){
+            currentColorsRGB.y+=speed;
+        } else if(currentColorsRGB.y > defaultColorsRGB.y+speed){
+            currentColorsRGB.y-=speed;
+        }
+        if(currentColorsRGB.z < defaultColorsRGB.z-speed){
+            currentColorsRGB.z+=speed;
+        } else if(currentColorsRGB.z > defaultColorsRGB.z+speed){
+            currentColorsRGB.z-=speed;
+        }
+        
+    }
+    
     public void setTexture(String filename, float dividerx, float dividery, float offsetX, float offsetY, int anchors[]){
         texture = new SpaceTexture(filename,dividerx,dividery, offsetX, offsetY);
 
@@ -122,8 +169,25 @@ public class GameObject {
             float y = radius * (float)Math.sin(theta);
             shape[i] = new Vec2(x, y);
         }
+        isSphere = true;
+    }
+    public void setCircle(float radius, int smoothness){
+        shapeVecCount = 0;//not needed for circle shape
+        graphicsVecCount = smoothness;
+        float ra = r.nextFloat();
+        for(int i = 0; i < graphicsVecCount; i+= 1){
+            float theta,x,y;
+                theta = 2.0f * (float)Math.PI * (float)i /(float)graphicsVecCount;
+                x = radius * (float)Math.cos(theta);
+                y = radius * (float)Math.sin(theta);
+            ra += (r.nextFloat())/3;
+           // x = x * ra;
+            //y = y * ra;
+            shape[i] = new Vec2(x, y);
+        }
         isCircle = true;
     }
+
     
     public void setTransform(float x, float y, float angle){
         body.setTransform(new Vec2(x,y), angle);

@@ -1,17 +1,16 @@
 package PlanetView;
 
-import GameObjects.BattleShip;
-import GameObjects.Ground;
 import Event.Event;
-import org.lwjgl.input.Keyboard;
 import static Event.EventMachine.*;
 import Event.sharedContainer;
+import GameObjects.BattleShip;
+import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
-import GameObjects.Volcano;
 import Graphics.SpaceTexture;
-import Tools.Particle;
 import java.util.Random;
+import org.jbox2d.common.Vec2;
+import org.lwjgl.input.Keyboard;
 
 public class PlanetEvent extends Event{
     private Surface surface;
@@ -42,10 +41,11 @@ public class PlanetEvent extends Event{
             meteorbool = true;
         }else if(meteorbool){
             if(eventTimer % 2 == 0) {
-            createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
+            //createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
             }
             meteor.applyRotation(1f);
         }
+        meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
         //physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
@@ -77,7 +77,7 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
-            g.colorsRGB = sharedContainer.currentPlanet.colorsRGB;
+            g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
@@ -91,7 +91,7 @@ public class PlanetEvent extends Event{
         
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
-        renderer.addObject(ship);  
+        renderer.addObject(ship); 
     }
     
     private void invokeMeteor(){
@@ -102,12 +102,12 @@ public class PlanetEvent extends Event{
         float meteorStartY = renderer.getCameraPos().y + 30;
         if(meteorChance == 0){
             meteor = new Meteor();
-            meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.5f));
+            meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.1f));
             meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
             renderer.addObject(meteor);
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 
-            }
+            }  
             
         }
     }

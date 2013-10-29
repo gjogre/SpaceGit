@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import static Event.sharedContainer.*;
+import java.util.Random;
 
 public class EventMachine {
 
@@ -14,9 +15,9 @@ public class EventMachine {
     public static Core physicsCore;
     public static Renderer renderer;
     public static long eventTimer;
-    
+    public static Random r;
     public EventMachine() throws LWJGLException{
-        
+        r = new Random();
         events = new ArrayList<>();
         
         physicsCore = new Core();

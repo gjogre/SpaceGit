@@ -1,5 +1,6 @@
 package Physics;
 
+import GameObjects.GameObject;
 import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
 import java.awt.Point;
 import java.util.Random;
@@ -20,6 +21,7 @@ public class Core {
     private World world;
     private Random r = new Random();
     
+    private DamageSystem damageSystem;
     private enum Entities {
         SOLID(0x0001) ,
         DYNAMIC(0x0002) ,
@@ -41,7 +43,8 @@ public class Core {
         
        
        world = new World(gravity);
-       
+       damageSystem = new DamageSystem();
+       world.setContactListener(damageSystem);
       
         
     }
@@ -191,46 +194,6 @@ public class Core {
         return body;
    
    }
-    /*
-    public Body addFireParticle(float x, float y, float angle, float radius){
-
-       float speed = r.nextFloat()*0.3f+0.2f; 
-       //angle vector
-        Vec2 vec = new Vec2();
-        vec.x = (float)Math.cos(angle);
-        vec.y = (float)Math.sin(angle);
-       
-       BodyDef b = new BodyDef();
-       b.position.set(vec.x*-2 +r.nextFloat()-0.5f, vec.y*-2+r.nextFloat()-0.5f);
-       b.type = BodyType.DYNAMIC;
-       
-       CircleShape shape = new CircleShape();
-       shape.m_p.set(x,y);
-       shape.m_radius = radius;
-       
-       FixtureDef f = new FixtureDef();
-       f.shape = shape;
-       //mass density
-       f.density = 0.1f;
-       //kitka
-       f.friction = 1.0f;
-       //bouncyness
-       f.restitution = 1.0f;
-       
-       f.filter.categoryBits = (Entities.PARTICLE.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode());
-       
-       Body body = world.createBody(b);
-       body.createFixture(f);
-
-       vec.x *=-speed;
-       vec.y *= -speed;
-
-        body.applyForce(vec, body.getWorldCenter());
-       return body;
-        
-        
-    }*/
     
     public void distanceJoint(Body a, Body b, Vec2 anchorA, Vec2 anchorB){
        DistanceJointDef jointDef = new DistanceJointDef();
@@ -238,10 +201,14 @@ public class Core {
        jointDef.collideConnected = true;
        world.createJoint(jointDef);
     }
-    
+    public void addDamageObject(GameObject g){
+        damageSystem.addObject(g);
+    }
+
     public void release(){
-        
+        damageSystem.clearObjects();
         world = new World(gravity);
+        world.setContactListener(damageSystem);
     }
     public void removeBody(Body b){
         world.destroyBody(b);
