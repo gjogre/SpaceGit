@@ -42,7 +42,7 @@ public class DamageSystem implements ContactListener{
                 if(cntct.getFixtureA() != null && cntct.getFixtureB() != null)
                 {
                     for(GameObject b : damageObjects){
-                        if(cntct.getFixtureA().getBody() == b.getBody()||cntct.getFixtureA().getBody() == b.getBody()){
+                        if(cntct.getFixtureA().getBody() == b.getBody()||cntct.getFixtureB().getBody() == b.getBody()){
                             b.takeHit(ci.normalImpulses[0]);
                         }
                     }
