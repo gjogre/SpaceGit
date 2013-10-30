@@ -92,6 +92,7 @@ public class PlanetEvent extends Event{
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
         renderer.addObject(ship); 
+        physicsCore.addDamageObject(ship);
     }
     
     private void invokeMeteor(){
@@ -108,7 +109,7 @@ public class PlanetEvent extends Event{
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 
             }  
-            
+            physicsCore.addDamageObject(meteor);
         }
     }
     
