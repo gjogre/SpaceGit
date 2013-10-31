@@ -38,12 +38,14 @@ public class Meteor extends GameObject {
         isCircle = true;
     } 
     
+
     public boolean getHitBool(){
         return hit;
     }
     
     @Override
     protected void takeDamage(float force){
-        hit = true;
+        hit = true;   
+
     }
 }

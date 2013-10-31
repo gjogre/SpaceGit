@@ -2,6 +2,8 @@ package Physics;
 
 import GameObjects.GameObject;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.locks.ReentrantLock;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -10,7 +12,9 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 
 public class DamageSystem implements ContactListener{
-    private static float damageTreshold = 0f;
+
+    private static float damageTreshold = 2f;
+
     private ArrayList<GameObject> damageObjects = new ArrayList<>();
     @Override
     public void beginContact(Contact cntct) {
@@ -34,17 +38,31 @@ public class DamageSystem implements ContactListener{
     public void clearObjects(){
         damageObjects.clear();
     }
-    
+
+    public void removeObject(GameObject b){
+
+        if(damageObjects.contains(b)){
+                damageObjects.remove(b);
+        }
+
+    }
     @Override
     public void postSolve(Contact cntct, ContactImpulse ci) {
         if(ci.normalImpulses[0] > damageTreshold)
             {
+
                 if(cntct.getFixtureA() != null && cntct.getFixtureB() != null)
                 {
-                    for(GameObject b : damageObjects){
-                        if(cntct.getFixtureA().getBody() == b.getBody()||cntct.getFixtureB().getBody() == b.getBody()){
-                            b.takeHit(ci.normalImpulses[0]);
-                        }
+                    Iterator<GameObject> itr = damageObjects.iterator();
+                        while(itr.hasNext()){
+                            GameObject g = itr.next();
+                            if(g.markForKill){
+                                itr.remove();
+                            } else {
+                                if(cntct.getFixtureA().getBody() == g.getBody()||cntct.getFixtureB().getBody() == g.getBody()){
+                                    g.takeHit(ci.normalImpulses[0]);
+                                }
+                            }
                     }
                 }
 

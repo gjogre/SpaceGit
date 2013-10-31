@@ -3,6 +3,7 @@ package Physics;
 import GameObjects.GameObject;
 import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.collision.Distance;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -22,6 +23,9 @@ public class Core {
     private Random r = new Random();
     
     private DamageSystem damageSystem;
+    
+    private ArrayList<Body> toBeDestroyed;
+    
     private enum Entities {
         SOLID(0x0001) ,
         DYNAMIC(0x0002) ,
@@ -45,7 +49,7 @@ public class Core {
        world = new World(gravity);
        damageSystem = new DamageSystem();
        world.setContactListener(damageSystem);
-      
+      toBeDestroyed = new ArrayList<>();
         
     }
     
@@ -212,6 +216,21 @@ public class Core {
     }
     public void removeBody(Body b){
         world.destroyBody(b);
+        
+    }
+    
+    public void removeObject(GameObject g){
+        toBeDestroyed.add(g.getBody());
+        
+        //damageSystem.removeObject(g);
+    }
+    
+    public void destroyBodies(){
+        for(Body b : toBeDestroyed){
+            world.destroyBody(b);
+            
+        }
+        toBeDestroyed.clear();
     }
     
     public void doStep(){
