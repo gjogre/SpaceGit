@@ -159,14 +159,14 @@ public class Renderer {
                    
                } else if(o.isCircle){
                    glBegin(GL_TRIANGLE_FAN);
-                   if(o.hasTexture()){glTexCoord2f(0.5f, 0.5f);}
+                   if(o.hasTexture()){glTexCoord2f(0.5f/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, 0.5f/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
                     glVertex3f(0,0,0.2f);
                     
                     for(int i = 0; i < o.getGraphicsVecCount(); i++){
-                        if(o.hasTexture()){glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX, o.getLine(i).y/o.getSTexture().textureDividerY);}
+                        if(o.hasTexture()){glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
                         glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
                     }
-                    if(o.hasTexture()){glTexCoord2f(o.getLine(0).x/o.getSTexture().textureDividerX, o.getLine(0).y/o.getSTexture().textureDividerY);}
+                    if(o.hasTexture()){glTexCoord2f(o.getLine(0).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(0).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
                     glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
                    glEnd();
                } else {

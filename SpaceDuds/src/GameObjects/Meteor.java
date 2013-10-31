@@ -7,7 +7,7 @@ import org.jbox2d.common.Vec2;
 
 public class Meteor extends GameObject {
     private Random r = new Random();
-    private static SpaceTexture meteorTexture = new SpaceTexture("meteor.png",10f,10f,0,0);
+    private static SpaceTexture meteorTexture = new SpaceTexture("meteor.png",3f,3f,0f,5f);
     
     public Meteor(){
       super();  
