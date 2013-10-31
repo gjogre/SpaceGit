@@ -178,14 +178,14 @@ public class Core {
        FixtureDef f = new FixtureDef();
        f.shape = shape;
        //mass density
-       f.density = 1.0f;
+       f.density = 0.2f;
        //kitka
        f.friction = 1.0f;
        //bouncyness
        f.restitution = 0.2f;
        
        f.filter.categoryBits = (Entities.SOLID.getCode());
-       f.filter.maskBits = (Entities.SOLID.getCode() | Entities.DYNAMIC.getCode() | Entities.PARTICLE.getCode());
+       f.filter.maskBits = (Entities.PARTICLE.getCode());
        
        Body body = world.createBody(b);
        body.createFixture(f);

@@ -43,7 +43,12 @@ public class PlanetEvent extends Event{
             if(eventTimer % 2 == 0) {
             //createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
             }
+            if(meteor.getHitBool()){
+                System.out.println("OSUMA!");
+                
+            }
             meteor.applyRotation(1f);
+            
         }
         meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
         //physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
@@ -65,9 +70,9 @@ public class PlanetEvent extends Event{
         if(sharedContainer.currentPlanet.getType() == Planet.Type.MOON){
             groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
         } else if(sharedContainer.currentPlanet.getType() == Planet.Type.GAS){
-            groundTexture = new SpaceTexture("pepperground.png", 10f, 10f,0f,0f);
+            groundTexture = new SpaceTexture("lavaGround.png", 10f, 10f,0f,0f);
         } else {
-            groundTexture = new SpaceTexture("basicGround.png", 1f, 1f,0f,0f);
+            groundTexture = new SpaceTexture("lavaGround.png", 1f, 1f,0f,0f);
             
         }
         int[] anchors = {
@@ -91,6 +96,7 @@ public class PlanetEvent extends Event{
         
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
+        physicsCore.addDamageObject(ship);
         renderer.addObject(ship); 
     }
     
@@ -100,10 +106,12 @@ public class PlanetEvent extends Event{
         
         float meteorStartX = renderer.getCameraPos().x + 30;
         float meteorStartY = renderer.getCameraPos().y + 30;
+        
         if(meteorChance == 0){
             meteor = new Meteor();
             meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.1f));
             meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
+            physicsCore.addDamageObject(meteor);
             renderer.addObject(meteor);
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 

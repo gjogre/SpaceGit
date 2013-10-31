@@ -58,12 +58,8 @@ public class SpaceEvent extends Event{
             renderer.addGuiObject(movables);
         }
     private void generatePlanets(){
-<<<<<<< HEAD
-            SpaceTexture solid = new SpaceTexture("land.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
-=======
-            SpaceTexture solid = new SpaceTexture("rockplanet.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
->>>>>>> d556541bf990ed4b6591b0a571a3fb4e55ee4bd2
-            SpaceTexture gas = new SpaceTexture("gasplanet.png",1f,1f,0f,0f);
+            SpaceTexture solid = new SpaceTexture("lavaLandOutline.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
+            SpaceTexture gas = new SpaceTexture("lavaLandOutline.png",1f,1f,0f,0f);
             SpaceTexture sun = new SpaceTexture("sun.png",1f,1f,0f,0f);
             SpaceTexture moon = new SpaceTexture("moon2asd.png",1f,1f,0f,0f);
 

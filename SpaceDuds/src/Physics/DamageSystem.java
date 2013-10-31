@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 
 public class DamageSystem implements ContactListener{
-    private static float damageTreshold = 2f;
+    private static float damageTreshold = 0f;
     private ArrayList<GameObject> damageObjects = new ArrayList<>();
     @Override
     public void beginContact(Contact cntct) {
@@ -42,7 +42,7 @@ public class DamageSystem implements ContactListener{
                 if(cntct.getFixtureA() != null && cntct.getFixtureB() != null)
                 {
                     for(GameObject b : damageObjects){
-                        if(cntct.getFixtureA().getBody() == b.getBody()||cntct.getFixtureA().getBody() == b.getBody()){
+                        if(cntct.getFixtureA().getBody() == b.getBody()||cntct.getFixtureB().getBody() == b.getBody()){
                             b.takeHit(ci.normalImpulses[0]);
                         }
                     }

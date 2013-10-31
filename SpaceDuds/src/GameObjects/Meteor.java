@@ -7,7 +7,8 @@ import org.jbox2d.common.Vec2;
 
 public class Meteor extends GameObject {
     private Random r = new Random();
-    private static SpaceTexture meteorTexture = new SpaceTexture("meteor.png",10f,10f,0,0);
+    private static SpaceTexture meteorTexture = new SpaceTexture("lavaLandOutline.png",10f,10f,0,0);
+    private boolean hit;
     
     public Meteor(){
       super();  
@@ -15,6 +16,7 @@ public class Meteor extends GameObject {
       this.setTexture(meteorTexture);
       this.hasHalo = true;
       this.haloSize = 1.4f;
+      hit = false;
       
     }
     
@@ -35,4 +37,13 @@ public class Meteor extends GameObject {
         }
         isCircle = true;
     } 
+    
+    public boolean getHitBool(){
+        return hit;
+    }
+    
+    @Override
+    protected void takeDamage(float force){
+        hit = true;
+    }
 }

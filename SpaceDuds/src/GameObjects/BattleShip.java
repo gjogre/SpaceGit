@@ -15,4 +15,9 @@ public class BattleShip extends GameObject {
         super.shape[1] = new Vec2(-1f,-1f);
         super.shape[2] = new Vec2(1f,0f);
     }
+    
+    @Override
+    protected void takeDamage(float force){
+        System.out.println("asd");
+    }
 }
