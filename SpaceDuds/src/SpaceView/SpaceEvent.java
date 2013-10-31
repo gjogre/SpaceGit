@@ -59,7 +59,7 @@ public class SpaceEvent extends Event{
         }
     private void generatePlanets(){
             SpaceTexture solid = new SpaceTexture("rockplanet.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
-            SpaceTexture gas = new SpaceTexture("gasplanet.png",1f,1f,0f,0f);
+            SpaceTexture gas = new SpaceTexture("lavaLandOutline.png",1f,1f,0f,0f);
             SpaceTexture sun = new SpaceTexture("sun.png",1f,1f,0f,0f);
             SpaceTexture moon = new SpaceTexture("moon2asd.png",1f,1f,0f,0f);
 
@@ -115,7 +115,7 @@ public class SpaceEvent extends Event{
     public void update(){
         input();
         updateMap();
-        renderer.setCameraPos(ship.getPos().x, ship.getPos().y);
+        renderer.setCameraTargetPos(ship.getPos().x, ship.getPos().y);
         ship.shipUpdate();
     }
 
@@ -144,13 +144,6 @@ public class SpaceEvent extends Event{
                 
                 createParticle(ship.getPos().x +ship.getParticleOutputPos().x,ship.getPos().y +ship.getParticleOutputPos().y, 0.5f,r.nextFloat()*2*(float)Math.PI,20,r.nextFloat(),r.nextFloat(),r.nextFloat());
             }
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_MINUS)){
-            renderer.scale(0.1f);
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
-            renderer.scale(-0.1f);
-           
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_E)){
             

@@ -34,7 +34,7 @@ public class PlanetEvent extends Event{
     @Override
     public void update(){
         input();
-        renderer.setCameraPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
+        renderer.setCameraTargetPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
         test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
