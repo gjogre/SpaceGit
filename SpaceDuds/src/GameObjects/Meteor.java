@@ -35,4 +35,9 @@ public class Meteor extends GameObject {
         }
         isCircle = true;
     } 
+    
+    @Override
+    protected void takeDamage(float force){
+        
+    }
 }
