@@ -73,7 +73,6 @@ public class PlanetEvent extends Event{
         float startX = 10f;
         float scale = 5f;
         i = 0;
-        i2 = 0;
         surface = sharedContainer.currentPlanet.getSurface();
         groundShapeList = new Vec2[surface.groundList.size()+3];
         backwardRun = groundShapeList.length-1;
@@ -125,8 +124,7 @@ public class PlanetEvent extends Event{
         for(i = 0;i<groundShapeList.length;i++){
             groundShapeList[i].x = groundShapeList[i].x-groundShapeCenter.x;
             groundShapeList[i].y = groundShapeList[i].y+groundShapeCenter.y;
-            System.out.println(groundShapeList[i].toString());
-            
+            System.out.println(groundShapeList[i].toString());   
         }
         
         ship = new BattleShip();
