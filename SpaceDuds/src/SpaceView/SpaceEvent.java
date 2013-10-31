@@ -59,7 +59,7 @@ public class SpaceEvent extends Event{
         }
     private void generatePlanets(){
 
-            SpaceTexture solid = new SpaceTexture("lavaLandOutline.png"/*"rockplanet.png"*/,1f,1f,0f,0f);
+            SpaceTexture solid = new SpaceTexture("lavaLandOutline.png",1f,1f,0f,0f);
             SpaceTexture gas = new SpaceTexture("lavaLandOutline.png",1f,1f,0f,0f);
             SpaceTexture sun = new SpaceTexture("sun.png",1f,1f,0f,0f);
             SpaceTexture moon = new SpaceTexture("moon2asd.png",1f,1f,0f,0f);

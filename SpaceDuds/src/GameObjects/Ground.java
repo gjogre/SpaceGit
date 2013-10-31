@@ -46,12 +46,20 @@ public class Ground extends GameObject{
         return end;
     }
     
-    public Vec2 returnLast(){
+    public Vec2 returnTopRight(){
         return shape[3];
     }
     
-    public Vec2 returnFirst(){
+    public Vec2 returnTopLeft(){
         return shape[0];
+    }
+    
+    public Vec2 returnBotLeft(){
+        return shape[1];
+    }
+    
+    public Vec2 returnBotRight(){
+        return shape[2];
     }
     
     public boolean isVolcanic(){

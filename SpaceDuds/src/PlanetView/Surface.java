@@ -1,5 +1,6 @@
 package PlanetView;
 
+import GameObjects.GameObject;
 import GameObjects.Ground;
 import GameObjects.Planet;
 import GameObjects.Planet.Climate;
@@ -8,17 +9,21 @@ import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 
-public class Surface {
+public class Surface extends GameObject{
     
     private Climate atmosphere;
     private float temperature;
     Random r = new Random();
     public ArrayList<Ground> groundList;
     public ArrayList<Volcano> volcanoList;
-    
+    private int groundPieces = 10; //HOW MANY GROUND OBJECTS MAP HAS
+    public Vec2[] groundShapeList = new Vec2[groundPieces+3];
     private boolean firstPiece = true;
-    
+    private Vec2 groundShapeCenter;
+ 
     public Surface(Planet planet){
+        super.graphicsVecCount = groundShapeList.length;
+        
         atmosphere = planet.getClimate();
         if(atmosphere == Planet.Climate.HOT){
             temperature = (float)r.nextInt(1000)+1000f;
@@ -36,6 +41,8 @@ public class Surface {
             temperature = -273.15f;
         }
         generateGround(planet.getRoughness());
+        super.shape = groundShapeList;
+        
     }
     
     private void generateGround(float scale){
@@ -44,16 +51,17 @@ public class Surface {
         float yAxisStart = 0;
         float lastYAxis = 0;
         
+                
         groundList = new ArrayList<>();
         volcanoList = new ArrayList<>();
         
         firstPiece = true;
-        for(i = 0;i<50;i++){
+        for(i = 0;i<groundPieces;i++){
             if(firstPiece){ 
                groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                firstPiece = false;
             }else{
-                yAxisStart = groundList.get(groundList.size()-1).returnLast().y;
+                yAxisStart = groundList.get(groundList.size()-1).returnTopRight().y;
                 rdm = r.nextInt(4);
                 if(rdm == 0){
                     if(lastYAxis >= (6*scale)){
@@ -80,8 +88,7 @@ public class Surface {
                         groundList.add(new Ground(scale, yAxisStart, lastYAxis));
                     }
                 }
-                
-            }
+            }  
         }
     }
 }

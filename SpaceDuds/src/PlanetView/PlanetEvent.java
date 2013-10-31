@@ -29,6 +29,13 @@ public class PlanetEvent extends Event{
     private float meteorStartX;
     private float meteorStartY;
     
+    public Vec2[] groundShapeList;
+    int i, i2;
+    
+    private boolean firstPiece = false;
+    int backwardRun;
+    private Vec2 groundShapeCenter;
+    
     private boolean meteorbool = false;
 
     @Override
@@ -44,7 +51,7 @@ public class PlanetEvent extends Event{
             //createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
             }
             if(meteor.getHitBool()){
-                System.out.println("OSUMA!");
+                //System.out.println("OSUMA!");
                 
             }
             meteor.applyRotation(1f);
@@ -65,7 +72,11 @@ public class PlanetEvent extends Event{
     protected void init(){
         float startX = 10f;
         float scale = 5f;
+        i = 0;
+        i2 = 0;
         surface = sharedContainer.currentPlanet.getSurface();
+        groundShapeList = new Vec2[surface.groundList.size()+3];
+        backwardRun = groundShapeList.length-1;
         SpaceTexture groundTexture;
         if(sharedContainer.currentPlanet.getType() == Planet.Type.MOON){
             groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
@@ -77,8 +88,7 @@ public class PlanetEvent extends Event{
         }
         int[] anchors = {
           0,1,2,
-          3,0,2
-            
+          3,0,2    
         };
         
         for(Ground g : surface.groundList){
@@ -88,10 +98,35 @@ public class PlanetEvent extends Event{
             renderer.addObject(g);
             if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
-                g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnLast().y-g.returnFirst().y),scale));
+                g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
                 renderer.addObject(g.volcano);
             }
+            
+            if(i == (surface.groundList.size()/2)-1){
+                groundShapeCenter = g.getPos();
+            }
+            
+            if(!firstPiece){
+                groundShapeList[0] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
+                groundShapeList[1] = new Vec2((surface.groundList.get(i).returnBotLeft().x + startX), surface.groundList.get(i).returnBotLeft().y);
+                firstPiece = true;
+            }else if(i == surface.groundList.size() - 1){
+                groundShapeList[2] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
+                groundShapeList[3] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
+                groundShapeList[4] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
+            }else if(backwardRun >= 5){
+                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
+                backwardRun--;
+            }
+            i++;
             startX = startX + scale;
+        }
+        
+        for(i = 0;i<groundShapeList.length;i++){
+            groundShapeList[i].x = groundShapeList[i].x-groundShapeCenter.x;
+            groundShapeList[i].y = groundShapeList[i].y+groundShapeCenter.y;
+            System.out.println(groundShapeList[i].toString());
+            
         }
         
         ship = new BattleShip();
@@ -117,7 +152,7 @@ public class PlanetEvent extends Event{
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 
             }  
-            physicsCore.addDamageObject(meteor);
+            //physicsCore.addDamageObject(meteor);
         }
     }
     
