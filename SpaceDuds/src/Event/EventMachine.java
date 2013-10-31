@@ -40,7 +40,7 @@ public class EventMachine {
                     events.get(events.size()-1).pauseInput();
                     events.get(events.size()-1).update();
                     physicsCore.doStep();
-
+                    physicsCore.destroyBodies();
 
                     renderer.render();
                     Display.update();

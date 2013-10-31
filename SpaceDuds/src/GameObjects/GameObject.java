@@ -1,7 +1,10 @@
 
 package GameObjects;
 
+import Event.EventMachine;
+import Graphics.Renderer;
 import Graphics.SpaceTexture;
+import Physics.Core;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.common.Vec3;
@@ -35,7 +38,7 @@ public class GameObject {
     private boolean hasAnchors = false;
     
     private SpaceTexture texture;
-    
+    public boolean markForKill = false;
     
 
     
@@ -241,4 +244,15 @@ public class GameObject {
         this.body = body;
     }
     
+    public void kill(){
+        markForKill = true;
+        EventMachine.renderer.removeObject(this);
+        EventMachine.physicsCore.removeObject(this);
+        afterKill();
+        
+    }
+    
+    protected void afterKill(){
+        
+    }
 }

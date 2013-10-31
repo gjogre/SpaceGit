@@ -298,6 +298,12 @@ public class Renderer {
 
     }
     
+    public void removeObject(GameObject g){
+        if(objectList.contains(g)){
+            objectList.remove(g);
+        }
+    }
+    
      /*   private void drawParticles(){
         double angle = 0;
         for(Iterator<Particle> itr = particles.iterator(); itr.hasNext();){
