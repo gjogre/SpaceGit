@@ -30,7 +30,7 @@ public class PlanetEvent extends Event{
     private float meteorStartY;
     
     public Vec2[] groundShapeList;
-    int i, i2;
+    int i;
     
     private boolean firstPiece = false;
     int backwardRun;
