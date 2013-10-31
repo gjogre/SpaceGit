@@ -49,7 +49,7 @@ public class Space {
             }
         }
     }
-    public ArrayList<Planet> generatePlanetArray(int galaxy){
+    public ArrayList<Planet> getPlanetsFromGalaxy(int galaxy){
         ArrayList<Planet> planetArr = new ArrayList<>();
         planetArr.addAll(Arrays.asList(planets[galaxy]));
         return planetArr;

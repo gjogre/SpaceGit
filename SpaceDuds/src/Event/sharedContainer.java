@@ -19,7 +19,7 @@ public class sharedContainer {
     private static Audio wavEffect;
     public static void generatePlanets(){
         
-        planets = space.generatePlanetArray(0);
+        planets = space.getPlanetsFromGalaxy(0);
     }
     public static void initSound(){
         try{

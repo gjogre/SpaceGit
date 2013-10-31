@@ -34,7 +34,7 @@ public class PlanetEvent extends Event{
     @Override
     public void update(){
         input();
-        renderer.setCameraPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
+        renderer.setCameraTargetPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
         test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
@@ -98,6 +98,7 @@ public class PlanetEvent extends Event{
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
         physicsCore.addDamageObject(ship);
         renderer.addObject(ship); 
+        physicsCore.addDamageObject(ship);
     }
     
     private void invokeMeteor(){
@@ -116,7 +117,7 @@ public class PlanetEvent extends Event{
             for(int impulse = 0; impulse < 30 ;impulse++){
                meteor.applyImulse(50f); 
             }  
-            
+            physicsCore.addDamageObject(meteor);
         }
     }
     

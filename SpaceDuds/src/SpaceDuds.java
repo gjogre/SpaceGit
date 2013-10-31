@@ -10,15 +10,9 @@ public class SpaceDuds{
    //private int WIDTH = (int) Tools.Utils.WIDTH;
   // private int HEIGHT = (int) Tools.Utils.WIDTH;
    
-   private boolean VSync = false;
-   public static boolean isApplet = true;
+
     public static void main(String args[]) throws LWJGLException{
-        
-
             new SpaceDuds();
-
-        
-        
     }
     public SpaceDuds() throws LWJGLException{
         

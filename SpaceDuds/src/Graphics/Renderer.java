@@ -1,5 +1,6 @@
 package Graphics;
 
+import Event.EventMachine;
 import Tools.GUIObject;
 import GameObjects.GameObject;
 import Tools.GUILine;
@@ -27,39 +28,41 @@ public class Renderer {
     
     private int WIDTH = 800, HEIGHT = 800;
     private Vec2 camera = new Vec2(0,0);
-    private Vec2 scale = new Vec2(0.05f,0.8f);
+    private Vec2 cameraTarget = new Vec2(0,0);
     private ArrayList<GameObject> objectList = new ArrayList<>();
     private ArrayList<GUIObject> GUIList = new ArrayList<>();
+    
+    private float lerp = 0.1f;
+    
+    public void setCameraTargetPos(float x, float y){
+        cameraTarget.set(new Vec2(x,y));
+    }
     public void setCameraPos(float x, float y){
         camera.set(new Vec2(x,y));
     }
-    
     public Vec2 getCameraPos(){
         return camera;
-    }
-    public void scale(float scale){
-        this.scale.x += scale;
-        this.scale.y += scale;
     }
     public void release() {
         objectList.clear();
         GUIList.clear();
         camera.set(new Vec2(0f,0f));
+        cameraTarget.set(new Vec2(0f,0f));
     }
 
     
     private Display display;
     public Renderer(boolean isApplet)throws LWJGLException{
         if(!isApplet){
-        Display.setTitle("SpaceDuds");
-        Display.setResizable(false);
+            Display.setTitle("SpaceDuds");
+            Display.setResizable(false);
 
-        Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
+            Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
 
-        Display.setVSyncEnabled(true);
-        Display.setFullscreen(false);
-        
-        Display.create();
+            Display.setVSyncEnabled(EventMachine.VSync);
+            Display.setFullscreen(false);
+
+            Display.create();
         
         }
 
@@ -79,7 +82,7 @@ public class Renderer {
         
         glLoadIdentity();
         glMatrixMode(GL_MODELVIEW);
-        glLineWidth(1f);
+        glLineWidth(2f);
         makeFont();
        // GL30.glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -100,8 +103,9 @@ public class Renderer {
     public void render(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-
-
+        camera.x += (cameraTarget.x - camera.x)* lerp;
+        camera.y += (cameraTarget.y - camera.y)* lerp;
+        
         glColor3f(1, 1, 1);
         //moving screen to camera postition
         glPushMatrix();

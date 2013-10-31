@@ -16,6 +16,9 @@ public class EventMachine {
     public static Renderer renderer;
     public static long eventTimer;
     public static Random r;
+    
+    public static boolean VSync = true;
+    
     public EventMachine() throws LWJGLException{
         r = new Random();
         events = new ArrayList<>();
@@ -24,26 +27,23 @@ public class EventMachine {
         renderer = new Renderer(false);
         initSound();
         generatePlanets();
-        sharedContainer.currentPlanet = space.generatePlanetArray(0).get(2);
+        sharedContainer.currentPlanet = space.getPlanetsFromGalaxy(0).get(2);
         eventTimer = 0;
         
     }
     
     public void loop(){
                 while(!Display.isCloseRequested()){
-                eventTimer++;
-                Display.sync(60);
-                
-                events.get(events.size()-1).pauseInput();
-                events.get(events.size()-1).update();
-                physicsCore.doStep();
-                    
-                
-                renderer.render();
-                Display.update();
-               
-                
-            
+                    eventTimer++;
+                    Display.sync(60);
+
+                    events.get(events.size()-1).pauseInput();
+                    events.get(events.size()-1).update();
+                    physicsCore.doStep();
+
+
+                    renderer.render();
+                    Display.update();
         }
     }
     public static void pushEvent(Event event){

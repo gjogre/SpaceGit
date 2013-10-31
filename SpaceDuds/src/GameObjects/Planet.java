@@ -13,6 +13,8 @@ public class Planet extends GameObject{
     public Surface getSurface() {
         return surface;
     }
+
+    
     
     public static enum Climate{
         SUN, HOT, WARM, TEMPERATE, CHILLY, COLD, FREEZING;
@@ -54,25 +56,8 @@ public class Planet extends GameObject{
         this.climate = climate;
         this.id = id;
         this.distanceToCenter = distanceToCenter;
-        int rr = r.nextInt(2);
         this.roughness += 0;
-        if(distanceToCenter - lastDistance < super.size*2 && distanceToCenter != 0){
-            distanceToCenter += super.size*2;
-
-        } 
-            switch(rr){
-                
-                case 0:
-                    this.type = Type.GAS;
-                    
-                    break;
-                default:
-                    this.type = Type.SOLID;
-                    break;
-          
-     
-        }
-         System.out.println("Planet type: "+rr);
+         distanceToCenter = generateType(distanceToCenter);
          generateColor();
         lastDistance = distanceToCenter;
 
@@ -123,4 +108,25 @@ public class Planet extends GameObject{
                 }*/
         
     }
+private float generateType(float distanceToCenter) {
+        int rr = r.nextInt(2);
+        if(distanceToCenter - lastDistance < super.size*2 && distanceToCenter != 0){
+            distanceToCenter += super.size*2;
+
+        }
+        switch(rr){
+            
+            case 0:
+                this.type = Type.GAS;
+                
+                break;
+            default:
+                this.type = Type.SOLID;
+                break;
+      
+ 
+    }   System.out.println("Planet type: "+rr);
+        return distanceToCenter;
+    }
+
 }
