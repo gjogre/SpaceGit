@@ -10,6 +10,7 @@ import GameObjects.Planet;
 import Graphics.SpaceTexture;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.lwjgl.input.Keyboard;
 
 public class PlanetEvent extends Event{
@@ -94,7 +95,7 @@ public class PlanetEvent extends Event{
             g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
-            renderer.addObject(g);
+           // renderer.addObject(g);
             if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
                 g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
@@ -126,6 +127,11 @@ public class PlanetEvent extends Event{
             groundShapeList[i].y = groundShapeList[i].y+groundShapeCenter.y;
             System.out.println(groundShapeList[i].toString());   
         }
+        
+        surface.setShape(groundShapeList);
+        surface.setBody(physicsCore.addBlankObject(groundShapeCenter.x, groundShapeCenter.y));
+        surface.isCircle = true;
+        renderer.addObject(surface);
         
         ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));

@@ -141,7 +141,16 @@ public class Core {
         return body;
         
     }
-   
+    public Body addBlankObject(float x, float y){
+       
+       BodyDef b = new BodyDef();
+       b.position.set(x,y);
+       b.type = BodyType.STATIC;
+       Body body = world.createBody(b);
+        return body;
+       
+       
+   }
    public Body addSquareParticle(float x, float y, float size, float angle){
        
        BodyDef b = new BodyDef();

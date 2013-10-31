@@ -149,6 +149,14 @@ public class GameObject {
         
         
     }
+    
+    public void setShape(Vec2[] shape){
+        
+        this.shape = shape;
+        this.graphicsVecCount = shape.length;
+        
+    }
+    
     //for planets for now
     protected float size;
     public float getSize(){
