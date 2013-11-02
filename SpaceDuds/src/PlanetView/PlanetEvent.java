@@ -37,6 +37,9 @@ public class PlanetEvent extends Event{
     int backwardRun;
     private Vec2 groundShapeCenter;
     
+    private float centerX, centerY;
+    private int shapeArrayBase = 5;
+    
     private boolean meteorbool = false;
 
     @Override
@@ -75,8 +78,7 @@ public class PlanetEvent extends Event{
         float scale = 5f;
         i = 0;
         surface = sharedContainer.currentPlanet.getSurface();
-        groundShapeList = new Vec2[surface.groundList.size()+3];
-        backwardRun = groundShapeList.length-1;
+        
         SpaceTexture groundTexture;
         if(sharedContainer.currentPlanet.getType() == Planet.Type.MOON){
             groundTexture = new SpaceTexture("moonGround.png", 10f, 10f,0f,0f);
@@ -92,6 +94,14 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
+            shapeArrayBase++;
+        }
+        
+        groundShapeList = new Vec2[surface.groundList.size()+shapeArrayBase];
+        backwardRun = groundShapeList.length-1;
+        
+        System.out.println(groundShapeList.length);
+        for(Ground g : surface.groundList){
             g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
@@ -102,30 +112,38 @@ public class PlanetEvent extends Event{
                 renderer.addObject(g.volcano);
             }
             
-            if(i == (surface.groundList.size()/2)-1){
+            if(i == (surface.groundList.size() / 2)-1){
                 groundShapeCenter = g.getPos();
             }
             
             if(!firstPiece){
                 groundShapeList[0] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
                 groundShapeList[1] = new Vec2((surface.groundList.get(i).returnBotLeft().x + startX), surface.groundList.get(i).returnBotLeft().y);
+                groundShapeList[2] = new Vec2((surface.groundList.get(i).returnBotLeft().x + startX), surface.groundList.get(i).returnBotLeft().y);
+                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
+                backwardRun--;
                 firstPiece = true;
             }else if(i == surface.groundList.size() - 1){
-                groundShapeList[2] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
-                groundShapeList[3] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
-                groundShapeList[4] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
-            }else if(backwardRun >= 5){
+                groundShapeList[3] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
+                groundShapeList[4] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
+                groundShapeList[5] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
+                groundShapeList[6] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
+                groundShapeList[7] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
+            }else if(backwardRun >= 8){
                 groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
+                backwardRun--;
+                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
                 backwardRun--;
             }
             i++;
             startX = startX + scale;
         }
         
+        System.out.println("GSCenter: "+groundShapeCenter.toString());
         for(i = 0;i<groundShapeList.length;i++){
             groundShapeList[i].x = groundShapeList[i].x-groundShapeCenter.x;
             groundShapeList[i].y = groundShapeList[i].y+groundShapeCenter.y;
-            System.out.println(groundShapeList[i].toString());   
+            System.out.println(groundShapeList[i].toString()); 
         }
         
         surface.setShape(groundShapeList);
