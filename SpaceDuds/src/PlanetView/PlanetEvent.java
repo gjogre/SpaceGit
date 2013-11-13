@@ -80,7 +80,6 @@ public class PlanetEvent extends Event{
     @Override
     protected void init(){
         float startX = -30f;
-        float scale = 5f;
         i = 0;
         surface = sharedContainer.currentPlanet.getSurface();
         
@@ -116,7 +115,7 @@ public class PlanetEvent extends Event{
                 g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
                 renderer.addObject(g.volcano);
             }*/
-            startX = startX + scale;
+            startX = startX + sharedContainer.currentPlanet.getRoughness()+10;
         }
         
         /*ship = new BattleShip();
