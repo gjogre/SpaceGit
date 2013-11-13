@@ -11,6 +11,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 public class Core {
     
@@ -234,14 +235,21 @@ public class Core {
     public void distanceJoint(Body a, Body b, Vec2 anchorA, Vec2 anchorB){
        DistanceJointDef jointDef = new DistanceJointDef();
        jointDef.initialize(a, b, anchorA, anchorB);
-       jointDef.collideConnected = true;
+       jointDef.collideConnected = false;
        world.createJoint(jointDef);
+    }
+    
+    public void revoluteJoint(Body a, Body b, Vec2 anchor){
+        RevoluteJointDef jointDef = new RevoluteJointDef();
+        jointDef.initialize(a, b, anchor);
+        world.createJoint(jointDef);
     }
     public void addDamageObject(GameObject g){
         damageSystem.addObject(g);
     }
 
     public void release(){
+        setGravity(0f, 0f);
         damageSystem.clearObjects();
         world = new World(gravity);
         world.setContactListener(damageSystem);

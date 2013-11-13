@@ -17,20 +17,25 @@ public class Roover extends GameObject {
         super.shapeVecCount = 4;
         super.graphicsVecCount = 6;
         
-        super.shape[0] = new Vec2(-4, 2);
-        super.shape[1] = new Vec2(-4, -2);
-        super.shape[2] = new Vec2(4, -2);
-        super.shape[3] = new Vec2(4, 2);
-        super.shape[4] = new Vec2(-4, 2);
-        super.shape[5] = new Vec2(4, -2);
+        super.shape[0] = new Vec2(-3, 1.5f);
+        super.shape[1] = new Vec2(-3, -1.5f);
+        super.shape[2] = new Vec2(3, -1.5f);
+        super.shape[3] = new Vec2(1.5f, 1.5f);
+        super.shape[4] = new Vec2(-3, 1.5f);
+        super.shape[5] = new Vec2(3, -1.5f);
     }
     
     public Vec2 getBackAxelSpot(){
-        return new Vec2(shape[1].x=+0.5f, shape[1].y=+0.5f);
+        return new Vec2(shape[1].x, shape[1].y);
     }
     
     public Vec2 getFrontAxelSpot(){
-        return new Vec2(shape[2].x=-0.5f, shape[2].y=+0.5f);
+        return new Vec2(shape[2].x, shape[2].y);
+    }
+    
+    @Override
+    protected void takeDamage(float force){
+        System.out.println("asd");
     }
     
 }

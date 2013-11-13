@@ -44,7 +44,7 @@ public class PlanetEvent extends Event{
     
     private boolean meteorbool = false;
     private Roover roover;
-    private Wheel backWheel, frontWheel;
+    private Wheel backWheel, frontWheel, topWheel;
     
     @Override
     public void update(){
@@ -79,7 +79,7 @@ public class PlanetEvent extends Event{
     
     @Override
     protected void init(){
-        float startX = 10f;
+        float startX = -30f;
         float scale = 5f;
         i = 0;
         surface = sharedContainer.currentPlanet.getSurface();
@@ -126,21 +126,24 @@ public class PlanetEvent extends Event{
         physicsCore.addDamageObject(ship);*/
         
         roover = new Roover();
-        roover.setBody(physicsCore.addObject(15f, 10f, roover.getShape(), roover.getshapeVecCount(), 1f, 0.5f, 0.5f));
+        roover.setBody(physicsCore.addObject(12.5f, 14f, roover.getShape(), roover.getshapeVecCount(), 1f, 0.5f, 0.5f));
+        physicsCore.addDamageObject(roover);
         backWheel = new Wheel();
-        backWheel.setCircle(backWheel.getBackWheelSize(), 8);
-        backWheel.setBody(physicsCore.addWheel(15f, 6f, backWheel.getBackWheelSize()));
+        backWheel.setCircle(backWheel.getBackWheelSize(), 12);
+        backWheel.setBody(physicsCore.addWheel(10f, 12f, backWheel.getBackWheelSize()));
         frontWheel = new Wheel();
-        frontWheel.setCircle(frontWheel.getBackWheelSize(), 8);
-        frontWheel.setBody(physicsCore.addWheel(20f, 6f, frontWheel.getBackWheelSize()));
+        frontWheel.setCircle(frontWheel.getFrontWheelSize(), 12);
+        frontWheel.setBody(physicsCore.addWheel(15f, 12f, frontWheel.getFrontWheelSize()));
         
-        //physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
-        //physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
+        
+        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
+        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
+        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getPos(), backWheel.getPos());
+        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getPos(), frontWheel.getPos());
         physicsCore.distanceJoint(backWheel.getBody(), frontWheel.getBody(), backWheel.getPos(), frontWheel.getPos());
-        //renderer.addObject(roover);
+        renderer.addObject(roover);
         renderer.addObject(backWheel);
         renderer.addObject(frontWheel);
-        
     }
     
     private void invokeMeteor(){
@@ -186,9 +189,9 @@ public class PlanetEvent extends Event{
         }
         
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            backWheel.applyRotation(-5f);
+            roover.applyRotation(-250f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            backWheel.applyRotation(5f);
+            roover.applyRotation(250f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             popEvent();
 
