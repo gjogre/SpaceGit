@@ -136,20 +136,43 @@ public class Core {
        
        Body body = world.createBody(b);
        body.createFixture(f);
-      
-        
-        return body;
-        
+       
+       return body; 
     }
+   
+   public Body addWheel(float x, float y, float size){
+       BodyDef b = new BodyDef();
+       b.position.set(x,y);
+       b.type = BodyType.DYNAMIC;
+       
+       CircleShape shape = new CircleShape();
+       shape.m_radius = size;
+       
+       FixtureDef f = new FixtureDef();
+       f.shape = shape;
+       //mass density
+       f.density = 1.0f;
+       //kitka
+       f.friction = 0.4f;
+       //bouncyness
+       f.restitution = 0.3f;
+       
+       f.filter.categoryBits = (Entities.DYNAMIC.getCode());
+       f.filter.maskBits = (Entities.DYNAMIC.getCode() | Entities.SOLID.getCode());
+       
+       
+       Body body = world.createBody(b);
+       body.createFixture(f);
+       
+       return body;
+   }
     public Body addBlankObject(float x, float y){
        
        BodyDef b = new BodyDef();
        b.position.set(x,y);
        b.type = BodyType.STATIC;
        Body body = world.createBody(b);
-        return body;
-       
-       
+        return body; 
    }
    public Body addSquareParticle(float x, float y, float size, float angle){
        

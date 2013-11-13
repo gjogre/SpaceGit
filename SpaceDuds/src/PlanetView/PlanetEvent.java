@@ -7,6 +7,8 @@ import GameObjects.BattleShip;
 import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
+import GameObjects.Roover;
+import GameObjects.Wheel;
 import Graphics.SpaceTexture;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
@@ -41,12 +43,14 @@ public class PlanetEvent extends Event{
     private int shapeArrayBase = 5;
     
     private boolean meteorbool = false;
-
+    private Roover roover;
+    private Wheel backWheel, frontWheel;
+    
     @Override
     public void update(){
         input();
-        renderer.setCameraTargetPos(ship.getPos().x+cameraPushbackX, ship.getPos().y/*cameraY*/);
-        test = r.nextInt(3)+1;
+        renderer.setCameraTargetPos(roover.getPos().x+cameraPushbackX, roover.getPos().y/*cameraY*/);
+        /*test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
             meteorbool = true;
@@ -105,57 +109,37 @@ public class PlanetEvent extends Event{
             g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
-           // renderer.addObject(g);
+            renderer.addObject(g);
             if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
                 g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
                 renderer.addObject(g.volcano);
             }
-            
-            if(i == (surface.groundList.size() / 2)-1){
-                groundShapeCenter = g.getPos();
-            }
-            
-            if(!firstPiece){
-                groundShapeList[0] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
-                groundShapeList[1] = new Vec2((surface.groundList.get(i).returnBotLeft().x + startX), surface.groundList.get(i).returnBotLeft().y);
-                groundShapeList[2] = new Vec2((surface.groundList.get(i).returnBotLeft().x + startX), surface.groundList.get(i).returnBotLeft().y);
-                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
-                backwardRun--;
-                firstPiece = true;
-            }else if(i == surface.groundList.size() - 1){
-                groundShapeList[3] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
-                groundShapeList[4] = new Vec2((surface.groundList.get(i).returnBotRight().x + startX), surface.groundList.get(i).returnBotRight().y);
-                groundShapeList[5] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
-                groundShapeList[6] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
-                groundShapeList[7] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
-            }else if(backwardRun >= 8){
-                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopLeft().x + startX), surface.groundList.get(i).returnTopLeft().y);
-                backwardRun--;
-                groundShapeList[backwardRun] = new Vec2((surface.groundList.get(i).returnTopRight().x + startX), surface.groundList.get(i).returnTopRight().y);
-                backwardRun--;
-            }
-            i++;
             startX = startX + scale;
         }
         
-        System.out.println("GSCenter: "+groundShapeCenter.toString());
-        for(i = 0;i<groundShapeList.length;i++){
-            groundShapeList[i].x = groundShapeList[i].x-groundShapeCenter.x;
-            groundShapeList[i].y = groundShapeList[i].y+groundShapeCenter.y;
-            System.out.println(groundShapeList[i].toString()); 
-        }
-        
-        surface.setShape(groundShapeList);
-        surface.setBody(physicsCore.addBlankObject(groundShapeCenter.x, groundShapeCenter.y));
-        surface.isCircle = true;
-        renderer.addObject(surface);
-        
-        ship = new BattleShip();
+        /*ship = new BattleShip();
         ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
         physicsCore.addDamageObject(ship);
         renderer.addObject(ship); 
-        physicsCore.addDamageObject(ship);
+        physicsCore.addDamageObject(ship);*/
+        
+        roover = new Roover();
+        roover.setBody(physicsCore.addObject(15f, 10f, roover.getShape(), roover.getshapeVecCount(), 1f, 0.5f, 0.5f));
+        backWheel = new Wheel();
+        //backWheel.setRoundShape(backWheel.getBackWheelSize());
+        backWheel.setBody(physicsCore.addWheel(15f, 6f, backWheel.getBackWheelSize()));
+        frontWheel = new Wheel();
+        //frontWheel.setRoundShape(frontWheel.getBackWheelSize()*2);
+        frontWheel.setBody(physicsCore.addWheel(20f, 6f, frontWheel.getBackWheelSize()));
+        
+        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
+        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
+        physicsCore.distanceJoint(backWheel.getBody(), frontWheel.getBody(), backWheel.getPos(), frontWheel.getPos());
+        renderer.addObject(roover);
+        renderer.addObject(backWheel);
+        renderer.addObject(frontWheel);
+        
     }
     
     private void invokeMeteor(){
@@ -180,13 +164,13 @@ public class PlanetEvent extends Event{
     
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            ship.applyForceForward(5f);
+            roover.applyForceForward(5f);
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
             if(!typed){
                 System.out.println("asd");
                 typed = true;
-                ship.applyImulse(3f);
+                roover.applyImulse(3f);
             }else{
                 typed = false;
             }
@@ -196,9 +180,9 @@ public class PlanetEvent extends Event{
         }
         
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            ship.applyRotation(-5f);
+            roover.applyRotation(-5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            ship.applyRotation(5f);
+            roover.applyRotation(5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             popEvent();
 

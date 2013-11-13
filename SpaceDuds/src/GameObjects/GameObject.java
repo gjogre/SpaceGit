@@ -223,6 +223,10 @@ public class GameObject {
         return body.getPosition();
     }
     
+    public Vec2 getWorldCenter(){
+        return body.getWorldCenter();
+    }
+    
     public void applyForce(Vec2 force, Vec2 point){
         body.applyForce(force, point);
     }
