@@ -214,7 +214,7 @@ public class Core {
        FixtureDef f = new FixtureDef();
        f.shape = shape;
        //mass density
-       f.density = 0.2f;
+       f.density = 0.8f;
        //kitka
        f.friction = 1.0f;
        //bouncyness

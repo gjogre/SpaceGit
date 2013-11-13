@@ -49,7 +49,7 @@ public class PlanetEvent extends Event{
     @Override
     public void update(){
         input();
-        renderer.setCameraTargetPos(roover.getPos().x+cameraPushbackX, roover.getPos().y/*cameraY*/);
+        renderer.setCameraTargetPos(frontWheel.getPos().x+cameraPushbackX, frontWheel.getPos().y/*cameraY*/);
         /*test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
@@ -66,13 +66,14 @@ public class PlanetEvent extends Event{
             
         }
         meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
-        //physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
+        physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
         //esimerkki miten partikkelia vois käyttää. toi vika luku on time to live. eventTimer on eventin alusta kulunu aika. angle radiaani.
         /*if(eventTimer % 3 == 0) {
             createParticle(50f, 15f, r.nextFloat()+0.2f, r.nextFloat()*3, 30);
         }*/
+        physicsCore.setGravity(0f, -9.81f);
     }
     
     
@@ -110,11 +111,11 @@ public class PlanetEvent extends Event{
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
-            if(g.isVolcanic()){
+            /*if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
                 g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
                 renderer.addObject(g.volcano);
-            }
+            }*/
             startX = startX + scale;
         }
         
@@ -127,16 +128,16 @@ public class PlanetEvent extends Event{
         roover = new Roover();
         roover.setBody(physicsCore.addObject(15f, 10f, roover.getShape(), roover.getshapeVecCount(), 1f, 0.5f, 0.5f));
         backWheel = new Wheel();
-        //backWheel.setRoundShape(backWheel.getBackWheelSize());
+        backWheel.setCircle(backWheel.getBackWheelSize(), 8);
         backWheel.setBody(physicsCore.addWheel(15f, 6f, backWheel.getBackWheelSize()));
         frontWheel = new Wheel();
-        //frontWheel.setRoundShape(frontWheel.getBackWheelSize()*2);
+        frontWheel.setCircle(frontWheel.getBackWheelSize(), 8);
         frontWheel.setBody(physicsCore.addWheel(20f, 6f, frontWheel.getBackWheelSize()));
         
-        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
-        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
+        //physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
+        //physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
         physicsCore.distanceJoint(backWheel.getBody(), frontWheel.getBody(), backWheel.getPos(), frontWheel.getPos());
-        renderer.addObject(roover);
+        //renderer.addObject(roover);
         renderer.addObject(backWheel);
         renderer.addObject(frontWheel);
         
@@ -164,13 +165,18 @@ public class PlanetEvent extends Event{
     
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            roover.applyForceForward(5f);
+            //backWheel.applyForceForward(5f);
+            backWheel.applyRotation(-250f);
+            frontWheel.applyRotation(-250f);
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+            backWheel.applyRotation(250f);
+            frontWheel.applyRotation(250f);
+            
             if(!typed){
                 System.out.println("asd");
                 typed = true;
-                roover.applyImulse(3f);
+                //backWheel.applyImulse(3f);
             }else{
                 typed = false;
             }
@@ -180,9 +186,9 @@ public class PlanetEvent extends Event{
         }
         
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            roover.applyRotation(-5f);
+            backWheel.applyRotation(-5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            roover.applyRotation(5f);
+            backWheel.applyRotation(5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             popEvent();
 

@@ -16,7 +16,7 @@ public class Surface extends GameObject{
     Random r = new Random();
     public ArrayList<Ground> groundList;
     public ArrayList<Volcano> volcanoList;
-    private int groundPieces = 30; //HOW MANY GROUND OBJECTS MAP HAS
+    private int groundPieces = 500; //HOW MANY GROUND OBJECTS MAP HAS
     public Vec2[] groundShapeList = new Vec2[groundPieces+3];
     private boolean firstPiece = true;
     private Vec2 groundShapeCenter;
