@@ -41,29 +41,33 @@ public class Event{
       }
     }
     
-    protected void createParticle(float x, float y, float size, float angle){
+    protected Particle createParticle(float x, float y, float size, float angle){
         
             Particle p = new Particle();
             Particle.addParticle(p);
             p.body = physicsCore.addSquareParticle(x, y, 
-            size, angle);
+            size, angle,5f);
+            return p;
         
     }
-    protected void createParticle(float x, float y, float size, float angle, int ttl){
+    protected Particle createParticle(float x, float y, float size, float angle, int ttl){
         
             Particle p = new Particle(ttl);
             Particle.addParticle(p);
             p.body = physicsCore.addSquareParticle(x, y, 
-            size, angle);
+            size, angle,5f);
+            return p;
         
     }
-    protected void createParticle(float x, float y, float size, float angle, int ttl, float r, float g, float b){
+    
+    protected Particle createParticle(float x, float y, float size, float angle, int ttl, float r, float g, float b, float speed){
         
             Particle p = new Particle(ttl);
             p.setColor(r, g, b);
             Particle.addParticle(p);
             p.body = physicsCore.addSquareParticle(x, y, 
-            size, angle);
+            size, angle,speed);
+            return p;
         
     }
     
