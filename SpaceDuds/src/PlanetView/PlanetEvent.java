@@ -131,7 +131,7 @@ public class PlanetEvent extends Event{
         renderer.addObject(ship); 
         physicsCore.addDamageObject(ship);*/
         
-        roover = new Roover(2.5f);
+        roover = new Roover(1f);
         backWheel = new Wheel();
         frontWheel = new Wheel();
         rooverBuilder = new RooverBuilder(roover, backWheel, frontWheel, 7f, 12f);

@@ -17,7 +17,10 @@ import Event.sharedContainer;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
 import GameObjects.Moon;
+import GameObjects.Roover;
+import GameObjects.Wheel;
 import Graphics.SpaceTexture;
+import ObjectBuilders.RooverBuilder;
 import Tools.GUIObject;
 import org.jbox2d.collision.Distance;
 import org.jbox2d.common.Vec3;
@@ -28,6 +31,10 @@ public class SpaceEvent extends Event{
     private Map map;
     private GUIObject movables;
     private Random r = new Random();
+    
+    private Roover roover;
+    private Wheel wheel1, wheel2;
+    private RooverBuilder builder;
     
     public SpaceEvent(){
         
@@ -54,6 +61,12 @@ public class SpaceEvent extends Event{
             makeMapFrame();
             renderer.addGuiObject(map);
             renderer.addGuiObject(movables);
+            
+            roover = new Roover(1f);
+            wheel1 = new Wheel();
+            wheel2 = new Wheel();
+            builder = new RooverBuilder(roover, wheel1, wheel2, ship.getPos().x+5, ship.getPos().y+5);
+                    
         }
     private void generatePlanets(){
 
