@@ -281,8 +281,10 @@ public class Renderer {
                 glTranslatef(-20f, 20f, 0.5f);
                 glScalef(0.1f, -0.1f, 0.2f);
                 font.drawString(0f, 0f, "Space: Boost", org.newdawn.slick.Color.blue);
-                font.drawString(0f, 18f, "e: Land (p: to get off land)", org.newdawn.slick.Color.blue);
-                font.drawString(0f, 36f, "wasd: Move", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 18f, "e: Send lander (if it misses planet its gone)", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 36f, "p: get off planet", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 54f, "wasd: Move", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 72f, "esc: pause and restart scene", org.newdawn.slick.Color.blue);
             glPopMatrix();
     }
     

@@ -98,7 +98,6 @@ public class Ship extends GameObject {
        
        landerSlots = 3;
        landers.add(new Roover(1f));
-       landers.add(new Roover(1f));
     }
 
     public void shipUpdate(){
