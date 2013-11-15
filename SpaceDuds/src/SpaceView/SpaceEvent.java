@@ -54,6 +54,7 @@ public class SpaceEvent extends Event{
             
             generatePlanets();
             ship.setBody(physicsCore.addObject(currentPlanet.getPos().x, currentPlanet.getPos().y+currentPlanet.getSize()*2, ship.getShape(), ship.getshapeVecCount(), 0.5f,  0.5f, 0.5f));
+            ship.addLander(new Roover(1f));
             makeMapFrame();
             renderer.addGuiObject(map);
             renderer.addGuiObject(movables);
