@@ -99,6 +99,12 @@ public class Renderer {
         
 
     
+
+
+    public static float ZOOM_X = 1.0f;
+    public static float ZOOM_Y = 1.0f;
+    
+
     public void render(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
@@ -108,8 +114,9 @@ public class Renderer {
         glColor3f(1, 1, 1);
         //moving screen to camera postition
         glPushMatrix();
+        glScalef(ZOOM_X, ZOOM_Y, 0.05f);
         glTranslatef(-camera.x, -camera.y, 0.05f);
-        glScalef(1f, 1f, 0.05f);
+        
         //glScalef(scale.x, scale.y, 1f);
          
 
@@ -303,25 +310,7 @@ public class Renderer {
         }
     }
     
-     /*   private void drawParticles(){
-        double angle = 0;
-        for(Iterator<Particle> itr = particles.iterator(); itr.hasNext();){
-            Particle p = itr.next();
-            angle = 0;
-                glPushMatrix();
-                glTranslatef(p.body.getPosition().x, p.body.getPosition().y, 0);
-                glBegin(GL_POLYGON); 
-                for(int i = 0; i < 29; i ++){
-                    glVertex2d(p.radius * Math.cos(i*2*Math.PI / 32)+p.body.getPosition().x,p.radius*Math.sin(i*2*Math.PI / 32)+p.body.getPosition().y );
-                }
-                glEnd();
-                glPopMatrix();
-            if(p.subTtl()){
-                physicsCore.removeBody(p.body);
-                itr.remove();
-            }
-            
-        }
+    public void setLerp(float lerp){
+        this.lerp = lerp;
     }
-    */
 }

@@ -56,10 +56,12 @@ public class EventMachine {
     }
     
     public static void popEvent(){
+        
         events.get(events.size()-1).release();
         events.remove(events.get(events.size()-1));
         eventTimer = 0;
         events.get(events.size()-1).init();
+        
     }
 
 }

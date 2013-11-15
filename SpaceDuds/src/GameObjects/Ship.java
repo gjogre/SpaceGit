@@ -93,8 +93,8 @@ public class Ship extends GameObject {
        landerOutputPos = new Vec2(0f,0.5f);
        
        landerSlots = 3;
-       landers.add(new Roover());
-       landers.add(new Roover());
+       landers.add(new Roover(1f));
+       landers.add(new Roover(1f));
     }
 
     public void shipUpdate(){

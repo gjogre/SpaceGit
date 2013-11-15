@@ -4,25 +4,25 @@ import org.jbox2d.common.Vec2;
 
 
 public class Roover extends GameObject {
+    private float size;
     
-    float backWheelSize, frontWheelSize;
-    
-    public Roover(){
+    public Roover(float size){
         super();
-        rooverShape();
+        rooverShape(size);
+        this.size = size;
     }
     
-    private void rooverShape(){
+    private void rooverShape(float size){
         
         super.shapeVecCount = 4;
         super.graphicsVecCount = 6;
         
-        super.shape[0] = new Vec2(-3, 1.5f);
-        super.shape[1] = new Vec2(-3, -1.5f);
-        super.shape[2] = new Vec2(3, -1.5f);
-        super.shape[3] = new Vec2(1.5f, 1.5f);
-        super.shape[4] = new Vec2(-3, 1.5f);
-        super.shape[5] = new Vec2(3, -1.5f);
+        super.shape[0] = new Vec2(-1*size, 0.5f*size);
+        super.shape[1] = new Vec2(-1*size, -0.5f*size);
+        super.shape[2] = new Vec2(1*size, -0.5f*size);
+        super.shape[3] = new Vec2(0.5f*size, 0.5f*size);
+        super.shape[4] = new Vec2(-1*size, 0.5f*size);
+        super.shape[5] = new Vec2(1*size, -0.5f*size);
     }
     
     public Vec2 getBackAxelSpot(){
@@ -36,6 +36,10 @@ public class Roover extends GameObject {
     @Override
     protected void takeDamage(float force){
         System.out.println("asd");
+    }
+    
+    public float getMass(){
+        return size;
     }
     
 }

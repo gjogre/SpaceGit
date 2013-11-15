@@ -17,7 +17,7 @@ public class Surface extends GameObject{
     Random r = new Random();
     public ArrayList<Ground> groundList;
     public ArrayList<Volcano> volcanoList;
-    private int groundPieces = 700; //HOW MANY GROUND OBJECTS MAP HAS
+    private int groundPieces = 200; //HOW MANY GROUND OBJECTS MAP HAS
     public Vec2[] groundShapeList = new Vec2[groundPieces+3];
     private boolean firstPiece = true;
     private Vec2 groundShapeCenter;
@@ -65,7 +65,7 @@ public class Surface extends GameObject{
                 yAxisStart = groundList.get(groundList.size()-1).returnTopRight().y;
                 rdm = r.nextInt(4);
                 if(rdm == 0){
-                    if(lastYAxis >= (30/*6*scale*/)){
+                    if(lastYAxis >= (10/*6*scale*/)){
                         lastYAxis = yAxisStart;
                     }else{
                         lastYAxis = yAxisStart + (4/*0.4f*scale*/);
