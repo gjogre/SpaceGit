@@ -3,6 +3,7 @@ package GameObjects;
 import Event.EventMachine;
 import Event.sharedContainer;
 import GameObjects.GameObject;
+import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 
 
@@ -10,6 +11,31 @@ import org.jbox2d.common.Vec2;
 public class Ship extends GameObject {
     private final int MAX_ADDONS = 10;
 
+    private ArrayList<Roover> landers;
+    private Roover currentLander;
+    private int selectedLanderSlot = 0;
+
+    public boolean setLander() {
+        try{
+        if(landers.get(selectedLanderSlot) != null){
+            currentLander = landers.get(selectedLanderSlot);
+            landers.remove(landers.get(selectedLanderSlot));
+            return true;
+        }
+        } catch(IndexOutOfBoundsException e){
+            return false;
+        }
+        return false;
+    }
+
+    public void addSelectedLanderSlot() {
+        if(selectedLanderSlot < landerSlots){
+            selectedLanderSlot++;
+        } else {
+            selectedLanderSlot = 0;
+        }
+    }
+    
     public int getBoostLoad() {
         return boostLoad;
     }
@@ -21,18 +47,24 @@ public class Ship extends GameObject {
         return boost;
     }
     private int boostStrenght = 10;
+    private int landerSlots;
     
     //place in local coordinates where the particles comes from
     private Vec2 particleOutputPos; 
+    private Vec2 landerOutputPos; 
     public Vec2 getParticleOutputPos() {
         Vec2 temp = new Vec2(particleOutputPos.x * (float)Math.cos(body.getAngle()), particleOutputPos.x  * (float)Math.sin(body.getAngle()));
         return temp;
     }
-   
+       public Vec2 getLanderOutputPos() {
+        Vec2 temp = new Vec2(landerOutputPos.x * (float)Math.cos(body.getAngle()), landerOutputPos.x  * (float)Math.sin(body.getAngle()));
+        return temp;
+    }
     public Vec2 posInGalaxy;
     
     public Ship(){
         super();
+        landers = new ArrayList<>();
         posInGalaxy = new Vec2(-100f,15f);
         makeNormalShip();
         
@@ -58,8 +90,11 @@ public class Ship extends GameObject {
 
       //  super.shape[4] = new Vec2(0.25f,1f);
         particleOutputPos = new Vec2(-2.5f, 0f);
+       landerOutputPos = new Vec2(0f,0.5f);
        
-        
+       landerSlots = 3;
+       landers.add(new Roover(1f));
+       landers.add(new Roover(1f));
     }
 
     public void shipUpdate(){

@@ -13,7 +13,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 public class DamageSystem implements ContactListener{
 
-    private static float damageTreshold = 2f;
+    private static float damageTreshold = 0.5f;
 
     private ArrayList<GameObject> damageObjects = new ArrayList<>();
     @Override
@@ -35,8 +35,9 @@ public class DamageSystem implements ContactListener{
         System.out.println(b.toString());
         damageObjects.add(b);
     }
+    
     public void clearObjects(){
-        damageObjects.clear();
+       damageObjects.clear();
     }
 
     public void removeObject(GameObject b){
@@ -53,8 +54,8 @@ public class DamageSystem implements ContactListener{
 
                 if(cntct.getFixtureA() != null && cntct.getFixtureB() != null)
                 {
-                    Iterator<GameObject> itr = damageObjects.iterator();
-                        while(itr.hasNext()){
+                    
+                        for (Iterator<GameObject> itr = damageObjects.iterator(); itr.hasNext(); ){
                             GameObject g = itr.next();
                             if(g.markForKill){
                                 itr.remove();

@@ -2,13 +2,14 @@
 package Tools;
 
 import Event.EventMachine;
+import GameObjects.GameObject;
 import Physics.Core;
 import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec3;
 import org.jbox2d.dynamics.Body;
 
-public class Particle {
+public class Particle{
 
     public static ArrayList<Particle> particles = new ArrayList<>();
     

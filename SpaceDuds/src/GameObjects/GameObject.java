@@ -13,7 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 
 public class GameObject {
 
-    private final int MAX_VERTICES = 200;
+    private final int MAX_VERTICES = 50;
     
     protected Body body;
     protected Vec2[] shape;

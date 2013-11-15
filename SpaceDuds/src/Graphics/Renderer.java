@@ -32,7 +32,7 @@ public class Renderer {
     private ArrayList<GameObject> objectList = new ArrayList<>();
     private ArrayList<GUIObject> GUIList = new ArrayList<>();
     
-    private float lerp = 0.1f;
+    private float lerp = 1f;
     
     public void setCameraTargetPos(float x, float y){
         cameraTarget.set(new Vec2(x,y));
@@ -99,9 +99,12 @@ public class Renderer {
         
 
     
+
+
     public static float ZOOM_X = 1.0f;
     public static float ZOOM_Y = 1.0f;
     
+
     public void render(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
