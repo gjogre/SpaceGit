@@ -22,11 +22,11 @@ public class Ground extends GameObject{
         end = yEnd;
         
         super.shape[0] = new Vec2(0,yStart);
-        super.shape[1] = new Vec2(0,-12);
-        super.shape[2] = new Vec2(1*scale,-12);
+        super.shape[1] = new Vec2(0,-24);
+        super.shape[2] = new Vec2(1*scale,-24);
         super.shape[3] = new Vec2(1*scale,yEnd);
         super.shape[4] = new Vec2(0,yStart);
-        super.shape[5] = new Vec2(1*scale,-12);
+        super.shape[5] = new Vec2(1*scale,-24);
         
         if(rdm == 1){
             isVolcanic = true;

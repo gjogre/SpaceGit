@@ -4,6 +4,7 @@ import Event.Event;
 import static Event.EventMachine.*;
 import Event.sharedContainer;
 import GameObjects.BattleShip;
+import ObjectBuilders.RooverBuilder;
 import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
@@ -22,7 +23,7 @@ public class PlanetEvent extends Event{
     private Meteor meteor;
     
     private float cameraY = 10;
-    private float cameraPushbackX = 15; // changing this parameter will make camera go 'n' pixels ahead the ship 
+    private float cameraPushbackX = 7; // changing this parameter will make camera go 'n' pixels ahead the ship 
     private boolean typed = false;
     
     private Random r = new Random();
@@ -45,11 +46,12 @@ public class PlanetEvent extends Event{
     private boolean meteorbool = false;
     private Roover roover;
     private Wheel backWheel, frontWheel, topWheel;
+    private RooverBuilder rooverBuilder;
     
     @Override
     public void update(){
         input();
-        renderer.setCameraTargetPos(frontWheel.getPos().x+cameraPushbackX, frontWheel.getPos().y/*cameraY*/);
+        renderer.setCameraTargetPos(frontWheel.getPos().x+cameraPushbackX, frontWheel.getPos().y);
         /*test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
@@ -79,6 +81,11 @@ public class PlanetEvent extends Event{
     
     @Override
     protected void init(){
+        physicsCore.setGravity(0f, -9.81f);
+        renderer.setLerp(0.6f);
+        renderer.ZOOM_X = 1.6f;
+        renderer.ZOOM_Y = 1.6f;
+        
         float startX = -30f;
         i = 0;
         surface = sharedContainer.currentPlanet.getSurface();
@@ -106,13 +113,13 @@ public class PlanetEvent extends Event{
         
         System.out.println(groundShapeList.length);
         for(Ground g : surface.groundList){
-            g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
+            //g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
             /*if(g.isVolcanic()){
                 g.volcano.setBody(physicsCore.addGround(startX,0f,g.volcano.getShape(),g.volcano.getshapeVecCount()));
-                g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y),scale));
+                g.volcano.setTransform(startX,g.returnStart(),(float)Math.atan2((g.returnTopRight().y-g.returnTopLeft().y), sharedContainer.currentPlanet.getRoughness()+10));
                 renderer.addObject(g.volcano);
             }*/
             startX = startX + sharedContainer.currentPlanet.getRoughness()+10;
@@ -124,25 +131,10 @@ public class PlanetEvent extends Event{
         renderer.addObject(ship); 
         physicsCore.addDamageObject(ship);*/
         
-        roover = new Roover();
-        roover.setBody(physicsCore.addObject(12.5f, 14f, roover.getShape(), roover.getshapeVecCount(), 1f, 0.5f, 0.5f));
-        physicsCore.addDamageObject(roover);
+        roover = new Roover(2.5f);
         backWheel = new Wheel();
-        backWheel.setCircle(backWheel.getBackWheelSize(), 12);
-        backWheel.setBody(physicsCore.addWheel(10f, 12f, backWheel.getBackWheelSize()));
         frontWheel = new Wheel();
-        frontWheel.setCircle(frontWheel.getFrontWheelSize(), 12);
-        frontWheel.setBody(physicsCore.addWheel(15f, 12f, frontWheel.getFrontWheelSize()));
-        
-        
-        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getBackAxelSpot(), backWheel.getPos());
-        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getFrontAxelSpot(), frontWheel.getPos());
-        physicsCore.distanceJoint(roover.getBody(), backWheel.getBody(), roover.getPos(), backWheel.getPos());
-        physicsCore.distanceJoint(roover.getBody(), frontWheel.getBody(), roover.getPos(), frontWheel.getPos());
-        physicsCore.distanceJoint(backWheel.getBody(), frontWheel.getBody(), backWheel.getPos(), frontWheel.getPos());
-        renderer.addObject(roover);
-        renderer.addObject(backWheel);
-        renderer.addObject(frontWheel);
+        rooverBuilder = new RooverBuilder(roover, backWheel, frontWheel, 7f, 12f);
     }
     
     private void invokeMeteor(){
@@ -168,12 +160,12 @@ public class PlanetEvent extends Event{
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
             //backWheel.applyForceForward(5f);
-            backWheel.applyRotation(-250f);
-            frontWheel.applyRotation(-250f);
+            backWheel.applyRotation(-5f);
+            frontWheel.applyRotation(-5f);
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            backWheel.applyRotation(250f);
-            frontWheel.applyRotation(250f);
+            backWheel.applyRotation(5f);
+            frontWheel.applyRotation(5f);
             
             if(!typed){
                 System.out.println("asd");
@@ -188,10 +180,13 @@ public class PlanetEvent extends Event{
         }
         
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            roover.applyRotation(-250f);
+            roover.applyRotation(-5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            roover.applyRotation(250f);
+            roover.applyRotation(5f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
+            renderer.setLerp(0.1f);
+            renderer.ZOOM_X = 1.0f;
+            renderer.ZOOM_Y = 1.0f;
             popEvent();
 
         }

@@ -37,8 +37,6 @@ public class SpaceEvent extends Event{
 
     @Override
         protected void init(){
-
-
             
             int[] anchors = {
               0,1,2,
@@ -112,8 +110,14 @@ public class SpaceEvent extends Event{
         
     }
     
+    private boolean gravity = false;
     @Override
     public void update(){
+        if(!gravity){
+            physicsCore.setGravity(0f, 0f);
+            gravity = true;
+        }
+        
         input();
         updateMap();
         renderer.setCameraTargetPos(ship.getPos().x, ship.getPos().y);
@@ -157,16 +161,14 @@ private void landing(){
     
     for(Planet p : planets) {
         if(physicsCore.getDistance(p.getBody(), ship.getBody()) < p.getSize()*2){
-            
+            gravity = false;
             sharedContainer.currentPlanet = p;
             sharedContainer.ship.posInGalaxy = ship.getPos();
             sharedContainer.playSound(0);
             pushEvent(new PlanetEvent());
             break;
-        }
-        
+        } 
     }
-    
 }
     private int boostMeter;
 private void makeMapFrame(){
