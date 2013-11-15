@@ -32,10 +32,6 @@ public class SpaceEvent extends Event{
     private GUIObject movables;
     private Random r = new Random();
     
-    private Roover roover;
-    private Wheel wheel1, wheel2;
-    private RooverBuilder builder;
-    
     public SpaceEvent(){
         
         
@@ -62,10 +58,6 @@ public class SpaceEvent extends Event{
             renderer.addGuiObject(map);
             renderer.addGuiObject(movables);
             
-            roover = new Roover(1f);
-            wheel1 = new Wheel();
-            wheel2 = new Wheel();
-            builder = new RooverBuilder(roover, wheel1, wheel2, ship.getPos().x+5, ship.getPos().y+5);
                     
         }
     private void generatePlanets(){
