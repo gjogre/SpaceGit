@@ -175,7 +175,7 @@ public class Core {
        Body body = world.createBody(b);
         return body; 
    }
-   public Body addSquareParticle(float x, float y, float size, float angle){
+   public Body addSquareParticle(float x, float y, float size, float angle, float speed){
        
        BodyDef b = new BodyDef();
        b.position.set(x,y);
@@ -199,7 +199,7 @@ public class Core {
        Body body = world.createBody(b);
        body.createFixture(f);
       
-        body.applyLinearImpulse(new Vec2(-(float)Math.cos(angle)*size*5, -(float)Math.sin(angle)*size*5), new Vec2(0,0));
+        body.applyLinearImpulse(new Vec2(-(float)Math.cos(angle)*size*speed, -(float)Math.sin(angle)*size*speed), new Vec2(0,0));
         return body;
        
        

@@ -111,13 +111,19 @@ public class SpaceEvent extends Event{
             }
         
     }
-    
+    private boolean landed = false;
     @Override
     public void update(){
         input();
         updateMap();
         renderer.setCameraTargetPos(ship.getPos().x, ship.getPos().y);
         ship.shipUpdate();
+        
+        if(landed){
+            landed = false;
+            sharedContainer.playSound(0);
+            pushEvent(new PlanetEvent());
+        }
     }
 
     
@@ -143,7 +149,7 @@ public class SpaceEvent extends Event{
             
             if(ship.boost()){
                 
-                createParticle(ship.getPos().x +ship.getParticleOutputPos().x,ship.getPos().y +ship.getParticleOutputPos().y, 0.5f,r.nextFloat()*2*(float)Math.PI,20,r.nextFloat(),r.nextFloat(),r.nextFloat());
+                createParticle(ship.getPos().x +ship.getParticleOutputPos().x,ship.getPos().y +ship.getParticleOutputPos().y, 0.5f,r.nextFloat()*2*(float)Math.PI,20,r.nextFloat(),r.nextFloat(),r.nextFloat(),2f);
             }
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_E)){
@@ -153,6 +159,7 @@ public class SpaceEvent extends Event{
         }
     }
     
+    
 private void landing(){
     
     for(Planet p : planets) {
@@ -160,14 +167,43 @@ private void landing(){
             
             sharedContainer.currentPlanet = p;
             sharedContainer.ship.posInGalaxy = ship.getPos();
-            sharedContainer.playSound(0);
-            pushEvent(new PlanetEvent());
+            
+            
+            
+            if(ship.setLander()){
+                
+                LanderParticle lp = new LanderParticle(createParticle(ship.getPos().x +ship.getLanderOutputPos().x,ship.getPos().y +ship.getLanderOutputPos().y, 
+                        0.3f,ship.getAngle()+0.5f*(float)Math.PI, 200,0.2f,0.2f,0.2f,1.5f));
+                
+                physicsCore.addDamageObject(lp);
+                
+            }
+//pushEvent(new PlanetEvent());
             break;
         }
         
     }
     
 }
+
+private class LanderParticle extends GameObject {
+    
+    public Particle p;
+    
+    public LanderParticle(Particle p){
+        this.p = p;
+        body = p.body;
+    }
+    
+    @Override
+    protected void takeDamage(float force){
+        landed = true;
+
+    }
+    
+    
+}
+
     private int boostMeter;
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);
