@@ -107,7 +107,7 @@ public class SpaceEvent extends Event{
                    
                 }
             }
-        
+        gravity = false;
     }
 
     private boolean landed = false;

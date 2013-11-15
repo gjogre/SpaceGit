@@ -37,9 +37,7 @@ public class DamageSystem implements ContactListener{
     }
     
     public void clearObjects(){
-        for(GameObject g : damageObjects){
-            g.markForKill = true;
-        }
+       damageObjects.clear();
     }
 
     public void removeObject(GameObject b){
