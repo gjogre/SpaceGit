@@ -1,12 +1,12 @@
 package ObjectBuilders;
 
-import GameObjects.Roover;
+import GameObjects.Lander;
 import GameObjects.Wheel;
 import static Event.EventMachine.physicsCore;
 import static Event.EventMachine.renderer;
 
 public class RooverBuilder {
-    public RooverBuilder(Roover roover, Wheel backWheel, Wheel frontWheel, float x, float y){
+    public RooverBuilder(Lander roover, Wheel backWheel, Wheel frontWheel, float x, float y){
         int i;
         float size, wheelSize;
         size = roover.getMass() / 0.5f;

@@ -8,7 +8,7 @@ import ObjectBuilders.RooverBuilder;
 import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
-import GameObjects.Roover;
+import GameObjects.Lander;
 import GameObjects.Wheel;
 import Graphics.SpaceTexture;
 import java.util.Random;
@@ -44,7 +44,7 @@ public class PlanetEvent extends Event{
     private int shapeArrayBase = 5;
     
     private boolean meteorbool = false;
-    private Roover roover;
+    private Lander roover;
     private Wheel backWheel, frontWheel, topWheel;
     private RooverBuilder rooverBuilder;
     
@@ -83,8 +83,8 @@ public class PlanetEvent extends Event{
     protected void init(){
         physicsCore.setGravity(0f, -9.81f);
         renderer.setLerp(0.6f);
-        renderer.ZOOM_X = 1.6f;
-        renderer.ZOOM_Y = 1.6f;
+        renderer.ZOOM_X = 1.3f;
+        renderer.ZOOM_Y = 1.3f;
         
         float startX = -30f;
         i = 0;
@@ -131,7 +131,7 @@ public class PlanetEvent extends Event{
         renderer.addObject(ship); 
         physicsCore.addDamageObject(ship);*/
         
-        roover = new Roover(6f);
+        roover = new Lander(1f);
         backWheel = new Wheel();
         frontWheel = new Wheel();
         rooverBuilder = new RooverBuilder(roover, backWheel, frontWheel, 7f, 12f);

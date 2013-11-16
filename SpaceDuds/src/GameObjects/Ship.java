@@ -11,8 +11,8 @@ import org.jbox2d.common.Vec2;
 public class Ship extends GameObject {
     private final int MAX_ADDONS = 10;
 
-    private ArrayList<Roover> landers;
-    private Roover currentLander;
+    private ArrayList<Lander> landers;
+    private Lander currentLander;
     private int selectedLanderSlot = 0;
 
     public boolean setLander() {
@@ -93,8 +93,8 @@ public class Ship extends GameObject {
        landerOutputPos = new Vec2(0f,0.5f);
        
        landerSlots = 3;
-       landers.add(new Roover(1f));
-       landers.add(new Roover(1f));
+       landers.add(new Lander(1f));
+       landers.add(new Lander(1f));
     }
 
     public void shipUpdate(){

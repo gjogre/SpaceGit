@@ -3,10 +3,10 @@ package GameObjects;
 import org.jbox2d.common.Vec2;
 
 
-public class Roover extends GameObject {
+public class Lander extends GameObject {
     private float size;
     
-    public Roover(float size){
+    public Lander(float size){
         super();
         rooverShape(size);
         this.size = size;

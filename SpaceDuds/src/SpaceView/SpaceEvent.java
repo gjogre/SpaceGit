@@ -17,7 +17,7 @@ import Event.sharedContainer;
 import PlanetView.PlanetEvent;
 import static Event.sharedContainer.*;
 import GameObjects.Moon;
-import GameObjects.Roover;
+import GameObjects.Lander;
 import GameObjects.Wheel;
 import Graphics.SpaceTexture;
 import ObjectBuilders.RooverBuilder;
