@@ -4,7 +4,6 @@ import Event.Event;
 import static Event.EventMachine.*;
 import Event.sharedContainer;
 import GameObjects.BattleShip;
-import ObjectBuilders.RooverBuilder;
 import GameObjects.Ground;
 import GameObjects.Meteor;
 import GameObjects.Planet;
@@ -44,14 +43,15 @@ public class PlanetEvent extends Event{
     private int shapeArrayBase = 5;
     
     private boolean meteorbool = false;
-    private Lander roover;
-    private Wheel backWheel, frontWheel, topWheel;
-    private RooverBuilder rooverBuilder;
     
     @Override
     public void update(){
         input();
-        renderer.setCameraTargetPos(frontWheel.getPos().x+cameraPushbackX, frontWheel.getPos().y);
+        if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().ROOVER){
+            renderer.setCameraTargetPos(sharedContainer.ship.getCurrentLander().getBackWheel().getPos().x+cameraPushbackX, sharedContainer.ship.getCurrentLander().getFrontWheel().getPos().y);
+        }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
+            renderer.setCameraTargetPos(sharedContainer.ship.getCurrentLander().getPos().x+cameraPushbackX, sharedContainer.ship.getCurrentLander().getPos().y);
+        }
         /*test = r.nextInt(3)+1;
         if(test <= 3 && !meteorbool){
             invokeMeteor();
@@ -75,13 +75,11 @@ public class PlanetEvent extends Event{
         /*if(eventTimer % 3 == 0) {
             createParticle(50f, 15f, r.nextFloat()+0.2f, r.nextFloat()*3, 30);
         }*/
-        physicsCore.setGravity(0f, -9.81f);
     }
     
     
     @Override
     protected void init(){
-        physicsCore.setGravity(0f, -9.81f);
         renderer.setLerp(0.6f);
         renderer.ZOOM_X = 1.3f;
         renderer.ZOOM_Y = 1.3f;
@@ -97,7 +95,6 @@ public class PlanetEvent extends Event{
             groundTexture = new SpaceTexture("lavaGround.png", 10f, 10f,0f,0f);
         } else {
             groundTexture = new SpaceTexture("lavaGround.png", 1f, 1f,0f,0f);
-            
         }
         int[] anchors = {
           0,1,2,
@@ -131,10 +128,8 @@ public class PlanetEvent extends Event{
         renderer.addObject(ship); 
         physicsCore.addDamageObject(ship);*/
         
-        roover = new Lander(1f);
-        backWheel = new Wheel();
-        frontWheel = new Wheel();
-        rooverBuilder = new RooverBuilder(roover, backWheel, frontWheel, 7f, 12f);
+        LanderBuilder.Builder(sharedContainer.ship.getCurrentLander(), 7f, 12f);
+        
     }
     
     private void invokeMeteor(){
@@ -160,29 +155,37 @@ public class PlanetEvent extends Event{
     private void input(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
             //backWheel.applyForceForward(5f);
-            backWheel.applyRotation(-5f);
-            frontWheel.applyRotation(-5f);
+            if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().ROOVER){
+                sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(-20f);
+                sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(-20f);
+            }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
+                sharedContainer.ship.getCurrentLander().applyForceForward(5f);
+            }
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            backWheel.applyRotation(5f);
-            frontWheel.applyRotation(5f);
-            
-            if(!typed){
-                System.out.println("asd");
-                typed = true;
-                //backWheel.applyImulse(3f);
-            }else{
-                typed = false;
+            if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().ROOVER){
+                sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(-20f);
+                sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(-20f);
+            }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
+                if(!typed){
+                    System.out.println("asd");
+                    typed = true;
+                    sharedContainer.ship.getCurrentLander().applyImulse(3f);
+                }else{
+                    typed = false;
+                }
             }
+            
+           
         }else if(Keyboard.isKeyDown(Keyboard.KEY_U)){
             meteor.applyForceForward(5f);
             
         }
         
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            roover.applyRotation(-5f);
+            sharedContainer.ship.getCurrentLander().applyRotation(-20f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            roover.applyRotation(5f);
+            sharedContainer.ship.getCurrentLander().applyRotation(20f);
         } else if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             renderer.setLerp(0.1f);
             renderer.ZOOM_X = 1.0f;
@@ -194,7 +197,8 @@ public class PlanetEvent extends Event{
             //createParticle();
         }
     }
-
+    
+    
     
     
 }

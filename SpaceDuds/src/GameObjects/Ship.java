@@ -93,8 +93,8 @@ public class Ship extends GameObject {
        landerOutputPos = new Vec2(0f,0.5f);
        
        landerSlots = 3;
-       landers.add(new Lander(1f));
-       landers.add(new Lander(1f));
+       landers.add(new Lander(1, 1.5f));
+       landers.add(new Lander(2, 1.5f));
     }
 
     public void shipUpdate(){
@@ -102,7 +102,6 @@ public class Ship extends GameObject {
             boost++;
             System.out.println(boost);
         }
-
     }
     
     public boolean boost(){
@@ -117,5 +116,9 @@ public class Ship extends GameObject {
             return true;
         }
         return false;
+    }
+    
+    public Lander getCurrentLander(){
+        return currentLander;
     }
 }
