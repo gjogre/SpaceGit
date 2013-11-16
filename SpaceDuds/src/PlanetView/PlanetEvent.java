@@ -192,6 +192,7 @@ public class PlanetEvent extends Event{
             renderer.setLerp(0.1f);
             renderer.ZOOM_X = 1.0f;
             renderer.ZOOM_Y = 1.0f;
+            sharedContainer.ship.addLander(sharedContainer.ship.getCurrentLander());
             popEvent();
 
         }
