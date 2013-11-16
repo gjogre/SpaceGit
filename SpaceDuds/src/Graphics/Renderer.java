@@ -123,7 +123,7 @@ public class Renderer {
         
          for(GameObject o : objectList){
              o.updateGfx();
-            glPushMatrix();
+             glPushMatrix();
                 if(o.hasTexture()){
                     glEnable(GL_TEXTURE_2D);
                     o.getTexture().bind();
@@ -136,85 +136,17 @@ public class Renderer {
                glTranslatef(o.getPos().x, o.getPos().y, 0f);
                glRotatef((float)Math.toDegrees(o.getAngle()),0,0,1);
                
-                if(o.hasHalo){
-                    
-                    glBegin(GL_TRIANGLE_FAN);
-                        glColor4f(o.defaultColorsRGB.x,o.defaultColorsRGB.y, o.defaultColorsRGB.z, 0.2f);
-                        for(int i = 0; i < o.getGraphicsVecCount(); i++){
-
-                            glVertex3f(o.getLine(i).x*o.haloSize, o.getLine(i).y*o.haloSize,-0.1f);
-                            
-                        }
-                     glEnd();
-
+               if(o.hasHalo){
+                   drawHalo(o);
                }
                glColor4f(o.currentColorsRGB.x, o.currentColorsRGB.y, o.currentColorsRGB.z, o.alpha);
                if(o.isSphere){
-                  
-
-                   //glBegin(GL_TRIANGLE_FAN);
-                   glRotatef(90f,1,0,0);
-                  glRotatef(-(float)Math.toDegrees(o.getRotation()),0,0,1);
-                  // o.getTexture().bind();
-                   Sphere s = new Sphere();
-                   s.setDrawStyle(GLU.GLU_FILL);
-                   s.setTextureFlag(true);
-                   s.setNormals(GLU.GLU_SMOOTH);
-                   s.draw(o.getSize(), 24, 16);
-
-                   
+                   drawSphere(o);                  
                } else if(o.isCircle){
-                   glBegin(GL_TRIANGLE_FAN);
-                   if(o.hasTexture()){glTexCoord2f(0.5f/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, 0.5f/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
-                    glVertex3f(0,0,0.2f);
-                    
-                    for(int i = 0; i < o.getGraphicsVecCount(); i++){
-                        if(o.hasTexture()){glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
-                        glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
-                    }
-                    if(o.hasTexture()){glTexCoord2f(o.getLine(0).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(0).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
-                    glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
-                   glEnd();
+                   drawCircle(o);
                } else {
-               glBegin(GL_TRIANGLES);
-
-                //glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
-
-
-                int anchors = 0;
-                //normal way of drawing
-                 for(int i = 0; i < o.getGraphicsVecCount(); i++){
-
-
-                     if(o.hasTexture()){ 
-                         if(o.hasAnchors()){ 
-
-                             if(o.getAnchor(i) == 0){
-                                 glTexCoord2f(0f, 0f);
-                             }
-                             if(o.getAnchor(i) == 1){
-                                 glTexCoord2f(0f, 1f);
-                             }
-                             if(o.getAnchor(i) == 2){
-                                 glTexCoord2f(1f, 1f);
-                             }
-                             if(o.getAnchor(i) == 3){
-                                 glTexCoord2f(1f, 0f);
-                             }
-                         } else {
-                             glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);
-                         }
-                     }
-
-                     glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
-
-
-                 }
-
-                 if(o.hasTexture()){o.getTexture().release();}
-               
-               glEnd();
-            }
+                   drawStandardObject(o);
+               }
 
             glPopMatrix();
          }
@@ -225,6 +157,84 @@ public class Renderer {
          glPopMatrix();
          
          drawGUI();
+    }
+
+    private void drawStandardObject(GameObject o) {
+        glBegin(GL_TRIANGLES);
+        
+        //glColor4f(o.colorsRGB.x, o.colorsRGB.y, o.colorsRGB.z, o.alpha);
+        
+        
+        int anchors = 0;
+        //normal way of drawing
+        for(int i = 0; i < o.getGraphicsVecCount(); i++){
+            
+            
+            if(o.hasTexture()){
+                if(o.hasAnchors()){
+                    
+                    if(o.getAnchor(i) == 0){
+                        glTexCoord2f(0f, 0f);
+                    }
+                    if(o.getAnchor(i) == 1){
+                        glTexCoord2f(0f, 1f);
+                    }
+                    if(o.getAnchor(i) == 2){
+                        glTexCoord2f(1f, 1f);
+                    }
+                    if(o.getAnchor(i) == 3){
+                        glTexCoord2f(1f, 0f);
+                    }
+                } else {
+                    glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX,-o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);
+                }
+            }
+            
+            glVertex3f(o.getLine(i).x, o.getLine(i).y,0.1f);
+            
+            
+        }
+        
+        if(o.hasTexture()){o.getTexture().release();}
+        
+        glEnd();
+    }
+
+    private void drawCircle(GameObject o) {
+        glBegin(GL_TRIANGLE_FAN);
+        if(o.hasTexture()){glTexCoord2f(0.5f/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, 0.5f/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
+        glVertex3f(0,0,0.2f);
+        
+        for(int i = 0; i < o.getGraphicsVecCount(); i++){
+            if(o.hasTexture()){glTexCoord2f(o.getLine(i).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(i).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
+            glVertex3f(o.getLine(i).x, o.getLine(i).y,0.2f);
+        }
+        if(o.hasTexture()){glTexCoord2f(o.getLine(0).x/o.getSTexture().textureDividerX+o.getSTexture().textureOffsetX, o.getLine(0).y/o.getSTexture().textureDividerY+o.getSTexture().textureOffsetY);}
+        glVertex3f(o.getLine(0).x, o.getLine(0).y,0.2f);
+        glEnd();
+    }
+
+    private void drawSphere(GameObject o) {
+        //glBegin(GL_TRIANGLE_FAN);
+        glRotatef(90f,1,0,0);
+        glRotatef(-(float)Math.toDegrees(o.getRotation()),0,0,1);
+        // o.getTexture().bind();
+        Sphere s = new Sphere();
+        s.setDrawStyle(GLU.GLU_FILL);
+        s.setTextureFlag(true);
+        s.setNormals(GLU.GLU_SMOOTH);
+        s.draw(o.getSize(), 24, 16);
+    }
+
+    private void drawHalo(GameObject o) {
+        glBegin(GL_TRIANGLE_FAN);
+        glColor4f(o.defaultColorsRGB.x,o.defaultColorsRGB.y, o.defaultColorsRGB.z, 0.2f);
+        for(int i = 0; i < o.getGraphicsVecCount(); i++){
+            
+            glVertex3f(o.getLine(i).x*o.haloSize, o.getLine(i).y*o.haloSize,-0.1f);
+            
+        }
+        glEnd();
     }
     private java.awt.Font awtFont;
     private TrueTypeFont font;
@@ -271,8 +281,10 @@ public class Renderer {
                 glTranslatef(-20f, 20f, 0.5f);
                 glScalef(0.1f, -0.1f, 0.2f);
                 font.drawString(0f, 0f, "Space: Boost", org.newdawn.slick.Color.blue);
-                font.drawString(0f, 18f, "e: Land (p: to get off land)", org.newdawn.slick.Color.blue);
-                font.drawString(0f, 36f, "wasd: Move", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 18f, "e: Send lander (if it misses planet its gone)", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 36f, "p: get off planet", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 54f, "wasd: Move", org.newdawn.slick.Color.blue);
+                font.drawString(0f, 72f, "esc: pause and restart scene", org.newdawn.slick.Color.blue);
             glPopMatrix();
     }
     

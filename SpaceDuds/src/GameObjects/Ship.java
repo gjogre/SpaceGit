@@ -27,6 +27,10 @@ public class Ship extends GameObject {
         }
         return false;
     }
+    
+    public void addLander(Lander l){
+        landers.add(l);
+    }
 
     public void addSelectedLanderSlot() {
         if(selectedLanderSlot < landerSlots){
@@ -93,8 +97,10 @@ public class Ship extends GameObject {
        landerOutputPos = new Vec2(0f,0.5f);
        
        landerSlots = 3;
+
        landers.add(new Lander(1f));
        landers.add(new Lander(1f));
+
     }
 
     public void shipUpdate(){

@@ -105,6 +105,7 @@ public class PlanetEvent extends Event{
         };
         
         for(Ground g : surface.groundList){
+            g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
             shapeArrayBase++;
         }
         
@@ -113,7 +114,7 @@ public class PlanetEvent extends Event{
         
         System.out.println(groundShapeList.length);
         for(Ground g : surface.groundList){
-            //g.defaultColorsRGB = sharedContainer.currentPlanet.defaultColorsRGB;
+
             g.setTexture(groundTexture,anchors);
             g.setBody(physicsCore.addGround(startX,0f,g.getShape(),g.getshapeVecCount()));
             renderer.addObject(g);
@@ -131,6 +132,7 @@ public class PlanetEvent extends Event{
         renderer.addObject(ship); 
         physicsCore.addDamageObject(ship);*/
         
+
         roover = new Lander(1f);
         backWheel = new Wheel();
         frontWheel = new Wheel();
