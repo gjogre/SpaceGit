@@ -159,9 +159,12 @@ public class SpaceEvent extends Event{
             }
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_E)){
-            
-            landing();
-            
+            if(!tapped){
+                landing();
+            }
+            tapped = true;
+        } else {
+            tapped = false;
         }
     }
     
@@ -207,11 +210,14 @@ private class LanderParticle extends GameObject {
     
     
 }
-
-    private int boostMeter;
+//TODO Move to own class
+private int boostMeter;
+private LandersGUI landerGui;
 private void makeMapFrame(){
         map = new Map(-19.0f,-19.0f);
-       
+        landerGui = new LandersGUI(-22.0f,-12f);
+        
+        //maps frame
         map.addLine(5.0f, 5f);
          map.setLineColor(0f,0f,1f);
         map.addLine(-5.0f, 5f);
@@ -228,13 +234,13 @@ private void makeMapFrame(){
          map.setLineColor(0f,0f,1f);
         map.addLine(5.0f, 5f);
         map.setLineColor(0f,0f,1f);
-
+        //planet dots
         for(Planet p : planets){
             for(float i = 0f; i < 2*Math.PI; i+=0.2f) {
                 map.addLine(p.getDistanceToCenter() * (float)Math.cos(i) / 50f, p.getDistanceToCenter() * (float)Math.sin(i) / 50f);
                 map.setLineColor(0.2f, 0.2f, 0.2f);
             }
-
+            
             map.addQuad(p.getPos().x/50f, p.getPos().y/50f, p.getSize()/20f);
             map.setQuadColor(0.6f, 0.1f, 0.6f);
             for(Moon m : p.moons){
@@ -243,6 +249,7 @@ private void makeMapFrame(){
             }
              
         }
+        //player in map
         movables = new GUIObject(-19.0f, -19.0f);
         movables.addQuad(0f, 0f, 0.5f);
         movables.setQuadColor(1f, 1f, 0f);
@@ -254,6 +261,8 @@ private void makeMapFrame(){
         movables.addLine(6f, -5f);
         boostMeter = movables.addLine(6f, ship.getBoost()/(25f));
         movables.setLineColor(1f, 1f, 0f);
+        
+        renderer.addGuiObject(landerGui);
 }
 private boolean blink;
 private void updateMap(){
@@ -273,6 +282,12 @@ private void updateMap(){
         movables.setLineColor(1f, 1f, 1f);
     }
     movables.setLine(6f, ship.getBoost()/(10f)-5f, 0.2f, boostMeter-1);
+    
+    landerGui.clear();
+    for(int i = 0; i < ship.getLanderCount(); i++ ){
+        landerGui.addQuad(i*3.2f, 0, 3f);
+        landerGui.setQuadColor(0, 0, 0.3f);
+    }
     
 }
 

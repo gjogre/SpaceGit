@@ -39,7 +39,9 @@ public class Ship extends GameObject {
             selectedLanderSlot = 0;
         }
     }
-    
+    public int getLanderCount(){
+        return landers.size();
+    }
     public int getBoostLoad() {
         return boostLoad;
     }
@@ -97,6 +99,7 @@ public class Ship extends GameObject {
        landerOutputPos = new Vec2(0f,0.5f);
        
        landerSlots = 3;
+       landers.add(new Lander(2, 1.5f));
        landers.add(new Lander(2, 1.5f));
     }
 

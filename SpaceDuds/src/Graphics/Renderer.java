@@ -286,6 +286,11 @@ public class Renderer {
                 font.drawString(0f, 54f, "wasd: Move", org.newdawn.slick.Color.blue);
                 font.drawString(0f, 72f, "esc: pause and restart scene", org.newdawn.slick.Color.blue);
             glPopMatrix();
+            glPushMatrix();
+                glTranslatef(-24f, -8f, 0.5f);
+                glScalef(0.1f, -0.1f, 0.2f);
+                font.drawString(0f, 0f, "Landers", org.newdawn.slick.Color.blue);
+            glPopMatrix();
     }
     
     private void drawQuadParticles(){
