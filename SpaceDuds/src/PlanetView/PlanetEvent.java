@@ -69,7 +69,7 @@ public class PlanetEvent extends Event{
             
         }
         //meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
-        physicsCore.setGravity(0f, -9.81f); //jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
+        //physicsCore.setGravity(0f, -9.81f); //jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
         //esimerkki miten partikkelia vois käyttää. toi vika luku on time to live. eventTimer on eventin alusta kulunu aika. angle radiaani.

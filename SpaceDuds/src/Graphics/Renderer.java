@@ -21,7 +21,6 @@ import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.glu.*;
 import org.newdawn.slick.TrueTypeFont;
 public class Renderer {
