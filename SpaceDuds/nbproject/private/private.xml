@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/BattleShip.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/Meteor.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/GameObject.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/PlanetView/PlanetEvent.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/Wheel.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/PlanetView/LanderBuilder.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/Physics/Core.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/Lander.java</file>
+            <file>file:/home/jarbsku/code/SpaceDuds/src/GameObjects/Axle.java</file>
+        </group>
     </open-files>
 </project-private>

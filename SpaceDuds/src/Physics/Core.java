@@ -242,8 +242,12 @@ public class Core {
     public void revoluteJoint(Body a, Body b, Vec2 anchor){
         RevoluteJointDef jointDef = new RevoluteJointDef();
         jointDef.initialize(a, b, anchor);
+        jointDef.enableMotor = true;
+        jointDef.collideConnected = false;
+        jointDef.maxMotorTorque = 2;
         world.createJoint(jointDef);
     }
+    
     public void addDamageObject(GameObject g){
         damageSystem.addObject(g);
     }

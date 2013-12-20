@@ -45,7 +45,8 @@ public class Meteor extends GameObject {
     
     @Override
     protected void takeDamage(float force){
-        hit = true;   
+        hit = true;
+        
 
     }
 }
