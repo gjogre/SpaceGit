@@ -223,6 +223,7 @@ public class GameObject {
         return body.getPosition();
     }
     
+    
     public Vec2 getWorldCenter(){
         return body.getWorldCenter();
     }

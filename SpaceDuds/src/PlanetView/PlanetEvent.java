@@ -22,7 +22,7 @@ public class PlanetEvent extends Event{
     private Meteor meteor;
     
     private float cameraY = 10;
-    private float cameraPushbackX = 7; // changing this parameter will make camera go 'n' pixels ahead the ship 
+    private float cameraPushbackX = 15; // changing this parameter will make camera go 'n' pixels ahead the ship 
     private boolean typed = false;
     
     private Random r = new Random();
@@ -42,7 +42,8 @@ public class PlanetEvent extends Event{
     private float centerX, centerY;
     private int shapeArrayBase = 5;
     
-    private boolean meteorbool = false;
+    private float maxSpeed = 0, maxReverse = 0;
+    private boolean lastMeteorDestroyed = true;
     
     @Override
     public void update(){
@@ -52,23 +53,23 @@ public class PlanetEvent extends Event{
         }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
             renderer.setCameraTargetPos(sharedContainer.ship.getCurrentLander().getPos().x+cameraPushbackX, sharedContainer.ship.getCurrentLander().getPos().y);
         }
-        /*test = r.nextInt(3)+1;
-        if(test <= 3 && !meteorbool){
+        test = r.nextInt(3)+1;
+        if(test <= 3 && lastMeteorDestroyed){
             invokeMeteor();
-            meteorbool = true;
-        }else if(meteorbool){
+            lastMeteorDestroyed = false;
+        }else if(!lastMeteorDestroyed){
             if(eventTimer % 2 == 0) {
-            //createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
+                createParticle(meteor.getPos().x, meteor.getPos().y, r.nextFloat()+0.2f ,(float)(Math.PI/4),30);
             }
             if(meteor.getHitBool()){
-                //System.out.println("OSUMA!");
-                
+                meteor.kill();
+                lastMeteorDestroyed = true;
             }
             meteor.applyRotation(1f);
             
         }
-        meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
-        physicsCore.setGravity(0f, -9.81f); jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
+        //meteor.getBody().applyForceToCenter(new Vec2(0,-5f));
+        physicsCore.setGravity(0f, -9.81f); //jos jostain syystä haluut experimenttaa gravityllä nii tällä hoituu. muista vaa popeventis sit pistää se takas 0. 
         //jos haluut et osalla on gravity ja osalla ei, pistä niille objekteille applyforcea -gravityn verran updatessa nii se ei enää vaikutakkaa niihin!
         
         //esimerkki miten partikkelia vois käyttää. toi vika luku on time to live. eventTimer on eventin alusta kulunu aika. angle radiaani.
@@ -123,34 +124,23 @@ public class PlanetEvent extends Event{
             startX = startX + sharedContainer.currentPlanet.getRoughness()+10;
         }
         
-        /*ship = new BattleShip();
-        ship.setBody(physicsCore.addObject(15f, 10f, ship.getShape(), ship.getshapeVecCount(), 1f,  0.5f, 0.5f));
-        physicsCore.addDamageObject(ship);
-        renderer.addObject(ship); 
-        physicsCore.addDamageObject(ship);*/
-        
 
         LanderBuilder.Builder(sharedContainer.ship.getCurrentLander(), 7f, 12f);
         
     }
     
     private void invokeMeteor(){
-        //meteorChance = r.nextInt(100)+1;
-        meteorChance = 0;
         
         float meteorStartX = renderer.getCameraPos().x + 30;
         float meteorStartY = renderer.getCameraPos().y + 30;
-        
-        if(meteorChance == 0){
-            meteor = new Meteor();
-            meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.1f));
-            meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
-            physicsCore.addDamageObject(meteor);
-            renderer.addObject(meteor);
-            for(int impulse = 0; impulse < 30 ;impulse++){
-               meteor.applyImulse(50f); 
-            }  
-            //physicsCore.addDamageObject(meteor);
+
+        meteor = new Meteor();
+        meteor.setBody(physicsCore.addObject(meteorStartX, meteorStartY, meteor.getShape(), meteor.getshapeVecCount(), 1f,  0.5f, 0.1f));
+        meteor.setTransform(meteorStartX, meteorStartY,(float)(5*Math.PI)/4);
+        physicsCore.addDamageObject(meteor);
+        renderer.addObject(meteor);
+        for(int impulse = 0; impulse < 30 ;impulse++){
+           meteor.applyImulse(50f); 
         }
     }
     
@@ -158,16 +148,18 @@ public class PlanetEvent extends Event{
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
             //backWheel.applyForceForward(5f);
             if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().ROOVER){
-                sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(-20f);
-                sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(-20f);
+                
+                    sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(-50f);
+                    sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(-50f);
+                 
             }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
                 sharedContainer.ship.getCurrentLander().applyForceForward(5f);
             }
             
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
             if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().ROOVER){
-                sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(-20f);
-                sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(-20f);
+                sharedContainer.ship.getCurrentLander().getBackWheel().applyRotation(20f);
+                sharedContainer.ship.getCurrentLander().getFrontWheel().applyRotation(20f);
             }else if(sharedContainer.ship.getCurrentLander().getLanderType() == sharedContainer.ship.getCurrentLander().SCOUT){
                 if(!typed){
                     System.out.println("asd");

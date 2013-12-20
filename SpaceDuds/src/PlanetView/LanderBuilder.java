@@ -7,8 +7,7 @@ import GameObjects.Lander;
 public class LanderBuilder {
     
     public static void Builder(Lander lander, float x, float y){
-        
-        if(lander.getLanderType() == lander.ROOVER){
+         if(lander.getLanderType() == lander.ROOVER){
             int i;
             float size, wheelSize;
             size = lander.getMass() / 0.5f;

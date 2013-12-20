@@ -177,8 +177,6 @@ private void landing(){
             sharedContainer.currentPlanet = p;
             sharedContainer.ship.posInGalaxy = ship.getPos();
             
-            
-            
             if(ship.setLander()){
                 
                 LanderParticle lp = new LanderParticle(createParticle(ship.getPos().x +ship.getLanderOutputPos().x,ship.getPos().y +ship.getLanderOutputPos().y, 

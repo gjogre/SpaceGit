@@ -9,6 +9,7 @@ public class Lander extends GameObject {
     private float size;
     public static final int ROOVER = 1, SCOUT = 2, BATTLE_SHIP = 3;
     private Wheel backWheel, frontWheel;
+    private Axle backAxle, frontAxle;
     private int landerType;
     
     public Lander(int landerType, float size){
@@ -19,6 +20,8 @@ public class Lander extends GameObject {
             rooverShape(size);
             backWheel = new Wheel();
             frontWheel = new Wheel();
+            backAxle = new Axle();
+            frontAxle = new Axle();
         }else if(landerType == SCOUT){
             this.landerType = SCOUT;
             scoutShape(size);
@@ -69,8 +72,24 @@ public class Lander extends GameObject {
     }
     
     public Wheel getFrontWheel(){
-        if(backWheel != null){
+        if(frontWheel != null){
             return frontWheel;
+        }else{
+            return null;
+        }
+    }
+    
+    public Axle getBackAxle(){
+        if(backAxle != null){
+            return backAxle;
+        }else{
+            return null;
+        }
+    }
+    
+    public Axle getFrontAxle(){
+        if(frontAxle != null){
+            return frontAxle;
         }else{
             return null;
         }
